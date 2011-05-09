@@ -30,7 +30,7 @@
     <ClInclude Include="GameState.hpp" />
     <ClInclude Include="MenuState.hpp" />
     <ClInclude Include="PauseState.hpp" />
-    <ClInclude Include="Player.h" />
+    <ClInclude Include="Player.hpp" />
     <ClInclude Include="rapidxml.hpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
