@@ -12,7 +12,7 @@
 #include <OgreSubEntity.h>
 #include <OgreMaterialManager.h>
 
-#include "Player.h"
+#include "Player.hpp"
 
 //|||||||||||||||||||||||||||||||||||||||||||||||
 
