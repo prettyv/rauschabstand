@@ -1,7 +1,7 @@
 //|||||||||||||||||||||||||||||||||||||||||||||||
 
-#ifndef PLAYER
-#define PLAYER
+#ifndef PLAYER_HPP
+#define PLAYER_HPP
 
 //|||||||||||||||||||||||||||||||||||||||||||||||
 

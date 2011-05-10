@@ -13,6 +13,7 @@
 #include <OgreMaterialManager.h>
 
 #include "Player.hpp"
+#include "Map.hpp"
 
 //|||||||||||||||||||||||||||||||||||||||||||||||
 
@@ -76,6 +77,7 @@ private:
 	bool						m_bSettingsMode;
 
     Player*                     m_player;
+	Map*						m_map;
 };
 
 //|||||||||||||||||||||||||||||||||||||||||||||||

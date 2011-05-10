@@ -17,6 +17,7 @@
     <ClCompile Include="DotSceneLoader.cpp" />
     <ClCompile Include="GameState.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Map.cpp" />
     <ClCompile Include="MenuState.cpp" />
     <ClCompile Include="PauseState.cpp" />
     <ClCompile Include="Player.cpp" />
@@ -28,6 +29,7 @@
     <ClInclude Include="DemoApp.hpp" />
     <ClInclude Include="DotSceneLoader.hpp" />
     <ClInclude Include="GameState.hpp" />
+    <ClInclude Include="Map.hpp" />
     <ClInclude Include="MenuState.hpp" />
     <ClInclude Include="PauseState.hpp" />
     <ClInclude Include="Player.hpp" />

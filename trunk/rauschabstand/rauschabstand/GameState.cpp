@@ -21,6 +21,7 @@ GameState::GameState()
     m_pDetailsPanel		= 0;
 
     m_player = 0;
+	m_map = 0;
 }
 
 //|||||||||||||||||||||||||||||||||||||||||||||||
@@ -102,11 +103,14 @@ void GameState::createScene()
     */
     // used when no player is created
     
-    m_pOgreHeadEntity = m_pSceneMgr->createEntity("Head", "cube.mesh");
+    /*m_pOgreHeadEntity = m_pSceneMgr->createEntity("Head", "cube.mesh");
     //m_pOgreHeadEntity->setQueryFlags(OGRE_HEAD_MASK);
     m_pOgreHeadNode = m_pSceneMgr->getRootSceneNode()->createChildSceneNode("Cube");
     m_pOgreHeadNode->attachObject(m_pOgreHeadEntity);
-    m_pOgreHeadNode->setPosition(Vector3(0, 0, 25));
+    m_pOgreHeadNode->setPosition(Vector3(0, 0, 25));*/
+
+	m_map = new Map("map01", m_pSceneMgr);
+	m_map->createRandomMap();
     
     /*
     m_pOgreHeadMat = m_pOgreHeadEntity->getSubEntity(1)->getMaterial();
@@ -284,6 +288,7 @@ void GameState::getInput()
         || OgreFramework::getSingletonPtr()->m_pKeyboard->isKeyDown(OIS::KC_S)
         || OgreFramework::getSingletonPtr()->m_pKeyboard->isKeyDown(OIS::KC_A)
         || OgreFramework::getSingletonPtr()->m_pKeyboard->isKeyDown(OIS::KC_D) ) {
+			//Sollte der player nicht auch geupdatet werden, wenn kein input kommt?
             m_player->update(m_FrameEvent.timeSinceLastFrame, OgreFramework::getSingletonPtr()->m_pKeyboard);
     }
     /*
@@ -339,6 +344,8 @@ void GameState::update(double timeSinceLastFrame)
     m_RotScale  = m_RotateSpeed * timeSinceLastFrame;
 
     m_TranslateVector = Vector3::ZERO;
+
+	m_map->update(timeSinceLastFrame);
 
     getInput();
     moveCamera();
