@@ -287,9 +287,10 @@ void GameState::getInput()
     if ( OgreFramework::getSingletonPtr()->m_pKeyboard->isKeyDown(OIS::KC_W)
         || OgreFramework::getSingletonPtr()->m_pKeyboard->isKeyDown(OIS::KC_S)
         || OgreFramework::getSingletonPtr()->m_pKeyboard->isKeyDown(OIS::KC_A)
-        || OgreFramework::getSingletonPtr()->m_pKeyboard->isKeyDown(OIS::KC_D) ) {
-			//Sollte der player nicht auch geupdatet werden, wenn kein input kommt?
-            m_player->update(m_FrameEvent.timeSinceLastFrame, OgreFramework::getSingletonPtr()->m_pKeyboard);
+        || OgreFramework::getSingletonPtr()->m_pKeyboard->isKeyDown(OIS::KC_D) )
+	{
+		m_player->update(m_FrameEvent.timeSinceLastFrame, OgreFramework::getSingletonPtr()->m_pKeyboard);
+		//m_map->update(m_FrameEvent.timeSinceLastFrame, OgreFramework::getSingletonPtr()->m_pKeyboard);
     }
     /*
     if(m_bSettingsMode == false)
@@ -344,8 +345,6 @@ void GameState::update(double timeSinceLastFrame)
     m_RotScale  = m_RotateSpeed * timeSinceLastFrame;
 
     m_TranslateVector = Vector3::ZERO;
-
-	m_map->update(timeSinceLastFrame);
 
     getInput();
     moveCamera();

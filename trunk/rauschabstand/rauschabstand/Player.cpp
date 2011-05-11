@@ -19,10 +19,12 @@ Player::Player(std::string name, SceneManager* sceneMgr, Camera* camera) {
     m_playerMainNode->attachObject(m_playerEntity);
     m_cameraPosition = m_playerMainNode->createChildSceneNode(m_name + "_sight", Vector3 (0, 100, -300));
     m_targetPosition = m_playerMainNode->createChildSceneNode(m_name + "_chaseCamera", Vector3 (0, 0, 200));
+	m_playerMainNode->setOrientation(Quaternion(0, 0, 1, 0));
 
     // camera
     m_cameraTarget = m_pSceneMgr->getRootSceneNode()->createChildSceneNode(m_name + "cameraTarget");
     m_chaseCamera = m_pSceneMgr->getRootSceneNode()->createChildSceneNode(m_name + "chaseCamera");
+	m_chaseCamera->setPosition(Quaternion(0, 0, 1, 0) * m_cameraPosition->getPosition());
     m_chaseCamera->setAutoTracking(true, m_cameraTarget);   // the camera will always look at the camera target
     m_chaseCamera->setFixedYawAxis(true);   // needed because of auto tracking
     //m_camera = m_pSceneMgr->createCamera(m_name + "_camera");

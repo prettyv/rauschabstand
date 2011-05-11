@@ -4,13 +4,18 @@
 
 //|||||||||||||||||||||||||||||||||||||||||||||||
 
+using namespace Ogre;
 
-Map::Map(std::string name, Ogre::SceneManager* sceneMgr)
+//|||||||||||||||||||||||||||||||||||||||||||||||
+
+Map::Map(std::string name, SceneManager* sceneMgr)
 {
 	m_name = name;
 	m_pSceneMgr = sceneMgr;
 	
 	m_mapMainNode = m_pSceneMgr->getRootSceneNode()->createChildSceneNode(m_name);
+
+	m_t = 0;
 }
 
 //|||||||||||||||||||||||||||||||||||||||||||||||
@@ -28,26 +33,27 @@ void Map::createRandomMap()
 		m_cubes.push_back(row);
 	}
 
-	for (unsigned int i = 0; i < LENGTH; i++) {
-		m_quanternions.push_back(
-			Ogre::Quaternion(Ogre::Radian(Ogre::Degree(3)), Ogre::Vector3(0, 1, 0)) * 
-			Ogre::Quaternion(Ogre::Radian(Ogre::Degree(3)), Ogre::Vector3(0, 0, 1))
+	for (unsigned int i = 0; i < LENGTH; i++)
+	{
+		m_rotationalSpline.addPoint(
+			Quaternion(Ogre::Degree(3), Vector3(0, 1, 0)) * 
+			Quaternion(Ogre::Degree(3), Vector3(0, 0, 1))
 		);
 	}
-	m_quanternions.push_back(Ogre::Quaternion(1, 0, 0, 0));
+	m_rotationalSpline.addPoint(Ogre::Quaternion(1, 0, 0, 0));
 	
 	Ogre::Vector3 pos = Ogre::Vector3(0, 0, 0);
 	Ogre::Quaternion quant = Ogre::Quaternion(1, 0, 0, 0);
 	for (unsigned int i = 0; i < LENGTH - 1; i++)
 	{
-		quant = quant * m_quanternions[i];
-		Ogre::Quaternion nextQuant = quant * m_quanternions[i + 1];
+		quant = quant * m_rotationalSpline.getPoint(i);
+		Ogre::Quaternion nextQuant = quant * m_rotationalSpline.getPoint(i + 1);
 
 		for (int x = -250, j = 0; j < WIDTH; j++, x += 50)
 		{
 			if (/*m_cubes[i][j] == */true)
 			{
-				Ogre::SceneNode* mNode = m_pSceneMgr->getRootSceneNode()->createChildSceneNode();
+				Ogre::SceneNode* mNode = m_mapMainNode->createChildSceneNode();
 				mNode->attachObject(createPlane(x, x + 50, -100, pos, quant, nextQuant));
 			}
 		}
@@ -58,9 +64,30 @@ void Map::createRandomMap()
 
 //|||||||||||||||||||||||||||||||||||||||||||||||
 
-void Map::update(Ogre::Real elapsedTime)
+void Map::update(Ogre::Real elapsedTime, OIS::Keyboard *input)
 {
-	//empty
+	if (input->isKeyDown (OIS::KC_W))
+	{
+		m_mapMainNode->translate(m_mapMainNode->getOrientation() * Vector3(0, 0, 1. * elapsedTime));
+		m_t += elapsedTime / 100;
+
+		/*float t = m_t < LENGTH ? m_t < 0 ? 0 : m_t : LENGTH - 1;
+		m_mapMainNode->setOrientation(m_rotationalSpline.interpolate(t, true));*/
+	}
+	if (input->isKeyDown (OIS::KC_S))
+	{
+		m_mapMainNode->translate(m_mapMainNode->getOrientation() * Vector3(0, 0, -1 * elapsedTime));
+		m_t -= elapsedTime / 100;
+		//m_mapMainNode->rotate(m_quanternions[(int) m_t]);
+	}
+	if (input->isKeyDown (OIS::KC_A))
+	{
+		m_mapMainNode->translate(m_mapMainNode->getOrientation() * Vector3(0.5 * elapsedTime, 0, 0));
+	}
+	if (input->isKeyDown (OIS::KC_D))
+	{
+		m_mapMainNode->translate(m_mapMainNode->getOrientation() * Vector3(-0.5 * elapsedTime, 0, 0));
+	}
 }
 
 //|||||||||||||||||||||||||||||||||||||||||||||||
