@@ -14,6 +14,7 @@
 
 #include "Player.hpp"
 #include "Map.hpp"
+#include "OgreBulletCollision.hpp"
 
 //|||||||||||||||||||||||||||||||||||||||||||||||
 
@@ -78,6 +79,7 @@ private:
 
     Player*                     m_player;
 	Map*						m_map;
+	OgreBulletCollision*			m_ogreBulletMain;
 };
 
 //|||||||||||||||||||||||||||||||||||||||||||||||

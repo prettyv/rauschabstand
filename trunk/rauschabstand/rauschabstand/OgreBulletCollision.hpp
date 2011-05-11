@@ -27,7 +27,7 @@ private:
 	std::deque<OgreBulletCollisions::CollisionShape *>  mShapes;
 
 public:
-	OgreBulletCollision (SceneManager *sceneMgr, RenderWindow* win, Vector3 &gravityVector, AxisAlignedBox &bounds) 
+	OgreBulletCollision (SceneManager *sceneMgr, Vector3 &gravityVector, AxisAlignedBox &bounds) 
 		: mSceneMgr(sceneMgr), mNumEntitiesInstanced(0)
 	{
 		// Start Bullet
@@ -42,28 +42,19 @@ public:
 		SceneNode *node = mSceneMgr->getRootSceneNode()->createChildSceneNode("debugDrawer", Ogre::Vector3::ZERO);
 		node->attachObject(static_cast <SimpleRenderable *> (debugDrawer));
 
+		// create floor plane
+		/*
 		// Define a floor plane mesh
 		Entity *ent;
 		Plane p;
 		p.normal = Vector3(0,1,0); p.d = 0;
 		MeshManager::getSingleton().createPlane("FloorPlane", ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME, p, 200000, 200000, 20, 20, true, 1, 9000, 9000, Vector3::UNIT_Z);
-
+		
 		// Create an entity (the floor)
 		ent = mSceneMgr->createEntity("floor", "FloorPlane");
 		ent->setMaterialName("Examples/BumpyMetal");
 		mSceneMgr->getRootSceneNode()->createChildSceneNode()->attachObject(ent);
-
-		// add collision detection to it
-		OgreBulletCollisions::CollisionShape *Shape;
-		Shape = new OgreBulletCollisions::StaticPlaneCollisionShape(Ogre::Vector3(0,1,0), 0); // (normal vector, distance)
-
-		// a body is needed for the shape
-		OgreBulletDynamics::RigidBody *defaultPlaneBody = new OgreBulletDynamics::RigidBody("BasePlane", mWorld);
-		defaultPlaneBody->setStaticShape((OgreBulletCollisions::StaticPlaneCollisionShape*)Shape, 0.1, 0.8);	// (shape, restitution, friction)
-
-		// push the created objects to the deques
-		mShapes.push_back(Shape);
-		mBodies.push_back(defaultPlaneBody);
+		*/
 	}
 
 	~OgreBulletCollision() {
@@ -93,14 +84,19 @@ public:
 		mWorld->stepSimulation(timeSinceLastFrame);
 	}
 
-	void getBoxCollisionShape(Entity *entity, Vector3 position) {
+	void createBoxCollisionShape(SceneNode* node, AxisAlignedBox boundingB, Vector3 position) {
 		Vector3 size = Vector3::ZERO;	// size of the box
-		AxisAlignedBox boundingB = entity->getBoundingBox();	// we need the bounding box of the box to be able to set the size of the Bullet-box
 		
+		size = boundingB.getSize(); 
+		size /= 2.0f; // only the half needed
+		size *= 0.95f;	// Bullet margin is a bit bigger so we need a smaller size
+
+		/*
 		SceneNode *node = mSceneMgr->getRootSceneNode()->createChildSceneNode();
 		node->attachObject(entity);
 		node->scale(0.05f, 0.05f, 0.05f);	// the cube is too big for us
 		size *= 0.05f;						// don't forget to scale down the Bullet-box too
+		*/
 
 		// after that create the Bullet shape with the calculated size
 		OgreBulletCollisions::BoxCollisionShape *sceneBoxShape = new OgreBulletCollisions::BoxCollisionShape(size);
@@ -117,12 +113,26 @@ public:
 			position,		// starting position of the box
 			Quaternion(0,0,0,1));// orientation of the box
 
-		defaultBody->setLinearVelocity(mCamera->getDerivedDirection().normalisedCopy() * 7.0f ); // shooting speed
+		//defaultBody->setLinearVelocity(mCamera->getDerivedDirection().normalisedCopy() * 7.0f ); // shooting speed
 
 		mNumEntitiesInstanced++;
 
 		mShapes.push_back(sceneBoxShape);
 		mBodies.push_back(defaultBody);
+	}
+
+	void createStaticPlaneCollisionShape() {
+		// add collision detection to it
+		OgreBulletCollisions::CollisionShape *Shape;
+		Shape = new OgreBulletCollisions::StaticPlaneCollisionShape(Ogre::Vector3(0,1,0), 0); // (normal vector, distance)
+
+		// a body is needed for the shape
+		OgreBulletDynamics::RigidBody *defaultPlaneBody = new OgreBulletDynamics::RigidBody("BasePlane", mWorld);
+		defaultPlaneBody->setStaticShape((OgreBulletCollisions::StaticPlaneCollisionShape*)Shape, 0.1, 0.8);	// (shape, restitution, friction)
+
+		// push the created objects to the deques
+		mShapes.push_back(Shape);
+		mBodies.push_back(defaultPlaneBody);
 	}
 
 	/*
@@ -150,7 +160,7 @@ public:
 		return ret;
 	}
 	*/
-}
+};
 
 //|||||||||||||||||||||||||||||||||||||||||||||||
 

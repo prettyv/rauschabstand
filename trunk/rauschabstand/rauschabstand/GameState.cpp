@@ -22,6 +22,7 @@ GameState::GameState()
 
     m_player = 0;
 	m_map = 0;
+	m_ogreBulletMain = 0;
 }
 
 //|||||||||||||||||||||||||||||||||||||||||||||||
@@ -48,6 +49,12 @@ void GameState::enter()
     m_pCurrentObject = 0;
 
     m_player = new Player("Player", m_pSceneMgr, m_pCamera);
+
+	m_ogreBulletMain = new OgreBulletCollision(
+		m_pSceneMgr, 
+		Vector3(0,-9.81,0), 
+		AxisAlignedBox (Ogre::Vector3 (-10000, -10000, -10000), Ogre::Vector3 (10000,  10000,  10000))
+		);
 
     buildGUI();
 
@@ -111,6 +118,20 @@ void GameState::createScene()
 
 	m_map = new Map("map01", m_pSceneMgr);
 	m_map->createRandomMap();
+
+	Entity* boxEntity1 = m_pSceneMgr->createEntity("Box1Entity", "cube.mesh");            
+	boxEntity1->setCastShadows(true);
+	SceneNode* boxSceneNode1 = m_pSceneMgr->getRootSceneNode()->createChildSceneNode("Box1Node");
+	boxSceneNode1->attachObject(boxEntity1);
+	boxSceneNode1->setPosition(Vector3(0, 0, 25));
+	m_ogreBulletMain->createBoxCollisionShape(boxSceneNode1, boxEntity1->getBoundingBox(), boxSceneNode1->getPosition());
+
+	Entity* boxEntity2 = m_pSceneMgr->createEntity("Box2Entity", "cube.mesh");            
+	boxEntity2->setCastShadows(true);
+	SceneNode* boxSceneNode2 = m_pSceneMgr->getRootSceneNode()->createChildSceneNode("Box2Node");
+	boxSceneNode2->attachObject(boxEntity2);
+	boxSceneNode2->setPosition(Vector3(0, 3, 25));
+	m_ogreBulletMain->createBoxCollisionShape(boxSceneNode2, boxEntity2->getBoundingBox(), boxSceneNode2->getPosition());
     
     /*
     m_pOgreHeadMat = m_pOgreHeadEntity->getSubEntity(1)->getMaterial();
@@ -348,6 +369,7 @@ void GameState::update(double timeSinceLastFrame)
 
     getInput();
     moveCamera();
+	m_ogreBulletMain->stepSimulation(timeSinceLastFrame);
 }
 
 //|||||||||||||||||||||||||||||||||||||||||||||||

@@ -45,7 +45,7 @@
     <ClCompile Include="Map.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="OgreBullet_Collision.cpp">
+    <ClCompile Include="OgreBulletCollision.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -83,7 +83,7 @@
     <ClInclude Include="Player.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="OgreBullet_Collision.hpp">
+    <ClInclude Include="OgreBulletCollision.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
