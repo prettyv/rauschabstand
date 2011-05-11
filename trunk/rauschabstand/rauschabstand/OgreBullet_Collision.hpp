@@ -1,5 +1,5 @@
 //|||||||||||||||||||||||||||||||||||||||||||||||
-
+/*
 #ifndef OGREBULLET_COLLISSION_HPP
 #define OGREBULLET_COLLISSION_HPP
 
@@ -168,3 +168,4 @@ public:
 #endif
 
 //|||||||||||||||||||||||||||||||||||||||||||||||
+*/
