@@ -52,7 +52,7 @@ void GameState::enter()
 
 	m_ogreBulletMain = new OgreBulletCollision(
 		m_pSceneMgr, 
-		Vector3(0,-9.81,0), 
+		Vector3(0, -100, 0), 
 		AxisAlignedBox (Ogre::Vector3 (-10000, -10000, -10000), Ogre::Vector3 (10000,  10000,  10000))
 		);
 
@@ -130,7 +130,7 @@ void GameState::createScene()
 	boxEntity2->setCastShadows(true);
 	SceneNode* boxSceneNode2 = m_pSceneMgr->getRootSceneNode()->createChildSceneNode("Box2Node");
 	boxSceneNode2->attachObject(boxEntity2);
-	boxSceneNode2->setPosition(Vector3(0, 3, 25));
+	boxSceneNode2->setPosition(Vector3(200, 3, 25));
 	m_ogreBulletMain->createBoxCollisionShape(boxSceneNode2, boxEntity2->getBoundingBox(), boxSceneNode2->getPosition());
     
     /*

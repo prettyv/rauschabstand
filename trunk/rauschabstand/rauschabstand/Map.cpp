@@ -54,7 +54,12 @@ void Map::createRandomMap()
 			if (/*m_cubes[i][j] == */true)
 			{
 				Ogre::SceneNode* mNode = m_mapMainNode->createChildSceneNode();
-				mNode->attachObject(createPlane(x, x + 50, -100, pos, quant, nextQuant));
+				ManualObject* plane = createPlane(x, x + 50, -100, pos, quant, nextQuant);
+
+				//MeshPtr ptr = plane->convertToMesh("");
+				//Entity* planeEntity = m_pSceneMgr->createEntity("", ptr);
+
+				mNode->attachObject(plane);
 			}
 		}
 

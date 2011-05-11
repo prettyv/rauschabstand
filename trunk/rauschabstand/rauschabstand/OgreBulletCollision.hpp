@@ -43,18 +43,20 @@ public:
 		node->attachObject(static_cast <SimpleRenderable *> (debugDrawer));
 
 		// create floor plane
-		/*
+		
 		// Define a floor plane mesh
-		Entity *ent;
+		/*Entity *ent;
 		Plane p;
-		p.normal = Vector3(0,1,0); p.d = 0;
+		p.normal = Vector3(0,1,0); p.d = -400;
 		MeshManager::getSingleton().createPlane("FloorPlane", ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME, p, 200000, 200000, 20, 20, true, 1, 9000, 9000, Vector3::UNIT_Z);
 		
 		// Create an entity (the floor)
 		ent = mSceneMgr->createEntity("floor", "FloorPlane");
 		ent->setMaterialName("Examples/BumpyMetal");
-		mSceneMgr->getRootSceneNode()->createChildSceneNode()->attachObject(ent);
-		*/
+		mSceneMgr->getRootSceneNode()->createChildSceneNode()->attachObject(ent);*/
+
+		createStaticPlaneCollisionShape();
+		
 	}
 
 	~OgreBulletCollision() {
@@ -124,7 +126,7 @@ public:
 	void createStaticPlaneCollisionShape() {
 		// add collision detection to it
 		OgreBulletCollisions::CollisionShape *Shape;
-		Shape = new OgreBulletCollisions::StaticPlaneCollisionShape(Ogre::Vector3(0,1,0), 0); // (normal vector, distance)
+		Shape = new OgreBulletCollisions::StaticPlaneCollisionShape(Ogre::Vector3(0,1,0), -500); // (normal vector, distance)
 
 		// a body is needed for the shape
 		OgreBulletDynamics::RigidBody *defaultPlaneBody = new OgreBulletDynamics::RigidBody("BasePlane", mWorld);
