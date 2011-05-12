@@ -10,24 +10,21 @@
 #include <sstream>
 
 #include "AdvancedOgreFramework.hpp"
+#include "OgreBulletCollision.hpp"
 
 //|||||||||||||||||||||||||||||||||||||||||||||||
 
 class Map
 {
 public:
-	Map(std::string name, Ogre::SceneManager* sceneMgr);
+	Map(std::string name, Ogre::SceneManager* sceneMgr, OgreBulletCollision* ogreBulletMain);
 
 	void createRandomMap();
 	void update(Ogre::Real elapsedTime, OIS::Keyboard *input);
 
 private:
-	Ogre::ManualObject* createPlane(int left, int right, int back, Ogre::Vector3 pos, 
-		Ogre::Quaternion quant, Ogre::Quaternion nextQuant);
-
-private:
-	static const int				WIDTH = 5;
-	static const int				LENGTH = 20;
+	static const int				MAPLENGTH = 30;
+	static const int				MAPWIDTH = 5;
 
 	std::vector<std::vector<bool>>	m_cubes;
 	Ogre::RotationalSpline			m_rotationalSpline;
@@ -38,6 +35,7 @@ private:
     std::string						m_name;
 
 	float							m_t;
+	OgreBulletCollision*			m_ogreBulletMain;
 };
 
 

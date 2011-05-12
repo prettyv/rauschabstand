@@ -11,6 +11,43 @@
 
 //|||||||||||||||||||||||||||||||||||||||||||||||
 
+#include "OgreBulletCollisionsShape.h"
+
+
+#include "Shapes/OgreBulletCollisionsBoxShape.h"
+#include "Shapes/OgreBulletCollisionsSphereShape.h"
+#include "Shapes/OgreBulletCollisionsConeShape.h"
+#include "Shapes/OgreBulletCollisionsCylinderShape.h"
+#include "Shapes/OgreBulletCollisionsTriangleShape.h"
+#include "Shapes/OgreBulletCollisionsStaticPlaneShape.h"
+
+#include "Shapes/OgreBulletCollisionsCompoundShape.h"
+
+#include "Shapes/OgreBulletCollisionsMultiSphereShape.h"
+
+#include "Shapes/OgreBulletCollisionsConvexHullShape.h"
+#include "Shapes/OgreBulletCollisionsMinkowskiSumShape.h"
+
+#include "Shapes/OgreBulletCollisionsTrimeshShape.h"
+
+#include "Utils/OgreBulletCollisionsMeshToShapeConverter.h"
+
+#include "OgreBulletCollisionsRay.h"
+
+#include "Debug/OgreBulletCollisionsDebugLines.h"
+
+#include "OgreBulletDynamicsWorld.h"
+#include "OgreBulletDynamicsRigidBody.h"
+
+#include "OgreBulletDynamicsConstraint.h"
+#include "Constraints/OgreBulletDynamicsPoint2pointConstraint.h" 
+
+using namespace Ogre;
+using namespace OgreBulletCollisions;
+using namespace OgreBulletDynamics;
+
+//|||||||||||||||||||||||||||||||||||||||||||||||
+
 using namespace Ogre;
 
 //|||||||||||||||||||||||||||||||||||||||||||||||
@@ -128,9 +165,20 @@ public:
 		OgreBulletCollisions::CollisionShape *Shape;
 		Shape = new OgreBulletCollisions::StaticPlaneCollisionShape(Ogre::Vector3(0,1,0), -500); // (normal vector, distance)
 
+		/*Vector3* vertices;
+
+		Shape = new OgreBulletCollisions::TriangleMeshCollisionShape(
+			//{Vector3(0, -200, 0), Vector3(400, -200, 0), Vector3(0, -200, 400)},
+			//3,
+			//{0, 1, 2},
+			//3,
+			//true
+		);*/
+
 		// a body is needed for the shape
 		OgreBulletDynamics::RigidBody *defaultPlaneBody = new OgreBulletDynamics::RigidBody("BasePlane", mWorld);
 		defaultPlaneBody->setStaticShape((OgreBulletCollisions::StaticPlaneCollisionShape*)Shape, 0.1, 0.8);	// (shape, restitution, friction)
+
 
 		// push the created objects to the deques
 		mShapes.push_back(Shape);
@@ -162,6 +210,37 @@ public:
 		return ret;
 	}
 	*/
+
+	OgreBulletDynamics::RigidBody* addStaticTrimesh(const Ogre::String &instanceName,
+		const Ogre::String &meshName,
+		const Ogre::Vector3 &pos, 
+		const Ogre::Quaternion &q, 
+		const Ogre::Real bodyRestitution, 
+		const Ogre::Real bodyFriction,
+		bool castShadow)
+	{
+		Entity *sceneEntity = mSceneMgr->createEntity(instanceName + StringConverter::toString(mNumEntitiesInstanced), meshName);
+		sceneEntity->setCastShadows (castShadow);
+
+		OgreBulletCollisions::StaticMeshToShapeConverter *trimeshConverter = new OgreBulletCollisions::StaticMeshToShapeConverter(sceneEntity);
+		OgreBulletCollisions::TriangleMeshCollisionShape *sceneTriMeshShape = trimeshConverter->createTrimesh();
+		delete trimeshConverter;
+		OgreBulletDynamics::RigidBody *sceneRigid = new RigidBody(
+			instanceName + "Rigid" + StringConverter::toString(mNumEntitiesInstanced),
+			mWorld);
+
+		SceneNode *node = mSceneMgr->getRootSceneNode ()->createChildSceneNode ();
+		node->attachObject (sceneEntity);
+
+		sceneRigid->setStaticShape(node, sceneTriMeshShape, bodyRestitution, bodyFriction, pos);
+
+		//mEntities.push_back(sceneEntity);
+		mBodies.push_back(sceneRigid);
+		mNumEntitiesInstanced++;
+
+		return sceneRigid;
+	}
+
 };
 
 //|||||||||||||||||||||||||||||||||||||||||||||||

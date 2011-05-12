@@ -116,21 +116,21 @@ void GameState::createScene()
     m_pOgreHeadNode->attachObject(m_pOgreHeadEntity);
     m_pOgreHeadNode->setPosition(Vector3(0, 0, 25));*/
 
-	m_map = new Map("map01", m_pSceneMgr);
+	m_map = new Map("map01", m_pSceneMgr, m_ogreBulletMain);
 	m_map->createRandomMap();
 
 	Entity* boxEntity1 = m_pSceneMgr->createEntity("Box1Entity", "cube.mesh");            
 	boxEntity1->setCastShadows(true);
 	SceneNode* boxSceneNode1 = m_pSceneMgr->getRootSceneNode()->createChildSceneNode("Box1Node");
 	boxSceneNode1->attachObject(boxEntity1);
-	boxSceneNode1->setPosition(Vector3(0, 0, 25));
+	boxSceneNode1->setPosition(Vector3(-150, 200, -500));
 	m_ogreBulletMain->createBoxCollisionShape(boxSceneNode1, boxEntity1->getBoundingBox(), boxSceneNode1->getPosition());
 
 	Entity* boxEntity2 = m_pSceneMgr->createEntity("Box2Entity", "cube.mesh");            
 	boxEntity2->setCastShadows(true);
 	SceneNode* boxSceneNode2 = m_pSceneMgr->getRootSceneNode()->createChildSceneNode("Box2Node");
 	boxSceneNode2->attachObject(boxEntity2);
-	boxSceneNode2->setPosition(Vector3(200, 3, 25));
+	boxSceneNode2->setPosition(Vector3(-100, 200, -200));
 	m_ogreBulletMain->createBoxCollisionShape(boxSceneNode2, boxEntity2->getBoundingBox(), boxSceneNode2->getPosition());
     
     /*

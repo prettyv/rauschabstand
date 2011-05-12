@@ -79,7 +79,7 @@ private:
 
     Player*                     m_player;
 	Map*						m_map;
-	OgreBulletCollision*			m_ogreBulletMain;
+	OgreBulletCollision*		m_ogreBulletMain;
 };
 
 //|||||||||||||||||||||||||||||||||||||||||||||||
