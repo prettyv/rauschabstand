@@ -217,10 +217,11 @@ public:
 		const Ogre::Quaternion &q, 
 		const Ogre::Real bodyRestitution, 
 		const Ogre::Real bodyFriction,
-		bool castShadow)
+		bool castShadow,
+		SceneNode* node)
 	{
 		Entity *sceneEntity = mSceneMgr->createEntity(instanceName + StringConverter::toString(mNumEntitiesInstanced), meshName);
-		sceneEntity->setCastShadows (castShadow);
+		//sceneEntity->setCastShadows (castShadow);
 
 		OgreBulletCollisions::StaticMeshToShapeConverter *trimeshConverter = new OgreBulletCollisions::StaticMeshToShapeConverter(sceneEntity);
 		OgreBulletCollisions::TriangleMeshCollisionShape *sceneTriMeshShape = trimeshConverter->createTrimesh();
@@ -229,8 +230,8 @@ public:
 			instanceName + "Rigid" + StringConverter::toString(mNumEntitiesInstanced),
 			mWorld);
 
-		SceneNode *node = mSceneMgr->getRootSceneNode ()->createChildSceneNode ();
-		node->attachObject (sceneEntity);
+		//SceneNode *node = mSceneMgr->getRootSceneNode ()->createChildSceneNode ();
+		//node->attachObject (sceneEntity);
 
 		sceneRigid->setStaticShape(node, sceneTriMeshShape, bodyRestitution, bodyFriction, pos);
 

@@ -52,7 +52,7 @@ void GameState::enter()
 
 	m_ogreBulletMain = new OgreBulletCollision(
 		m_pSceneMgr, 
-		Vector3(0, -100, 0), 
+		Vector3(0, -300, 0), 
 		AxisAlignedBox (Ogre::Vector3 (-10000, -10000, -10000), Ogre::Vector3 (10000,  10000,  10000))
 		);
 
@@ -311,8 +311,8 @@ void GameState::getInput()
         || OgreFramework::getSingletonPtr()->m_pKeyboard->isKeyDown(OIS::KC_D) )
 	{
 		m_player->update(m_FrameEvent.timeSinceLastFrame, OgreFramework::getSingletonPtr()->m_pKeyboard);
-		//m_map->update(m_FrameEvent.timeSinceLastFrame, OgreFramework::getSingletonPtr()->m_pKeyboard);
-    }
+	}
+	m_map->update(m_FrameEvent.timeSinceLastFrame, OgreFramework::getSingletonPtr()->m_pKeyboard);
     /*
     if(m_bSettingsMode == false)
     {

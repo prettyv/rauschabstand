@@ -12,6 +12,10 @@
 #include "AdvancedOgreFramework.hpp"
 #include "OgreBulletCollision.hpp"
 
+using namespace Ogre;
+using namespace OgreBulletCollisions;
+using namespace OgreBulletDynamics;
+
 //|||||||||||||||||||||||||||||||||||||||||||||||
 
 class Map
@@ -21,6 +25,8 @@ public:
 
 	void createRandomMap();
 	void update(Ogre::Real elapsedTime, OIS::Keyboard *input);
+
+	void setPosition(Ogre::Vector3 pos);
 
 private:
 	static const int				MAPLENGTH = 30;
@@ -36,6 +42,8 @@ private:
 
 	float							m_t;
 	OgreBulletCollision*			m_ogreBulletMain;
+
+	OgreBulletDynamics::RigidBody*	m_rigidBody;
 };
 
 

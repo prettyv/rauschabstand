@@ -34,17 +34,15 @@ void Map::createRandomMap()
 		m_cubes.push_back(row);
 	}
 
+	Quaternion currentQuaternion = Quaternion(1, 0, 0, 0);
 	for (unsigned int i = 0; i < MAPLENGTH; i++)
 	{
-		m_rotationalSpline.addPoint(
-			Quaternion(Ogre::Degree(3), Vector3(0, 1, 0)) * 
-			Quaternion(Ogre::Degree(3), Vector3(0, 0, 1))
-		);
+		Quaternion inputQuaternion = Quaternion(Ogre::Degree(3), Vector3(0, 0, 1));
+		currentQuaternion = currentQuaternion * inputQuaternion;
+		m_rotationalSpline.addPoint(currentQuaternion);
 	}
-	m_rotationalSpline.addPoint(Ogre::Quaternion(1, 0, 0, 0));
+	m_rotationalSpline.addPoint(currentQuaternion);
 
-
-	Ogre::SceneNode* mNode = m_mapMainNode->createChildSceneNode();
 	Ogre::ManualObject* plane = new Ogre::ManualObject("plane");
 	plane->estimateIndexCount(MAPLENGTH * MAPWIDTH * 4);
 	plane->estimateVertexCount(MAPLENGTH * MAPWIDTH * 4);
@@ -52,13 +50,14 @@ void Map::createRandomMap()
 	plane->begin("");
 	
 	Ogre::Vector3 pos = Ogre::Vector3(0, 0, 0);
-	Ogre::Quaternion quant = Ogre::Quaternion(1, 0, 0, 0);
+	Ogre::Quaternion quant;
+	Ogre::Quaternion nextQuant;
 	for (unsigned int i = 0; i < MAPLENGTH; i++)
 	{
-		quant = quant * m_rotationalSpline.getPoint(i);
-		Ogre::Quaternion nextQuant = quant * m_rotationalSpline.getPoint(i + 1);
+		quant = m_rotationalSpline.getPoint(i);
+		nextQuant = m_rotationalSpline.getPoint(i + 1);
 
-		for (int x = -250, j = 0; j < MAPWIDTH; j++, x += 50)
+		for (int x = -50 * (MAPWIDTH / 2), j = 0; j < MAPWIDTH; j++, x += 50)
 		{
 			if (/*m_cubes[i][j] == */true)
 			{
@@ -92,32 +91,49 @@ void Map::createRandomMap()
 
 	plane->end();
 
-	//mNode->attachObject(plane);
+	m_mapMainNode->attachObject(plane);
 
 	MeshPtr ptr = plane->convertToMesh("planeMesh");
 	Entity* planeEntity = m_pSceneMgr->createEntity("planeEntity", "planeMesh");
 
-	m_ogreBulletMain->addStaticTrimesh("sceneMesh",
+	m_rigidBody = m_ogreBulletMain->addStaticTrimesh("sceneMesh",
 		"planeMesh",
 		Ogre::Vector3(0, 0, 0), 
 		Quaternion::IDENTITY,
 		0.1f, 
 		0.8f,
-		true);
-	
+		true,
+		m_mapMainNode);
+
+	setPosition(Vector3(0, 0, 0));
 }
 
 //|||||||||||||||||||||||||||||||||||||||||||||||
 
 void Map::update(Ogre::Real elapsedTime, OIS::Keyboard *input)
 {
-	if (input->isKeyDown (OIS::KC_W))
+
+	if (input->isKeyDown (OIS::KC_N))
+	{
+		m_t = m_t >= MAPLENGTH ? MAPLENGTH : m_t + 1;
+	}
+	if (input->isKeyDown (OIS::KC_M))
+	{
+		m_t = m_t <= 0 ? 0 : m_t - 1;
+	}
+
+	/*m_mapMainNode->getChild("planeNode")->setPosition(
+		m_rotationalSpline.interpolate(m_t, 0, true).Inverse() * Vector3(0, 0, m_t * 100));
+	m_mapMainNode->getChild("planeNode")->setOrientation(
+		m_rotationalSpline.interpolate(m_t, 0, true).Inverse());*/
+
+	/*if (input->isKeyDown (OIS::KC_W))
 	{
 		m_mapMainNode->translate(m_mapMainNode->getOrientation() * Vector3(0, 0, 1. * elapsedTime));
 		m_t += elapsedTime / 100;
 
-		/*float t = m_t < LENGTH ? m_t < 0 ? 0 : m_t : LENGTH - 1;
-		m_mapMainNode->setOrientation(m_rotationalSpline.interpolate(t, true));*/
+		//float t = m_t < LENGTH ? m_t < 0 ? 0 : m_t : LENGTH - 1;
+		//m_mapMainNode->setOrientation(m_rotationalSpline.interpolate(t, true));
 	}
 	if (input->isKeyDown (OIS::KC_S))
 	{
@@ -132,7 +148,17 @@ void Map::update(Ogre::Real elapsedTime, OIS::Keyboard *input)
 	if (input->isKeyDown (OIS::KC_D))
 	{
 		m_mapMainNode->translate(m_mapMainNode->getOrientation() * Vector3(-0.5 * elapsedTime, 0, 0));
-	}
+	}*/
+}
+
+//|||||||||||||||||||||||||||||||||||||||||||||||
+
+void Map::setPosition(Ogre::Vector3 pos) {
+	btTransform transform;
+	transform.setIdentity();
+	transform.setOrigin(OgreBulletCollisions::OgreBtConverter::to(pos));
+	m_rigidBody->getBulletRigidBody()->setWorldTransform(transform);
+	m_mapMainNode->setPosition(pos);
 }
 
 //|||||||||||||||||||||||||||||||||||||||||||||||
