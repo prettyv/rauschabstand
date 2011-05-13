@@ -123,7 +123,7 @@ public:
 		mWorld->stepSimulation(timeSinceLastFrame);
 	}
 
-	void createBoxCollisionShape(SceneNode* node, AxisAlignedBox boundingB, Vector3 position) {
+	OgreBulletDynamics::RigidBody* createBoxCollisionShape(SceneNode* node, AxisAlignedBox boundingB, Vector3 position, float bodyMass) {
 		Vector3 size = Vector3::ZERO;	// size of the box
 		
 		size = boundingB.getSize(); 
@@ -141,14 +141,14 @@ public:
 		OgreBulletCollisions::BoxCollisionShape *sceneBoxShape = new OgreBulletCollisions::BoxCollisionShape(size);
 
 		// and the Bullet rigid body
-		OgreBulletDynamics::RigidBody *defaultBody = new OgreBulletDynamics::RigidBody(
+		OgreBulletDynamics::RigidBody* defaultBody = new OgreBulletDynamics::RigidBody(
 			"defaultBoxRigid" + StringConverter::toString(mNumEntitiesInstanced), 
 			mWorld);
 		defaultBody->setShape(	node,
 			sceneBoxShape,
 			0.6f,			// dynamic body restitution
 			0.6f,			// dynamic body friction
-			1.0f, 			// dynamic bodymass
+			bodyMass, 			// dynamic bodymass
 			position,		// starting position of the box
 			Quaternion(0,0,0,1));// orientation of the box
 
@@ -158,6 +158,8 @@ public:
 
 		mShapes.push_back(sceneBoxShape);
 		mBodies.push_back(defaultBody);
+
+		return defaultBody;
 	}
 
 	void createStaticPlaneCollisionShape() {

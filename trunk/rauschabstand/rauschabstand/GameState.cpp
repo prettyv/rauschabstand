@@ -124,15 +124,18 @@ void GameState::createScene()
 	SceneNode* boxSceneNode1 = m_pSceneMgr->getRootSceneNode()->createChildSceneNode("Box1Node");
 	boxSceneNode1->attachObject(boxEntity1);
 	boxSceneNode1->setPosition(Vector3(-150, 200, -500));
-	m_ogreBulletMain->createBoxCollisionShape(boxSceneNode1, boxEntity1->getBoundingBox(), boxSceneNode1->getPosition());
+	m_ogreBulletMain->createBoxCollisionShape(boxSceneNode1, boxEntity1->getBoundingBox(), boxSceneNode1->getPosition(), 1.0f);
 
 	Entity* boxEntity2 = m_pSceneMgr->createEntity("Box2Entity", "cube.mesh");            
 	boxEntity2->setCastShadows(true);
 	SceneNode* boxSceneNode2 = m_pSceneMgr->getRootSceneNode()->createChildSceneNode("Box2Node");
 	boxSceneNode2->attachObject(boxEntity2);
 	boxSceneNode2->setPosition(Vector3(-100, 200, -200));
-	m_ogreBulletMain->createBoxCollisionShape(boxSceneNode2, boxEntity2->getBoundingBox(), boxSceneNode2->getPosition());
+	m_ogreBulletMain->createBoxCollisionShape(boxSceneNode2, boxEntity2->getBoundingBox(), boxSceneNode2->getPosition(), 1.0f);
     
+	OgreBulletDynamics::RigidBody* rigidBody = m_ogreBulletMain->createBoxCollisionShape(m_player->m_playerMainNode, m_player->m_playerEntity->getBoundingBox(), m_player->m_playerMainNode->getPosition(), 1.0f);
+	m_player->setRigidBody(rigidBody);
+
     /*
     m_pOgreHeadMat = m_pOgreHeadEntity->getSubEntity(1)->getMaterial();
     m_pOgreHeadMatHigh = m_pOgreHeadMat->clone("OgreHeadMatHigh");
