@@ -42,6 +42,8 @@ static const Ogre::Vector3   CarPosition = Ogre::Vector3(-150, 600,-300);
 RaycastSpaceship::RaycastSpaceship(SceneManager *sceneMgr, OgreBulletDynamics::DynamicsWorld* world) {
 	m_sceneMgr = sceneMgr;
 	m_world = world;
+
+	init();
 }
 
 void RaycastSpaceship::init()
@@ -210,7 +212,7 @@ void RaycastSpaceship::init()
                     gWheelRadius,
                     isFrontWheel, gWheelFriction, gRollInfluence);
 
-                //mVehicle->setWheelsAttached();
+                mVehicle->setWheelsAttached();
 
             }
 
