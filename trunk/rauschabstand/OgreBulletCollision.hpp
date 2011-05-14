@@ -56,14 +56,16 @@ class OgreBulletCollision
 {
 private:
 	SceneManager* mSceneMgr; 
-	OgreBulletDynamics::DynamicsWorld *mWorld;	// OgreBullet World
-	OgreBulletCollisions::DebugDrawer *debugDrawer;
+	
+	OgreBulletCollisions::DebugDrawer* debugDrawer;
 	int mNumEntitiesInstanced;
 
 	std::deque<OgreBulletDynamics::RigidBody *>         mBodies;
 	std::deque<OgreBulletCollisions::CollisionShape *>  mShapes;
 
 public:
+	OgreBulletDynamics::DynamicsWorld* mWorld;	// OgreBullet World
+
 	OgreBulletCollision (SceneManager *sceneMgr, Vector3 &gravityVector, AxisAlignedBox &bounds) 
 		: mSceneMgr(sceneMgr), mNumEntitiesInstanced(0)
 	{

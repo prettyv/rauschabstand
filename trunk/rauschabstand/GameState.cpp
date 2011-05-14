@@ -1,6 +1,7 @@
 //|||||||||||||||||||||||||||||||||||||||||||||||
 
 #include "GameState.hpp"
+#include "RaycastSpaceship.hpp"
 
 //|||||||||||||||||||||||||||||||||||||||||||||||
 
@@ -135,6 +136,8 @@ void GameState::createScene()
     
 	OgreBulletDynamics::RigidBody* rigidBody = m_ogreBulletMain->createBoxCollisionShape(m_player->m_playerMainNode, m_player->m_playerEntity->getBoundingBox(), m_player->m_playerMainNode->getPosition(), 1.0f);
 	m_player->setRigidBody(rigidBody);
+
+	RaycastSpaceship* spaceship = new RaycastSpaceship(m_pSceneMgr, m_ogreBulletMain->mWorld);
 
     /*
     m_pOgreHeadMat = m_pOgreHeadEntity->getSubEntity(1)->getMaterial();

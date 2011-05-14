@@ -105,7 +105,7 @@ void Map::createRandomMap()
 		true,
 		m_mapMainNode);
 
-	setPosition(Vector3(0, 0, 0));
+	setPosition(Vector3(-100, -80, 300));
 }
 
 //|||||||||||||||||||||||||||||||||||||||||||||||
