@@ -8,7 +8,7 @@ using namespace Ogre;
 
 //|||||||||||||||||||||||||||||||||||||||||||||||
 
-Map::Map(std::string name, SceneManager* sceneMgr, OgreBulletCollision* ogreBulletMain)
+Map::Map(std::string name, SceneManager* sceneMgr)
 {
 	m_name = name;
 	m_pSceneMgr = sceneMgr;
@@ -16,7 +16,6 @@ Map::Map(std::string name, SceneManager* sceneMgr, OgreBulletCollision* ogreBull
 	m_mapMainNode = m_pSceneMgr->getRootSceneNode()->createChildSceneNode(m_name);
 
 	m_t = 0;
-	m_ogreBulletMain = ogreBulletMain;
 }
 
 //|||||||||||||||||||||||||||||||||||||||||||||||
@@ -95,16 +94,7 @@ void Map::createRandomMap()
 
 	MeshPtr ptr = plane->convertToMesh("planeMesh");
 	Entity* planeEntity = m_pSceneMgr->createEntity("planeEntity", "planeMesh");
-
-	m_rigidBody = m_ogreBulletMain->addStaticTrimesh("sceneMesh",
-		"planeMesh",
-		Ogre::Vector3(0, 0, 0), 
-		Quaternion::IDENTITY,
-		0.1f, 
-		0.8f,
-		true,
-		m_mapMainNode);
-
+	
 	setPosition(Vector3(-100, -80, 300));
 }
 
@@ -154,10 +144,6 @@ void Map::update(Ogre::Real elapsedTime, OIS::Keyboard *input)
 //|||||||||||||||||||||||||||||||||||||||||||||||
 
 void Map::setPosition(Ogre::Vector3 pos) {
-	btTransform transform;
-	transform.setIdentity();
-	transform.setOrigin(OgreBulletCollisions::OgreBtConverter::to(pos));
-	m_rigidBody->getBulletRigidBody()->setWorldTransform(transform);
 	m_mapMainNode->setPosition(pos);
 }
 

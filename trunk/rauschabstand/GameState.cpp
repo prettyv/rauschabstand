@@ -23,7 +23,6 @@ GameState::GameState()
 
     m_player = 0;
 	m_map = 0;
-	m_ogreBulletMain = 0;
 }
 
 //|||||||||||||||||||||||||||||||||||||||||||||||
@@ -50,12 +49,6 @@ void GameState::enter()
     m_pCurrentObject = 0;
 
     m_player = new Player("Player", m_pSceneMgr, m_pCamera);
-
-	m_ogreBulletMain = new OgreBulletCollision(
-		m_pSceneMgr, 
-		Vector3(0, -300, 0), 
-		AxisAlignedBox (Ogre::Vector3 (-10000, -10000, -10000), Ogre::Vector3 (10000,  10000,  10000))
-		);
 
     buildGUI();
 
@@ -117,34 +110,8 @@ void GameState::createScene()
     m_pOgreHeadNode->attachObject(m_pOgreHeadEntity);
     m_pOgreHeadNode->setPosition(Vector3(0, 0, 25));*/
 
-	m_map = new Map("map01", m_pSceneMgr, m_ogreBulletMain);
+	m_map = new Map("map01", m_pSceneMgr);
 	m_map->createRandomMap();
-
-	Entity* boxEntity1 = m_pSceneMgr->createEntity("Box1Entity", "cube.mesh");            
-	boxEntity1->setCastShadows(true);
-	SceneNode* boxSceneNode1 = m_pSceneMgr->getRootSceneNode()->createChildSceneNode("Box1Node");
-	boxSceneNode1->attachObject(boxEntity1);
-	boxSceneNode1->setPosition(Vector3(-150, 200, -500));
-	m_ogreBulletMain->createBoxCollisionShape(boxSceneNode1, boxEntity1->getBoundingBox(), boxSceneNode1->getPosition(), 1.0f);
-
-	Entity* boxEntity2 = m_pSceneMgr->createEntity("Box2Entity", "cube.mesh");            
-	boxEntity2->setCastShadows(true);
-	SceneNode* boxSceneNode2 = m_pSceneMgr->getRootSceneNode()->createChildSceneNode("Box2Node");
-	boxSceneNode2->attachObject(boxEntity2);
-	boxSceneNode2->setPosition(Vector3(-100, 200, -200));
-	m_ogreBulletMain->createBoxCollisionShape(boxSceneNode2, boxEntity2->getBoundingBox(), boxSceneNode2->getPosition(), 1.0f);
-    
-	OgreBulletDynamics::RigidBody* rigidBody = m_ogreBulletMain->createBoxCollisionShape(m_player->m_playerMainNode, m_player->m_playerEntity->getBoundingBox(), m_player->m_playerMainNode->getPosition(), 1.0f);
-	m_player->setRigidBody(rigidBody);
-
-	RaycastSpaceship* spaceship = new RaycastSpaceship(m_pSceneMgr, m_ogreBulletMain->mWorld);
-
-    /*
-    m_pOgreHeadMat = m_pOgreHeadEntity->getSubEntity(1)->getMaterial();
-    m_pOgreHeadMatHigh = m_pOgreHeadMat->clone("OgreHeadMatHigh");
-    m_pOgreHeadMatHigh->getTechnique(0)->getPass(0)->setAmbient(1, 0, 0);
-    m_pOgreHeadMatHigh->getTechnique(0)->getPass(0)->setDiffuse(1, 0, 0, 0);
-    */
 }
 
 //|||||||||||||||||||||||||||||||||||||||||||||||
@@ -374,8 +341,6 @@ void GameState::update(double timeSinceLastFrame)
     m_TranslateVector = Vector3::ZERO;
 
     getInput();
-    moveCamera();
-	m_ogreBulletMain->stepSimulation(timeSinceLastFrame);
 }
 
 //|||||||||||||||||||||||||||||||||||||||||||||||

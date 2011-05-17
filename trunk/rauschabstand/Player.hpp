@@ -8,7 +8,6 @@
 #include <string>
 
 #include "AdvancedOgreFramework.hpp"
-#include "OgreBulletCollision.hpp"
 
 //|||||||||||||||||||||||||||||||||||||||||||||||
 
@@ -18,14 +17,9 @@ public:
 
     void update(Ogre::Real elapsedTime, OIS::Keyboard *input);
 
-	inline void setRigidBody(OgreBulletDynamics::RigidBody* rigidBody) {
-		m_rigidBody = rigidBody;
-	};
-
 	// player
 	Ogre::SceneNode*				m_playerMainNode;
 	Ogre::Entity*					m_playerEntity;
-	OgreBulletDynamics::RigidBody*	m_rigidBody;
 
 private:
     Ogre::SceneManager*				m_pSceneMgr;
