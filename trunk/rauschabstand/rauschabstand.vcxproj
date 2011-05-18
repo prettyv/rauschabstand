@@ -19,7 +19,6 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Map.cpp" />
     <ClCompile Include="MenuState.cpp" />
-    <ClCompile Include="OgreBulletCollision.cpp" />
     <ClCompile Include="PauseState.cpp" />
     <ClCompile Include="Player.cpp" />
   </ItemGroup>
@@ -32,7 +31,6 @@
     <ClInclude Include="GameState.hpp" />
     <ClInclude Include="Map.hpp" />
     <ClInclude Include="MenuState.hpp" />
-    <ClInclude Include="OgreBulletCollision.hpp" />
     <ClInclude Include="PauseState.hpp" />
     <ClInclude Include="Player.hpp" />
     <ClInclude Include="rapidxml.hpp" />

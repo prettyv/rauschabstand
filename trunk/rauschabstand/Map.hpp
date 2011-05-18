@@ -20,24 +20,24 @@ class Map
 public:
 	Map(std::string name, Ogre::SceneManager* sceneMgr);
 
-	void createRandomMap();
+	void createRandomMap(int length, int width);
 	void update(Ogre::Real elapsedTime, OIS::Keyboard *input);
 
-	void setPosition(Ogre::Vector3 pos);
+	Ogre::Quaternion getOrientation(double t);
+	Ogre::Vector3 getPosition(double t, double u);
 
 private:
-	static const int				MAPLENGTH = 30;
-	static const int				MAPWIDTH = 5;
+	int	m_length;
+	int	m_width;
 
 	std::vector<std::vector<bool>>	m_cubes;
 	Ogre::RotationalSpline			m_rotationalSpline;
+	Ogre::SimpleSpline				m_pointsSpline;
 	
     Ogre::SceneManager*				m_pSceneMgr;
 
     Ogre::SceneNode*				m_mapMainNode;
     std::string						m_name;
-
-	float							m_t;
 };
 
 

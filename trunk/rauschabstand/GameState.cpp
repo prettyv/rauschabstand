@@ -1,7 +1,6 @@
 //|||||||||||||||||||||||||||||||||||||||||||||||
 
 #include "GameState.hpp"
-#include "RaycastSpaceship.hpp"
 
 //|||||||||||||||||||||||||||||||||||||||||||||||
 
@@ -48,11 +47,11 @@ void GameState::enter()
     OgreFramework::getSingletonPtr()->m_pViewport->setCamera(m_pCamera);
     m_pCurrentObject = 0;
 
-    m_player = new Player("Player", m_pSceneMgr, m_pCamera);
-
     buildGUI();
 
-    createScene();
+	createScene();
+
+	m_player = new Player("Player", m_pSceneMgr, m_pCamera, m_map);
 }
 
 //|||||||||||||||||||||||||||||||||||||||||||||||
@@ -111,7 +110,7 @@ void GameState::createScene()
     m_pOgreHeadNode->setPosition(Vector3(0, 0, 25));*/
 
 	m_map = new Map("map01", m_pSceneMgr);
-	m_map->createRandomMap();
+	m_map->createRandomMap(400, 5);
 }
 
 //|||||||||||||||||||||||||||||||||||||||||||||||
@@ -281,11 +280,12 @@ void GameState::getInput()
     if ( OgreFramework::getSingletonPtr()->m_pKeyboard->isKeyDown(OIS::KC_W)
         || OgreFramework::getSingletonPtr()->m_pKeyboard->isKeyDown(OIS::KC_S)
         || OgreFramework::getSingletonPtr()->m_pKeyboard->isKeyDown(OIS::KC_A)
-        || OgreFramework::getSingletonPtr()->m_pKeyboard->isKeyDown(OIS::KC_D) )
+        || OgreFramework::getSingletonPtr()->m_pKeyboard->isKeyDown(OIS::KC_D)
+		|| OgreFramework::getSingletonPtr()->m_pKeyboard->isKeyDown(OIS::KC_SPACE))
 	{
 		m_player->update(m_FrameEvent.timeSinceLastFrame, OgreFramework::getSingletonPtr()->m_pKeyboard);
 	}
-	m_map->update(m_FrameEvent.timeSinceLastFrame, OgreFramework::getSingletonPtr()->m_pKeyboard);
+	//m_map->update(m_FrameEvent.timeSinceLastFrame, OgreFramework::getSingletonPtr()->m_pKeyboard);
     /*
     if(m_bSettingsMode == false)
     {
@@ -339,6 +339,8 @@ void GameState::update(double timeSinceLastFrame)
     m_RotScale  = m_RotateSpeed * timeSinceLastFrame;
 
     m_TranslateVector = Vector3::ZERO;
+
+	m_player->update(timeSinceLastFrame);
 
     getInput();
 }
