@@ -44,13 +44,13 @@ void Map::createRandomMap(int length, int width)
 	for (unsigned int i = 0; i < m_length; i++)
 	{
 		// not random but smooth..
-		Quaternion inputQuaternion = Quaternion(Ogre::Degree(3), Vector3(0, 0, 1)) * 
-			Quaternion(Ogre::Degree(3), Vector3(0, 1, 0));
+		//Quaternion inputQuaternion = Quaternion(Ogre::Degree(3), Vector3(0, 0, 1)) * 
+			//Quaternion(Ogre::Degree(3), Vector3(0, 1, 0));
 
 		// true random TODO: needs smoothing
-		//Vector3 quanternionAxis = Vector3(rand() % 10, rand() % 10, rand() % 10);
-		//quanternionAxis.normalise();
-		//Quaternion inputQuaternion = Quaternion(Ogre::Degree(rand() % 3), quanternionAxis);
+		Vector3 quanternionAxis = Vector3(rand() % 10, rand() % 10, rand() % 10);
+		quanternionAxis.normalise();
+		Quaternion inputQuaternion = Quaternion(Ogre::Degree(rand() % 3), quanternionAxis);
 
 		currentQuaternion = currentQuaternion * inputQuaternion;
 		m_rotationalSpline.addPoint(currentQuaternion);

@@ -51,8 +51,6 @@ private:
 	double							m_t;					// position on map
 	double							m_u;
 	double							m_mass;
-
-	Ogre::SceneNode*				m_mapPositionCube;		// mapPositionCube (for debugging)
 };
 
 //|||||||||||||||||||||||||||||||||||||||||||||||

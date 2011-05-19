@@ -35,11 +35,6 @@ Player::Player(std::string name, SceneManager* sceneMgr, Camera* camera, Map* ma
     m_chaseCamera->attachObject(m_camera);
     m_tightness = 1.0f;
 
-	m_mapPositionCube = m_pSceneMgr->getRootSceneNode()->createChildSceneNode("mapPositionCube");
-	Ogre::Entity* cube = m_pSceneMgr->createEntity("Cube", "cube.mesh");
-	m_mapPositionCube->attachObject(cube);
-	m_mapPositionCube->scale(0.5, 0.5, 0.5);
-
 	m_speed = Vector3(0, 0, 0);
 	m_t = 0;
 	m_u = 0;
@@ -60,13 +55,10 @@ void Player::update (double elapsedTime)
 	Quaternion orientation = m_map->getOrientation(m_t);
 	m_playerMainNode->setOrientation(orientation * Quaternion(0, 0, 1, 0));
 
-	// set debug cube position
-	m_mapPositionCube->setPosition(m_map->getPosition(m_t, m_u));
-
-	Vector3 gravity = Vector3(0, -0.01, 0);
+	Vector3 gravity = Vector3(0, -0.02, 0);
 
 	// calculate distanceToMap
-	double distanceToMap = m_jumpNode->_getDerivedPosition().distance(m_map->getPosition(m_t, m_u)) - 100;
+	double distanceToMap = m_jumpNode->getPosition().y - 100;
 
 	// calculate mapAntiGravity with distanceToMap
 	Vector3 mapAntiGravity;
@@ -81,10 +73,21 @@ void Player::update (double elapsedTime)
 	m_speed += gravity * m_mass;
 
 	// simulate friction
-	m_speed *= 0.99;
+	m_speed *= 0.98;
 
 	// translate node
 	m_jumpNode->translate(m_speed * elapsedTime);
+
+	// if jumpposition < 0 -> speed auf 0
+	Vector3 jumpPosition = m_jumpNode->getPosition();
+	if (jumpPosition.y < 0)
+	{
+		jumpPosition.y = 0;
+		m_jumpNode->setPosition(jumpPosition);
+		m_speed = Vector3(0, 0, 0);
+	}
+
+	m_playerMainNode->setPosition(m_map->getPosition(m_t, 0));
 	
 	updateCamera();
 }
@@ -96,16 +99,16 @@ void Player::update (Real elapsedTime, OIS::Keyboard *input) {
     if (input->isKeyDown (OIS::KC_W)) 
 	{
 		//TODO: remove this input, should be moving by it self..
-		Quaternion orientation = m_map->getOrientation(m_t);
-		m_playerMainNode->translate(orientation * Vector3(0, 0, -20));
+		/*Quaternion orientation = m_map->getOrientation(m_t);
+		m_playerMainNode->translate(orientation * Vector3(0, 0, -20));*/
 		m_t += 0.2;
 		updateCamera();
 	}
 
     if (input->isKeyDown (OIS::KC_S))
 	{
-		Quaternion orientation = m_map->getOrientation(m_t);
-		m_playerMainNode->translate(orientation * Vector3(0, 0, 20));
+		/*Quaternion orientation = m_map->getOrientation(m_t);
+		m_playerMainNode->translate(orientation * Vector3(0, 0, 20));*/
 		m_t -= 0.2;
 		updateCamera();
 	}
