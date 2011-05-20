@@ -110,7 +110,7 @@ void GameState::createScene()
     m_pOgreHeadNode->setPosition(Vector3(0, 0, 25));*/
 
 	m_map = new Map("map01", m_pSceneMgr);
-	m_map->createRandomMap(400, 5);
+	m_map->createRandomMap(200, 5);
 }
 
 //|||||||||||||||||||||||||||||||||||||||||||||||

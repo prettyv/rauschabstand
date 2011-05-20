@@ -15,12 +15,20 @@ using namespace Ogre;
 
 //|||||||||||||||||||||||||||||||||||||||||||||||
 
+struct TimeQuaternion
+{
+	unsigned int m_t;
+	Quaternion m_quanternion;
+};
+
+//|||||||||||||||||||||||||||||||||||||||||||||||
+
 class Map
 {
 public:
 	Map(std::string name, Ogre::SceneManager* sceneMgr);
 
-	void createRandomMap(int length, int width);
+	void createRandomMap(unsigned int length, unsigned int width);
 	void update(Ogre::Real elapsedTime, OIS::Keyboard *input);
 
 	Ogre::Quaternion getOrientation(double t);
@@ -31,12 +39,12 @@ private:
 	int	m_width;
 
 	std::vector<std::vector<bool>>	m_cubes;
-	Ogre::RotationalSpline			m_rotationalSpline;
-	Ogre::SimpleSpline				m_pointsSpline;
+	RotationalSpline				m_rotationalSpline;
+	SimpleSpline					m_pointsSpline;
 	
-    Ogre::SceneManager*				m_pSceneMgr;
+    SceneManager*					m_pSceneMgr;
 
-    Ogre::SceneNode*				m_mapMainNode;
+    SceneNode*						m_mapMainNode;
     std::string						m_name;
 };
 
