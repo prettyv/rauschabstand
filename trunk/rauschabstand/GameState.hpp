@@ -14,6 +14,7 @@
 
 #include "Player.hpp"
 #include "Map.hpp"
+#include "AudioPlayer.hpp"
 
 //|||||||||||||||||||||||||||||||||||||||||||||||
 
@@ -78,6 +79,8 @@ private:
 
     Player*                     m_player;
 	Map*						m_map;
+	
+	AudioPlayer*				m_audioplayer;
 
 	
 	// VISUALS begin

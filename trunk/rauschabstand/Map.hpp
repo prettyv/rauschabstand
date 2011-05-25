@@ -41,7 +41,7 @@ private:
 	int	m_length;
 	int	m_width;
 
-	std::vector<std::vector<bool>>	m_cubes;
+	std::vector<std::vector<bool> >	m_cubes;
 	RotationalSpline				m_rotationalSpline;
 	SimpleSpline					m_pointsSpline;
 	
