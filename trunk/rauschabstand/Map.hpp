@@ -34,6 +34,9 @@ public:
 	Ogre::Quaternion getOrientation(double t);
 	Ogre::Vector3 getPosition(double t, double u);
 
+	int getLength() { return m_length; }
+	int getWidth() { return m_width; }
+
 private:
 	int	m_length;
 	int	m_width;

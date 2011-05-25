@@ -101,6 +101,7 @@ void Player::update (Real elapsedTime, OIS::Keyboard *input) {
 		//TODO: remove this input, should be moving by it self..
 		/*Quaternion orientation = m_map->getOrientation(m_t);
 		m_playerMainNode->translate(orientation * Vector3(0, 0, -20));*/
+		//TODO: * elapsedTime
 		m_t += 0.2;
 		updateCamera();
 	}
@@ -109,6 +110,7 @@ void Player::update (Real elapsedTime, OIS::Keyboard *input) {
 	{
 		/*Quaternion orientation = m_map->getOrientation(m_t);
 		m_playerMainNode->translate(orientation * Vector3(0, 0, 20));*/
+		//TODO: * elapsedTime
 		m_t -= 0.2;
 		updateCamera();
 	}
