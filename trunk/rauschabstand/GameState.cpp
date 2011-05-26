@@ -25,7 +25,6 @@ GameState::GameState()
 
     m_player = 0;
 	m_map = 0;
-	m_audioplayer = 0;
 
 	// AUDIO-VISUALS begin
 	m_numberOfBoxes = 0;
@@ -65,8 +64,6 @@ void GameState::enter()
 	createScene();
 
 	m_player = new Player("Player", m_pSceneMgr, m_pCamera, m_map);
-	m_audioplayer = new AudioPlayer("/home/berion/Music/speaking_in_code_mix.mp3");
-	m_audioplayer->play();
 }
 
 //|||||||||||||||||||||||||||||||||||||||||||||||
@@ -74,7 +71,6 @@ void GameState::enter()
 bool GameState::pause()
 {
     OgreFramework::getSingletonPtr()->m_pLog->logMessage("Pausing GameState...");
-	m_audioplayer->pause();
 
     return true;
 }
@@ -84,7 +80,6 @@ bool GameState::pause()
 void GameState::resume()
 {
     OgreFramework::getSingletonPtr()->m_pLog->logMessage("Resuming GameState...");
-	m_audioplayer->play();
 
     buildGUI();
 
@@ -102,7 +97,6 @@ void GameState::exit()
     m_pSceneMgr->destroyQuery(m_pRSQ);
     if(m_pSceneMgr)
         OgreFramework::getSingletonPtr()->m_pRoot->destroySceneManager(m_pSceneMgr);
-	m_audioplayer->stop();
 }
 
 //|||||||||||||||||||||||||||||||||||||||||||||||
@@ -379,7 +373,7 @@ bool GameState::keyPressed(const OIS::KeyEvent &keyEventRef)
         return true;
     }
 
-    if((m_bSettingsMode && OgreFramework::getSingletonPtr()->m_pKeyboard->isKeyDown(OIS::KC_RETURN)) ||
+    if(m_bSettingsMode && OgreFramework::getSingletonPtr()->m_pKeyboard->isKeyDown(OIS::KC_RETURN) ||
         OgreFramework::getSingletonPtr()->m_pKeyboard->isKeyDown(OIS::KC_NUMPADENTER))
     {
     }
