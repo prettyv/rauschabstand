@@ -323,7 +323,7 @@ void GameState::createScene()
 
 
 	m_map = new Map("map01", m_pSceneMgr);
-	m_map->createRandomMap(200, 5);
+	m_map->createRandomMap(200, 12);
 }
 
 //|||||||||||||||||||||||||||||||||||||||||||||||

@@ -45,12 +45,17 @@ Player::Player(std::string name, SceneManager* sceneMgr, Camera* camera, Map* ma
 	m_jumpNode->setPosition(0, 300, 0);
 
 	m_map = map;
+
+	m_throughHole = false;
+	m_jumping = false;
 }
 
 //|||||||||||||||||||||||||||||||||||||||||||||||
 
 void Player::update (double elapsedTime)
 {
+	//TODO: cleanup, remove magic numbers, move to gamestate.cpp(?), pack into functions
+
 	// set player orientation to local map orientation
 	Quaternion orientation = m_map->getOrientation(m_t);
 	m_playerMainNode->setOrientation(orientation * Quaternion(0, 0, 1, 0));
@@ -58,7 +63,7 @@ void Player::update (double elapsedTime)
 	Vector3 gravity = Vector3(0, -0.02, 0);
 
 	// calculate distanceToMap
-	double distanceToMap = m_jumpNode->getPosition().y - 100;
+	double distanceToMap = m_jumpNode->getPosition().y - 50;
 
 	// calculate mapAntiGravity with distanceToMap
 	Vector3 mapAntiGravity;
@@ -69,7 +74,10 @@ void Player::update (double elapsedTime)
 	}
 
 	// TODO: remove mass??
-	m_speed += mapAntiGravity * m_mass;
+	if (!m_map->isHoleInMap(m_t, m_u) && !m_throughHole)
+	{
+		m_speed += mapAntiGravity * m_mass;
+	}
 	m_speed += gravity * m_mass;
 
 	// simulate friction
@@ -78,13 +86,39 @@ void Player::update (double elapsedTime)
 	// translate node
 	m_jumpNode->translate(m_speed * elapsedTime);
 
-	// if jumpposition < 0 -> speed auf 0
+	// if jumpposition < THROUGHHOLE -> speed auf 0
 	Vector3 jumpPosition = m_jumpNode->getPosition();
-	if (jumpPosition.y < 0)
+	if (jumpPosition.y < THROUGHHOLEHEIGHT)
 	{
-		jumpPosition.y = 0;
-		m_jumpNode->setPosition(jumpPosition);
+		if (m_map->isHoleInMap(m_t, m_u))
+		{
+			m_throughHole = true;
+		}
+		else if (!m_throughHole)
+		{
+			m_jumpNode->setPosition(0, 0, 0);
+			m_speed = Vector3(0, 0, 0);
+		}
+	}
+
+	if (jumpPosition.y < DEADHEIGHT)
+	{
+		// reset to start
+		m_throughHole = false;
+
+		m_playerMainNode->setPosition(0, 0, 0);
+		m_t = 0;
+		m_sideNode->setPosition(0, 0, 0);
+		m_u = 0;
+		m_jumpNode->setPosition(0, 300, 0);
+
 		m_speed = Vector3(0, 0, 0);
+	}
+
+	//TODO: fix bug: checks before player is really jumping, result: double jump speed
+	// check if back from jump..
+	if (m_jumping && jumpPosition.y < 50) {
+		m_jumping = false;
 	}
 
 	m_playerMainNode->setPosition(m_map->getPosition(m_t, 0));
@@ -95,44 +129,60 @@ void Player::update (double elapsedTime)
 //|||||||||||||||||||||||||||||||||||||||||||||||
 
 void Player::update (Real elapsedTime, OIS::Keyboard *input) {
-    // handle player+camera movement
+
+	//TODO: remove this input, should be moving by it self..
     if (input->isKeyDown (OIS::KC_W)) 
 	{
-		//TODO: remove this input, should be moving by it self..
-		/*Quaternion orientation = m_map->getOrientation(m_t);
-		m_playerMainNode->translate(orientation * Vector3(0, 0, -20));*/
 		//TODO: * elapsedTime
 		m_t += 0.2;
+		m_t = m_t >= m_map->getLength() ? m_map->getLength() : m_t;
 		updateCamera();
 	}
 
     if (input->isKeyDown (OIS::KC_S))
 	{
-		/*Quaternion orientation = m_map->getOrientation(m_t);
-		m_playerMainNode->translate(orientation * Vector3(0, 0, 20));*/
 		//TODO: * elapsedTime
 		m_t -= 0.2;
+		m_t = m_t < 0 ? 0 : m_t;
 		updateCamera();
 	}
 
     if (input->isKeyDown (OIS::KC_A))
 	{
-		m_u -= 0.4 * elapsedTime;
-		m_sideNode->translate(Vector3(0.4 * elapsedTime, 0, 0));
+		m_u += 0.4 * elapsedTime;
+		m_u = m_u < m_map->getWidth() * 100 / (double) 2 ? m_u : m_map->getWidth() * 100 / (double) 2;
+		m_sideNode->setPosition(Vector3(m_u, 0, 0));
 		updateCamera();
     }
 
 	if (input->isKeyDown (OIS::KC_D))
 	{
-		m_u += 0.4 * elapsedTime;
-		m_sideNode->translate(Vector3(-0.4 * elapsedTime, 0, 0));
+		m_u -= 0.4 * elapsedTime;
+		m_u = m_u > -m_map->getWidth() * 100 / (double) 2 ? m_u : -m_map->getWidth() * 100 / (double) 2;
+		m_sideNode->setPosition(Vector3(m_u, 0, 0));
 		updateCamera();
     }
 
-	if (input->isKeyDown (OIS::KC_SPACE))
+	// jump
+	// player can only jump when
+	// - space key is pressed
+	// - player is not jumping
+	// - player is not above a hole
+	// - player has fallen through a hole
+	if (input->isKeyDown (OIS::KC_SPACE) && 
+			!m_jumping && 
+			!m_map->isHoleInMap(m_t, m_u) && 
+			m_jumpNode->getPosition().y > THROUGHHOLEHEIGHT)
 	{
-		//TODO: nur wenn am boden/ bodennähe
-		m_speed += Vector3(0, 0.01, 0) * elapsedTime;
+		//TODO: fix jump
+		double distanceToMap = m_jumpNode->getPosition().y;
+
+		if (distanceToMap < 1) {	// prevent division by zero
+			m_speed = Vector3(0, 0.05, 0) * elapsedTime;
+		} else {
+			m_speed = Vector3(0, 0.05 /*/ distanceToMap*/, 0) * elapsedTime;
+		}
+		m_jumping = true;
 	}
 
 }

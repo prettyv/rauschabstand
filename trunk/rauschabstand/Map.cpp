@@ -143,45 +143,7 @@ void Map::createRandomMap(unsigned int length, unsigned int width)
 
 void Map::update(Ogre::Real elapsedTime, OIS::Keyboard *input)
 {
-
-	//TODO: remove function if not needed..
-
-	/*if (input->isKeyDown (OIS::KC_N))
-	{
-		m_t = m_t >= MAPLENGTH ? MAPLENGTH : m_t + 1;
-	}
-	if (input->isKeyDown (OIS::KC_M))
-	{
-		m_t = m_t <= 0 ? 0 : m_t - 1;
-	}*/
-
-	/*m_mapMainNode->getChild("planeNode")->setPosition(
-		m_rotationalSpline.interpolate(m_t, 0, true).Inverse() * Vector3(0, 0, m_t * 100));
-	m_mapMainNode->getChild("planeNode")->setOrientation(
-		m_rotationalSpline.interpolate(m_t, 0, true).Inverse());*/
-
-	/*if (input->isKeyDown (OIS::KC_W))
-	{
-		m_mapMainNode->translate(m_mapMainNode->getOrientation() * Vector3(0, 0, 1. * elapsedTime));
-		m_t += elapsedTime / 100;
-
-		//float t = m_t < LENGTH ? m_t < 0 ? 0 : m_t : LENGTH - 1;
-		//m_mapMainNode->setOrientation(m_rotationalSpline.interpolate(t, true));
-	}
-	if (input->isKeyDown (OIS::KC_S))
-	{
-		m_mapMainNode->translate(m_mapMainNode->getOrientation() * Vector3(0, 0, -1 * elapsedTime));
-		m_t -= elapsedTime / 100;
-		//m_mapMainNode->rotate(m_quanternions[(int) m_t]);
-	}
-	if (input->isKeyDown (OIS::KC_A))
-	{
-		m_mapMainNode->translate(m_mapMainNode->getOrientation() * Vector3(0.5 * elapsedTime, 0, 0));
-	}
-	if (input->isKeyDown (OIS::KC_D))
-	{
-		m_mapMainNode->translate(m_mapMainNode->getOrientation() * Vector3(-0.5 * elapsedTime, 0, 0));
-	}*/
+	// empty
 }
 
 //|||||||||||||||||||||||||||||||||||||||||||||||
@@ -204,19 +166,33 @@ Ogre::Quaternion Map::getOrientation(double t)
 
 Ogre::Vector3 Map::getPosition(double t, double u)
 {
-	if ( t < 0)
-	{
-		t = 0;
-	} else if (t >= m_length)
-	{
-		t = m_length - 1;
-	}
+	t = t < 0 ? 0 : t;
+	t = t >= m_length ? m_length - 1 : t;
 	int index = (int) t;
 	double t2 = t - index;
 	Ogre::Vector3 tPos = m_pointsSpline.interpolate(index, t2);
 	Ogre::Quaternion quant = getOrientation(t);
 	
 	return tPos + quant * Ogre::Vector3(u, 0, 0);
+}
+
+//|||||||||||||||||||||||||||||||||||||||||||||||
+
+
+bool Map::isHoleInMap(double t, double u)
+{
+	t = t < 0 ? 0 : t;
+	t = t >= m_length ? m_length - 1 : t;
+
+	//TODO: wtf, fix this mess!
+	int j = u + (m_width / (double) 2) * 100;
+	j /= (double) 100;
+	j = m_width - j;
+	j -= 1;
+	j = j < 0 ? 0 : j;
+	j = j > m_width ? m_width : j;
+
+	return !m_cubes.at(t).at(j);
 }
 
 //|||||||||||||||||||||||||||||||||||||||||||||||

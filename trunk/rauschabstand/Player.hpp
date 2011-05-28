@@ -49,8 +49,13 @@ private:
 
 	Ogre::Vector3					m_speed;				// speed vector
 	double							m_t;					// position on map
-	double							m_u;
+	double							m_u;					// TODO: change to  (double) 0 to width
 	double							m_mass;
+
+	static const int				THROUGHHOLEHEIGHT = 0;	// height when fallen through Hole
+	bool							m_throughHole;			// true when player has fallen through hole
+	static const int				DEADHEIGHT = -300;		// height when player is dead
+	bool							m_jumping;				// true when player jumping
 };
 
 //|||||||||||||||||||||||||||||||||||||||||||||||
