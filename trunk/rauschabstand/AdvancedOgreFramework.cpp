@@ -55,7 +55,7 @@ bool OgreFramework::initOgre(Ogre::String wndTitle, OIS::KeyListener *pKeyListen
 
 #else
 
-    m_pRoot = new Ogre::Root();
+    m_pRoot = new Ogre::Root("plugins_d.cfg");
 
 #endif
 
@@ -101,7 +101,7 @@ bool OgreFramework::initOgre(Ogre::String wndTitle, OIS::KeyListener *pKeyListen
 
 #else
 
-    cf.load("resources.cfg");
+    cf.load("resources_d.cfg");
 
 #endif
 
