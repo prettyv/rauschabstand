@@ -79,7 +79,11 @@ private:
     Player*                     m_player;
 	Map*						m_map;
 
-	
+    // For Highscore
+	OgreBites::ParamsPanel*		m_pHighscorePanel;
+    unsigned long               m_Score;
+    unsigned int                m_Multiplier;
+
 	// VISUALS begin
 
 	int							m_numberOfBoxes;
@@ -92,8 +96,9 @@ private:
 	MaterialPtr	getMaterial(std::string name, int red, int green, int blue);
 	void		createVisualBar(const Ogre::Real& x = 0.0, const Ogre::Real& y = 0.0, const Ogre::Real& z = 0.0, const Ogre::Quaternion& rotation = Quaternion::IDENTITY);
 	void		updateVisual(int audioInput0, int audioInput1, int audioInput2, int audioInput3, int audioInput4);
-
 	// VISUALS end
+
+    void        createOverlays();
 };
 
 //|||||||||||||||||||||||||||||||||||||||||||||||

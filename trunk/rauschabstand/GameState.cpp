@@ -34,6 +34,11 @@ GameState::GameState()
 	continueUpdating = false;
 	std::srand(time(0));
 	// AUDIO-VISUALS end
+
+    //Highscore
+    m_pHighscorePanel   = 0;
+    m_Score         = 0;
+    m_Multiplier        = 2;
 }
 
 //|||||||||||||||||||||||||||||||||||||||||||||||
@@ -62,6 +67,8 @@ void GameState::enter()
     buildGUI();
 
 	createScene();
+
+    createOverlays();
 
 	m_player = new Player("Player", m_pSceneMgr, m_pCamera, m_map);
 }
@@ -565,6 +572,12 @@ void GameState::update(double timeSinceLastFrame)
 		m_countTime = 0.0;
 	}
 	// AUDIO-VISUALS end
+
+    // Update für Highscore
+    m_Score  = m_Score + 10;    //Dient nur zu Demo-Zwecken
+    m_pHighscorePanel->setParamValue(0, Ogre::StringConverter::toString(m_Score));
+    m_pHighscorePanel->setParamValue(1, Ogre::StringConverter::toString(m_Multiplier));
+    // Update für Highscore end
 }
 
 //|||||||||||||||||||||||||||||||||||||||||||||||
@@ -573,7 +586,7 @@ void GameState::buildGUI()
 {
     OgreFramework::getSingletonPtr()->m_pTrayMgr->showFrameStats(OgreBites::TL_BOTTOMLEFT);
     OgreFramework::getSingletonPtr()->m_pTrayMgr->showLogo(OgreBites::TL_BOTTOMRIGHT);
-    OgreFramework::getSingletonPtr()->m_pTrayMgr->createLabel(OgreBites::TL_TOP, "GameLbl", "Game mode", 250);
+    //OgreFramework::getSingletonPtr()->m_pTrayMgr->createLabel(OgreBites::TL_TOP, "GameLbl", "Game mode", 250);
     OgreFramework::getSingletonPtr()->m_pTrayMgr->showCursor();
 
     Ogre::StringVector items;
@@ -589,11 +602,12 @@ void GameState::buildGUI()
     m_pDetailsPanel = OgreFramework::getSingletonPtr()->m_pTrayMgr->createParamsPanel(OgreBites::TL_TOPLEFT, "DetailsPanel", 200, items);
     m_pDetailsPanel->show();
 
+    /*
     Ogre::String infoText = "[TAB] - Switch input mode\n\n[W] - Forward / Mode up\n[S] - Backwards/ Mode down\n[A] - Left\n";
     infoText.append("[D] - Right\n\nPress [SHIFT] to move faster\n\n[O] - Toggle FPS / logo\n");
     infoText.append("[Print] - Take screenshot\n\n[ESC] - Exit");
     OgreFramework::getSingletonPtr()->m_pTrayMgr->createTextBox(OgreBites::TL_RIGHT, "InfoPanel", infoText, 300, 220);
-
+    */
     Ogre::StringVector chatModes;
     chatModes.push_back("Solid mode");
     chatModes.push_back("Wireframe mode");
@@ -614,6 +628,53 @@ void GameState::itemSelected(OgreBites::SelectMenu* menu)
     case 2:
         m_pCamera->setPolygonMode(Ogre::PM_POINTS);break;
     }
+}
+
+void GameState::createOverlays()
+{
+    Ogre::StringVector items;
+    items.push_back("Score");
+    items.push_back("Multiplier");
+
+    m_pHighscorePanel = OgreFramework::getSingletonPtr()->m_pTrayMgr->createParamsPanel(OgreBites::TL_TOP, "Highscore", 160, items);
+    m_pHighscorePanel->show();
+   
+    
+    
+    
+    /*
+    OverlayManager& overlayManager = OgreFramework::getSingletonPtr()->m_pTrayMgr->getOverlayManager();
+    
+    // Create a panel
+    OverlayContainer* panel = static_cast<OverlayContainer*>(
+        overlayManager.createOverlayElement("Panel", "PanelName"));
+    panel->setMetricsMode(Ogre::GMM_PIXELS);
+    panel->setPosition(400, 300);
+    panel->setDimensions(2000, 2000);
+    //panel->setMaterialName("MaterialName"); // Optional background material
+
+    // Create a text area
+    TextAreaOverlayElement* textArea = static_cast<TextAreaOverlayElement*>(
+        overlayManager.createOverlayElement("TextArea", "TextAreaName"));
+    textArea->setMetricsMode(Ogre::GMM_PIXELS);
+    textArea->setPosition(10, 10);
+    textArea->setDimensions(200, 200);
+    textArea->setCaption("Hello, World!");
+    textArea->setCharHeight(16);
+    //textArea->setFontName("TrebuchetMSBold");       //geht irgendwie nicht
+    textArea->setColourBottom(ColourValue(0.3, 0.5, 0.3));
+    textArea->setColourTop(ColourValue(0.5, 0.7, 0.5));
+
+    // Create an overlay, and add the panel
+    Overlay* overlay = overlayManager.create("OverlayName");
+    overlay->add2D(panel);
+
+    // Add the text area to the panel
+    panel->addChild(textArea);
+
+    // Show the overlay
+    overlay->show();
+    */
 }
 
 //|||||||||||||||||||||||||||||||||||||||||||||||
