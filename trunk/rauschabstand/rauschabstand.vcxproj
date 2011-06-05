@@ -21,6 +21,7 @@
     <ClCompile Include="MenuState.cpp" />
     <ClCompile Include="PauseState.cpp" />
     <ClCompile Include="Player.cpp" />
+    <ClCompile Include="Visuals.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AdvancedOgreFramework.hpp" />
@@ -34,6 +35,7 @@
     <ClInclude Include="PauseState.hpp" />
     <ClInclude Include="Player.hpp" />
     <ClInclude Include="rapidxml.hpp" />
+    <ClInclude Include="Visuals.hpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{7D15805E-BC26-49AF-BCD7-A4FAFC516D8F}</ProjectGuid>
