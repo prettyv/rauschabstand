@@ -1,9 +1,10 @@
 //|||||||||||||||||||||||||||||||||||||||||||||||
 
-#include "GameState.hpp"
-
+// for faking the AUDIO-DATA
 #include <ctime>    // For time()
 #include <cstdlib>	// For srand() and rand()
+
+#include "GameState.hpp"
 
 //|||||||||||||||||||||||||||||||||||||||||||||||
 
@@ -26,19 +27,10 @@ GameState::GameState()
     m_player = 0;
 	m_map = 0;
 
-	// AUDIO-VISUALS begin
-	m_numberOfBoxes = 0;
-
-	// actually useless var, just for "faking" the audio-input:
-	m_countTime = 0.0;
-	continueUpdating = false;
-	std::srand(time(0));
-	// AUDIO-VISUALS end
-
-    //Highscore
-    m_pHighscorePanel   = 0;
-    m_Score         = 0;
-    m_Multiplier        = 2;
+	//Highscore
+	m_pHighscorePanel   = 0;
+	m_Score         = 0;
+	m_Multiplier        = 2;
 }
 
 //|||||||||||||||||||||||||||||||||||||||||||||||
@@ -108,229 +100,39 @@ void GameState::exit()
 
 //|||||||||||||||||||||||||||||||||||||||||||||||
 
-MaterialPtr GameState::getMaterial(std::string name, int red, int green, int blue) {
-
-	// Create the texture
-	TexturePtr texture = TextureManager::getSingleton().createManual(
-		name, // name
-		ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME,
-		TEX_TYPE_2D,      // type
-		256, 256,         // width & height
-		0,                // number of mipmaps
-		PF_BYTE_BGRA,     // pixel format
-		TU_DEFAULT);      // usage; should be TU_DYNAMIC_WRITE_ONLY_DISCARDABLE for
-						  // textures updated very often (e.g. each frame)
-
-	// Get the pixel buffer
-	HardwarePixelBufferSharedPtr pixelBuffer = texture->getBuffer();
-
-	// Lock the pixel buffer and get a pixel box
-	pixelBuffer->lock(HardwareBuffer::HBL_NORMAL); // for best performance use HBL_DISCARD!
-	const PixelBox& pixelBox = pixelBuffer->getCurrentLock();
-
-	uint8* pDest = static_cast<uint8*>(pixelBox.data);
-
-	// Fill in some pixel data. This will give a semi-transparent blue,
-	// but this is of course dependent on the chosen pixel format.
-	for (size_t j = 0; j < 256; j++) {
-		for(size_t i = 0; i < 256; i++)
-		{
-			*pDest++ = blue; // B
-			*pDest++ = green; // G
-			*pDest++ = red; // R
-			*pDest++ = 180; // A
-		}
-	}
-
-	// Unlock the pixel buffer
-	pixelBuffer->unlock();
-
-	MaterialPtr material = MaterialManager::getSingleton().create(name, ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME);
-
-	material->getTechnique(0)->getPass(0)->createTextureUnitState(name);
-	material->getTechnique(0)->getPass(0)->setSceneBlending(SBT_TRANSPARENT_ALPHA);
-
-	return material;
-}
-
-//|||||||||||||||||||||||||||||||||||||||||||||||
-
-void GameState::createVisualBar(const Ogre::Real& x, const Ogre::Real& y, const Ogre::Real& z, const Ogre::Quaternion& rotation) {
-	// create bar itself
-
-	SceneNode* mainBoxNode;
-	mainBoxNode = m_pSceneMgr->getRootSceneNode()->createChildSceneNode("mainBoxNode" + StringConverter::toString(m_numberOfBoxes));
-	mainBoxNode->scale(0.65, 0.5, 0.65);
-
-	Entity* boxEntity;
-	SceneNode* childBoxNode;
-
-	Ogre::Real childY = 0.0;
-
-		for (int j=0; j<5; ++j)
-		{
-			boxEntity = m_pSceneMgr->createEntity("boxEntity" + StringConverter::toString(m_numberOfBoxes) + StringConverter::toString(j), "cube.mesh");
-			childBoxNode = mainBoxNode->createChildSceneNode("childBoxNode" + StringConverter::toString(m_numberOfBoxes) + StringConverter::toString(j));
-			childBoxNode->attachObject(boxEntity);
-
-			switch (j)
-			{
-			case 0:
-				childY = 0.0;
-				boxEntity->setMaterialName("green");
-				break;
-			case 1:
-				childY = 105.0;
-				boxEntity->setMaterialName("darkGreen");
-				break;
-			case 2:
-				childY = 210.0;
-				boxEntity->setMaterialName("yellow");
-				break;
-			case 3:
-				childY = 315.0;
-				boxEntity->setMaterialName("orange");
-				break;
-			case 4:
-				childY = 420.0;
-				boxEntity->setMaterialName("red");
-				break;
-			}
-
-			childBoxNode->setPosition(0, childY, 0);
-		}
-
-	mainBoxNode->setPosition(x, y, z);
-	mainBoxNode->rotate(rotation);
-
-	++m_numberOfBoxes;
-}
-
-//|||||||||||||||||||||||||||||||||||||||||||||||
-
-void GameState::updateVisual(int audioInput0, int audioInput1, int audioInput2, int audioInput3, int audioInput4) {
-	SceneNode* childNode;
-	
-	for (int i=0; i<m_numberOfBoxes; ++i)
-	{
-
-		if ((i+1)%1 == 0)
-				{
-					for (int j=0; j<5; ++j)
-					{
-						childNode = (SceneNode*)( m_pSceneMgr->getSceneNode("mainBoxNode" + StringConverter::toString(i))->getChild("childBoxNode" + StringConverter::toString(i) + StringConverter::toString(j)) );
-						childNode->setVisible(false);
-						if (j <= audioInput0)
-						{
-							childNode->setVisible(true);
-						}
-					}
-				}
-		
-				if ((i+1)%2 == 0)
-				{
-					for (int j=0; j<5; ++j)
-					{
-						childNode = (SceneNode*)( m_pSceneMgr->getSceneNode("mainBoxNode" + StringConverter::toString(i))->getChild("childBoxNode" + StringConverter::toString(i) + StringConverter::toString(j)) );
-						childNode->setVisible(false);
-						if (j <= audioInput1)
-						{
-							childNode->setVisible(true);
-						}
-					}
-				}
-		
-				if ((i+1)%3 == 0)
-				{
-					for (int j=0; j<5; ++j)
-					{
-						childNode = (SceneNode*)( m_pSceneMgr->getSceneNode("mainBoxNode" + StringConverter::toString(i))->getChild("childBoxNode" + StringConverter::toString(i) + StringConverter::toString(j)) );
-						childNode->setVisible(false);
-						if (j <= audioInput2)
-						{
-							childNode->setVisible(true);
-						}
-					}
-				}
-		
-				if ((i+1)%4 == 0)
-				{
-					for (int j=0; j<5; ++j)
-					{
-						childNode = (SceneNode*)( m_pSceneMgr->getSceneNode("mainBoxNode" + StringConverter::toString(i))->getChild("childBoxNode" + StringConverter::toString(i) + StringConverter::toString(j)) );
-						childNode->setVisible(false);
-						if (j <= audioInput3)
-						{
-							childNode->setVisible(true);
-						}
-					}
-				}
-		
-				if ((i+1)%5 == 0)
-				{
-					for (int j=0; j<5; ++j)
-					{
-						childNode = (SceneNode*)( m_pSceneMgr->getSceneNode("mainBoxNode" + StringConverter::toString(i))->getChild("childBoxNode" + StringConverter::toString(i) + StringConverter::toString(j)) );
-						childNode->setVisible(false);
-						if (j <= audioInput4)
-						{
-							childNode->setVisible(true);
-						}
-					}
-				}
-		
-
-	}
-	
-}
-
-//|||||||||||||||||||||||||||||||||||||||||||||||
-
 void GameState::createScene()
 {
     m_pSceneMgr->createLight("Light")->setPosition(75,75,75);
-    /*
-    DotSceneLoader* pDotSceneLoader = new DotSceneLoader();
-    pDotSceneLoader->parseDotScene("CubeScene.xml", "General", m_pSceneMgr, m_pSceneMgr->getRootSceneNode());
-    delete pDotSceneLoader;
-
-    m_pSceneMgr->getEntity("Cube01")->setQueryFlags(CUBE_MASK);
-    m_pSceneMgr->getEntity("Cube02")->setQueryFlags(CUBE_MASK);
-    m_pSceneMgr->getEntity("Cube03")->setQueryFlags(CUBE_MASK);
-    */
-    // used when no player is created
-    
-    /*m_pOgreHeadEntity = m_pSceneMgr->createEntity("Head", "cube.mesh");
-    //m_pOgreHeadEntity->setQueryFlags(OGRE_HEAD_MASK);
-    m_pOgreHeadNode = m_pSceneMgr->getRootSceneNode()->createChildSceneNode("Cube");
-    m_pOgreHeadNode->attachObject(m_pOgreHeadEntity);
-    m_pOgreHeadNode->setPosition(Vector3(0, 0, 25));*/
-
-
-	// AUDIO-VISUALS begin
-
-	// create materials
-	MaterialPtr green = getMaterial("green", 0, 210, 25);
-	MaterialPtr darkGreen = getMaterial("darkGreen", 20, 110, 30);
-	MaterialPtr yellow = getMaterial("yellow", 250, 255, 0);
-	MaterialPtr orange = getMaterial("orange", 255, 160, 0);
-	MaterialPtr red = getMaterial("red", 210, 0, 0);
-
-	// create visuals
-	createVisualBar(-300.0, 20.0, -500.0);
-	createVisualBar(-300.0, 20.0, -600.0);
-	createVisualBar(-300.0, 20.0, -700.0);
-	createVisualBar(-300.0, 20.0, -800.0);
-	createVisualBar(-300.0, 20.0, -900.0);
-	createVisualBar(-300.0, 20.0, -1000.0);
-
-	continueUpdating = true;
-
-	// AUDIO-VISUALS end
-
 
 	m_map = new Map("map01", m_pSceneMgr);
 	m_map->createRandomMap(200, 12);
+
+
+	// AUDIO-VISUALS begin
+	double totalTrackLength = 150.0;	// should come from m_map
+	// creating audio-data arrays
+	double* audioSpectrumData0 = new double[(int)std::ceil(totalTrackLength)];
+	double* audioSpectrumData1 = new double[(int)std::ceil(totalTrackLength)];
+	double* audioSpectrumData2 = new double[(int)std::ceil(totalTrackLength)];
+	double* audioSpectrumData3 = new double[(int)std::ceil(totalTrackLength)];
+	double* audioSpectrumData4 = new double[(int)std::ceil(totalTrackLength)];
+
+	// faking the aduio-data
+	std::srand(time(0));
+
+	for (int i=0; i<totalTrackLength; ++i)
+	{
+		audioSpectrumData0[i] = std::rand() % 5;
+		audioSpectrumData1[i] = std::rand() % 5;
+		audioSpectrumData2[i] = std::rand() % 5;
+		audioSpectrumData3[i] = std::rand() % 5;
+		audioSpectrumData4[i] = std::rand() % 5;
+	}
+
+	// crating visuals
+	m_visuals = new Visuals(m_pSceneMgr, m_map, totalTrackLength, audioSpectrumData0, audioSpectrumData1, audioSpectrumData2, audioSpectrumData3, audioSpectrumData4);
+	m_visuals->createVisuals();
+	// AUDIO-VISUALS end
 }
 
 //|||||||||||||||||||||||||||||||||||||||||||||||
@@ -565,12 +367,7 @@ void GameState::update(double timeSinceLastFrame)
     getInput();
 
 	// AUDIO-VISUALS begin
-	m_countTime += timeSinceLastFrame;
-	if (m_countTime > 500.0 && continueUpdating)
-	{
-		updateVisual(rand() % 5, rand() % 5, rand() % 5, rand() % 5, rand() % 5);
-		m_countTime = 0.0;
-	}
+	m_visuals->updateVisual(timeSinceLastFrame);
 	// AUDIO-VISUALS end
 
     // Update für Highscore
