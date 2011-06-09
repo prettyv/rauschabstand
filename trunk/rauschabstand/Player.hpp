@@ -18,6 +18,7 @@ public:
 
 	void update(double elapsedTime);
     void update(Ogre::Real elapsedTime, OIS::Keyboard *input);
+	void keyReleased (Real elapsedTime, const OIS::KeyEvent& keyEvt);
 
 private:
 	
@@ -29,6 +30,7 @@ public:
 	Ogre::SceneNode*				m_playerMainNode;		// for time position (t) and orienation
 	Ogre::SceneNode*				m_sideNode;				// for side position (u)
 	Ogre::SceneNode*				m_jumpNode;				// for up position (jumping)
+	Ogre::SceneNode*				m_sideRollNode;			// for rolling while steering
 	Ogre::Entity*					m_playerEntity;
 
 private:
@@ -56,6 +58,10 @@ private:
 	bool							m_throughHole;			// true when player has fallen through hole
 	static const int				DEADHEIGHT = -300;		// height when player is dead
 	bool							m_jumping;				// true when player jumping
+
+	// for side-roll movement while steering
+	float							m_rollFactor;			// rolling intensity
+	bool							m_rollBack;				// signalizes that the player stopped steering and the model should roll-back
 };
 
 //|||||||||||||||||||||||||||||||||||||||||||||||

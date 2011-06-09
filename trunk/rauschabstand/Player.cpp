@@ -17,8 +17,9 @@ Player::Player(std::string name, SceneManager* sceneMgr, Camera* camera, Map* ma
     m_playerMainNode = m_pSceneMgr->getRootSceneNode()->createChildSceneNode(m_name);
 	m_sideNode = m_playerMainNode->createChildSceneNode(m_name + "_sideNode");
 	m_jumpNode = m_sideNode->createChildSceneNode(m_name + "_sideNode" + "_jumpNode");
+	m_sideRollNode = m_jumpNode->createChildSceneNode(m_name + "_sideNode" + "_jumpNode" + "_sideRollNode");
     m_playerEntity = m_pSceneMgr->createEntity(m_name, "razor.mesh");
-	m_jumpNode->attachObject(m_playerEntity);
+	m_sideRollNode->attachObject(m_playerEntity);
     m_cameraPosition = m_jumpNode->createChildSceneNode(m_name + "_sight", Vector3 (0, 100, -300));
     m_targetPosition = m_jumpNode->createChildSceneNode(m_name + "_chaseCamera", Vector3 (0, 0, 200));
 	m_playerMainNode->setOrientation(Quaternion(0, 0, 1, 0));
@@ -40,6 +41,8 @@ Player::Player(std::string name, SceneManager* sceneMgr, Camera* camera, Map* ma
 	m_u = 0;
 	m_mass = 1;
 
+	m_rollFactor = 0;
+
 	m_playerMainNode->setPosition(0, 0, 0);
 	m_sideNode->setPosition(0, 0, 0);
 	m_jumpNode->setPosition(0, 300, 0);
@@ -48,6 +51,8 @@ Player::Player(std::string name, SceneManager* sceneMgr, Camera* camera, Map* ma
 
 	m_throughHole = false;
 	m_jumping = false;
+
+	m_rollBack = false;
 }
 
 //|||||||||||||||||||||||||||||||||||||||||||||||
@@ -121,6 +126,23 @@ void Player::update (double elapsedTime)
 		m_jumping = false;
 	}
 
+
+	// for side-roll movement while steering
+	if (m_rollBack && m_rollFactor < 0.04f && m_rollFactor > -0.04f)	// when roll-back has finished set to "normal position"
+	{
+		m_rollFactor = 0.0f;
+		m_rollBack = false;
+	} else if (m_rollBack && m_rollFactor < -0.04f)		// rolling-back
+	{
+		m_rollFactor += 0.05f;
+		m_sideRollNode->roll(Ogre::Radian(0.05f));
+	} else if (m_rollBack && m_rollFactor > 0.04f)		// rolling-back
+	{
+		m_rollFactor -= 0.05f;
+		m_sideRollNode->roll(Ogre::Radian(-0.05f));
+	}
+	
+
 	m_playerMainNode->setPosition(m_map->getPosition(m_t, 0));
 	
 	updateCamera();
@@ -137,6 +159,7 @@ void Player::update (Real elapsedTime, OIS::Keyboard *input) {
 		m_t += 0.2;
 		m_t = m_t >= m_map->getLength() ? m_map->getLength() : m_t;
 		updateCamera();
+
 	}
 
     if (input->isKeyDown (OIS::KC_S))
@@ -147,13 +170,17 @@ void Player::update (Real elapsedTime, OIS::Keyboard *input) {
 		updateCamera();
 	}
 
-    if (input->isKeyDown (OIS::KC_A))
+	if (input->isKeyDown (OIS::KC_A))
 	{
 		m_u += 0.4 * elapsedTime;
 		m_u = m_u < m_map->getWidth() * 100 / (double) 2 ? m_u : m_map->getWidth() * 100 / (double) 2;
 		m_sideNode->setPosition(Vector3(m_u, 0, 0));
 		updateCamera();
-    }
+
+		// for side-roll movement while steering
+		m_rollFactor -= 0.05f;
+		m_sideRollNode->roll(Ogre::Radian(-0.05f));
+	}
 
 	if (input->isKeyDown (OIS::KC_D))
 	{
@@ -161,6 +188,10 @@ void Player::update (Real elapsedTime, OIS::Keyboard *input) {
 		m_u = m_u > -m_map->getWidth() * 100 / (double) 2 ? m_u : -m_map->getWidth() * 100 / (double) 2;
 		m_sideNode->setPosition(Vector3(m_u, 0, 0));
 		updateCamera();
+
+		// for side-roll movement while steering
+		m_rollFactor += 0.05f;
+		m_sideRollNode->roll(Ogre::Radian(0.05f));
     }
 
 	// jump
@@ -185,6 +216,15 @@ void Player::update (Real elapsedTime, OIS::Keyboard *input) {
 		m_jumping = true;
 	}
 
+}
+
+//|||||||||||||||||||||||||||||||||||||||||||||||
+
+void Player::keyReleased (Real elapsedTime, const OIS::KeyEvent& keyEvt) {
+	if (keyEvt.key == OIS::KC_A || keyEvt.key == OIS::KC_D)
+	{
+		m_rollBack = true;
+	}
 }
 
 //|||||||||||||||||||||||||||||||||||||||||||||||

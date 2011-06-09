@@ -197,6 +197,8 @@ bool GameState::keyPressed(const OIS::KeyEvent &keyEventRef)
 
 bool GameState::keyReleased(const OIS::KeyEvent &keyEventRef)
 {
+	m_player->keyReleased(m_FrameEvent.timeSinceLastFrame, keyEventRef);	// for player_rollback
+
     OgreFramework::getSingletonPtr()->keyPressed(keyEventRef);
     return true;
 }
@@ -307,6 +309,7 @@ void GameState::getInput()
 	{
 		m_player->update(m_FrameEvent.timeSinceLastFrame, OgreFramework::getSingletonPtr()->m_pKeyboard);
 	}
+
 	//m_map->update(m_FrameEvent.timeSinceLastFrame, OgreFramework::getSingletonPtr()->m_pKeyboard);
     /*
     if(m_bSettingsMode == false)
