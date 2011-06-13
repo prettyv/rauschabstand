@@ -42,6 +42,9 @@ void GameState::enter()
     m_pSceneMgr = OgreFramework::getSingletonPtr()->m_pRoot->createSceneManager(ST_GENERIC, "GameSceneMgr");
     m_pSceneMgr->setAmbientLight(Ogre::ColourValue(0.7f, 0.7f, 0.7f));
 
+	// set SKYBOX using material Examples/SpaceSkyBox from OgreSDK
+	m_pSceneMgr->setSkyBox(true, "Examples/SpaceSkyBox", 5000);  // set our skybox
+
     m_pRSQ = m_pSceneMgr->createRayQuery(Ray());
     m_pRSQ->setQueryMask(OGRE_HEAD_MASK);
 
