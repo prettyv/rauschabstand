@@ -15,6 +15,7 @@
 #include "Player.hpp"
 #include "Map.hpp"
 #include "Visuals.hpp"
+#include "GameLogic.hpp"
 
 //|||||||||||||||||||||||||||||||||||||||||||||||
 
@@ -39,8 +40,6 @@ public:
 	bool pause();
 	void resume();
 
-	void moveCamera();
-    void movePlayer();
 	void getInput();
     void buildGUI();
 
@@ -57,28 +56,17 @@ public:
 	void update(double timeSinceLastFrame);
 
 private:
-	Ogre::SceneNode*			m_pOgreHeadNode;
-	Ogre::Entity*				m_pOgreHeadEntity;
-	Ogre::MaterialPtr			m_pOgreHeadMat;
-	Ogre::MaterialPtr			m_pOgreHeadMatHigh;
+	void createOverlays();
 
-    OgreBites::ParamsPanel*		m_pDetailsPanel;
+private:
+	OgreBites::ParamsPanel*		m_pDetailsPanel;
 	bool						m_bQuit;
-
-	Ogre::Vector3				m_TranslateVector;
-	Ogre::Real					m_MoveSpeed;
-	Ogre::Degree				m_RotateSpeed;
-	float						m_MoveScale;
-	Ogre::Degree				m_RotScale;
 
 	Ogre::RaySceneQuery*		m_pRSQ;
 	Ogre::SceneNode*			m_pCurrentObject;
 	Ogre::Entity*				m_pCurrentEntity;
 	bool						m_bLMouseDown, m_bRMouseDown;
 	bool						m_bSettingsMode;
-
-    Player*                     m_player;
-	Map*						m_map;
 
 	Visuals*					m_visuals;
 
@@ -87,7 +75,7 @@ private:
     unsigned long               m_Score;
     unsigned int                m_Multiplier;
 
-    void        createOverlays();
+	GameLogic*					m_gameLogic;
 };
 
 //|||||||||||||||||||||||||||||||||||||||||||||||

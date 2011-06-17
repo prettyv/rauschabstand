@@ -37,9 +37,6 @@ Player::Player(std::string name, SceneManager* sceneMgr, Camera* camera, Map* ma
     m_tightness = 1.0f;
 
 	m_speed = Vector3(0, 0, 0);
-	m_t = 0;
-	m_u = 0;
-	m_mass = 1;
 
 	m_rollFactor = 0;
 
@@ -57,12 +54,14 @@ Player::Player(std::string name, SceneManager* sceneMgr, Camera* camera, Map* ma
 
 //|||||||||||||||||||||||||||||||||||||||||||||||
 
-void Player::update (double elapsedTime)
+void Player::update (double elapsedTime, Real t, Real u)
 {
 	//TODO: cleanup, remove magic numbers, move to gamestate.cpp(?), pack into functions
 
+	m_sideNode->setPosition(Vector3(u, 0, 0));
+
 	// set player orientation to local map orientation
-	Quaternion orientation = m_map->getOrientation(m_t);
+	Quaternion orientation = m_map->getOrientation(t);
 	m_playerMainNode->setOrientation(orientation * Quaternion(0, 0, 1, 0));
 
 	Vector3 gravity = Vector3(0, -0.02, 0);
@@ -79,11 +78,11 @@ void Player::update (double elapsedTime)
 	}
 
 	// TODO: remove mass??
-	if (!m_map->isHoleInMap(m_t, m_u) && !m_throughHole)
+	if (!m_map->isHoleInMap(t, u) && !m_throughHole)
 	{
-		m_speed += mapAntiGravity * m_mass;
+		m_speed += mapAntiGravity;
 	}
-	m_speed += gravity * m_mass;
+	m_speed += gravity;
 
 	// simulate friction
 	m_speed *= 0.98;
@@ -95,7 +94,7 @@ void Player::update (double elapsedTime)
 	Vector3 jumpPosition = m_jumpNode->getPosition();
 	if (jumpPosition.y < THROUGHHOLEHEIGHT)
 	{
-		if (m_map->isHoleInMap(m_t, m_u))
+		if (m_map->isHoleInMap(t, u))
 		{
 			m_throughHole = true;
 		}
@@ -104,20 +103,6 @@ void Player::update (double elapsedTime)
 			m_jumpNode->setPosition(0, 0, 0);
 			m_speed = Vector3(0, 0, 0);
 		}
-	}
-
-	if (jumpPosition.y < DEADHEIGHT)
-	{
-		// reset to start
-		m_throughHole = false;
-
-		m_playerMainNode->setPosition(0, 0, 0);
-		m_t = 0;
-		m_sideNode->setPosition(0, 0, 0);
-		m_u = 0;
-		m_jumpNode->setPosition(0, 300, 0);
-
-		m_speed = Vector3(0, 0, 0);
 	}
 
 	//TODO: fix bug: checks before player is really jumping, result: double jump speed
@@ -134,88 +119,62 @@ void Player::update (double elapsedTime)
 		m_rollBack = false;
 	} else if (m_rollBack && m_rollFactor < -0.04f)		// rolling-back
 	{
-		m_rollFactor += 0.05f;
-		m_sideRollNode->roll(Ogre::Radian(0.05f));
+		m_rollFactor += 0.05f * elapsedTime / Real(10);
+		m_sideRollNode->roll(Ogre::Radian(0.05f) * elapsedTime / Real(10));
 	} else if (m_rollBack && m_rollFactor > 0.04f)		// rolling-back
 	{
-		m_rollFactor -= 0.05f;
-		m_sideRollNode->roll(Ogre::Radian(-0.05f));
+		m_rollFactor -= 0.05f * elapsedTime / Real(10);
+		m_sideRollNode->roll(Ogre::Radian(-0.05f) * elapsedTime / Real(10));
 	}
 	
 
-	m_playerMainNode->setPosition(m_map->getPosition(m_t, 0));
+	m_playerMainNode->setPosition(m_map->getPosition(t, 0));
 	
-	updateCamera();
+	updateCamera(t);
 }
 
 //|||||||||||||||||||||||||||||||||||||||||||||||
 
 void Player::update (Real elapsedTime, OIS::Keyboard *input) {
 
-	//TODO: remove this input, should be moving by it self..
-    if (input->isKeyDown (OIS::KC_W)) 
-	{
-		//TODO: * elapsedTime
-		m_t += 0.2;
-		m_t = m_t >= m_map->getLength() ? m_map->getLength() : m_t;
-		updateCamera();
-
-	}
-
-    if (input->isKeyDown (OIS::KC_S))
-	{
-		//TODO: * elapsedTime
-		m_t -= 0.2;
-		m_t = m_t < 0 ? 0 : m_t;
-		updateCamera();
-	}
-
 	if (input->isKeyDown (OIS::KC_A))
 	{
-		m_u += 0.4 * elapsedTime;
-		m_u = m_u < m_map->getWidth() * 100 / (double) 2 ? m_u : m_map->getWidth() * 100 / (double) 2;
-		m_sideNode->setPosition(Vector3(m_u, 0, 0));
-		updateCamera();
-
 		// for side-roll movement while steering
-		m_rollFactor -= 0.05f;
-		m_sideRollNode->roll(Ogre::Radian(-0.05f));
+		m_rollFactor -= 0.05f * elapsedTime / Real(10);
+		m_sideRollNode->roll(Ogre::Radian(-0.05f) * elapsedTime / Real(10));
 	}
 
 	if (input->isKeyDown (OIS::KC_D))
 	{
-		m_u -= 0.4 * elapsedTime;
-		m_u = m_u > -m_map->getWidth() * 100 / (double) 2 ? m_u : -m_map->getWidth() * 100 / (double) 2;
-		m_sideNode->setPosition(Vector3(m_u, 0, 0));
-		updateCamera();
-
 		// for side-roll movement while steering
-		m_rollFactor += 0.05f;
-		m_sideRollNode->roll(Ogre::Radian(0.05f));
+		m_rollFactor += 0.05f * elapsedTime / Real(10);
+		m_sideRollNode->roll(Ogre::Radian(0.05f) * elapsedTime / Real(10));
     }
+}
 
+//|||||||||||||||||||||||||||||||||||||||||||||||
+
+void Player::jump(Real elapsedTime, Real t, Real u)
+{
 	// jump
 	// player can only jump when
-	// - space key is pressed
 	// - player is not jumping
 	// - player is not above a hole
 	// - player has fallen through a hole
-	if (input->isKeyDown (OIS::KC_SPACE) && 
-			!m_jumping && 
-			!m_map->isHoleInMap(m_t, m_u) && 
-			m_jumpNode->getPosition().y > THROUGHHOLEHEIGHT)
+	if (!m_jumping && 
+		!m_map->isHoleInMap(t, u) && 
+		m_jumpNode->getPosition().y > THROUGHHOLEHEIGHT)
 	{
 		//TODO: fix jump
 		double distanceToMap = m_jumpNode->getPosition().y;
 
 		if (distanceToMap < 1) {	// prevent division by zero
-			m_speed = Vector3(0, 0.05, 0) * elapsedTime;
+			m_speed = Vector3(0, 1, 0);
 		} else {
-			m_speed = Vector3(0, 0.05 /*/ distanceToMap*/, 0) * elapsedTime;
+			m_speed = Vector3(0, 1 /*/ distanceToMap*/, 0);
 		}
 		m_jumping = true;
 	}
-
 }
 
 //|||||||||||||||||||||||||||||||||||||||||||||||
@@ -229,18 +188,31 @@ void Player::keyReleased (Real elapsedTime, const OIS::KeyEvent& keyEvt) {
 
 //|||||||||||||||||||||||||||||||||||||||||||||||
 
-void Player::updateCamera()
+void Player::updateCamera(Real t)
 {
 	Vector3 displacement = ( m_cameraPosition->_getDerivedPosition() - m_chaseCamera->getPosition() ) * m_tightness;
 	m_chaseCamera->translate(displacement);
 
 	//TODO: rotate camera..
-	Quaternion orientation = m_map->getOrientation(m_t);
+	Quaternion orientation = m_map->getOrientation(t);
 	m_chaseCamera->setOrientation(orientation);
 	//m_cameraTarget->setOrientation(orientation);
 
 	displacement = ( m_targetPosition->_getDerivedPosition() - m_cameraTarget->getPosition() ) * m_tightness;
 	m_cameraTarget->translate(displacement);
+}
+
+//|||||||||||||||||||||||||||||||||||||||||||||||
+
+void Player::resetToStart()
+{
+	m_throughHole = false;
+	m_playerMainNode->setPosition(0, 0, 0);
+	m_sideNode->setPosition(0, 0, 0);
+	m_jumpNode->setPosition(0, 300, 0);
+	m_speed = Vector3(0, 0, 0);
+	m_rollFactor = 0;
+	m_sideRollNode->setOrientation(1, 0, 0, 0);
 }
 
 //|||||||||||||||||||||||||||||||||||||||||||||||

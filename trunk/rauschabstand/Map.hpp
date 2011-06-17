@@ -29,7 +29,6 @@ public:
 	Map(std::string name, Ogre::SceneManager* sceneMgr);
 
 	void createRandomMap(unsigned int length, unsigned int width);
-	void update(Ogre::Real elapsedTime, OIS::Keyboard *input);
 
 	Ogre::Quaternion getOrientation(double t);
 	Ogre::Vector3 getPosition(double t, double u);

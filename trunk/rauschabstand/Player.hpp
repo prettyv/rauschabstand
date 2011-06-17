@@ -16,14 +16,18 @@ class Player {
 public:
     Player(std::string name, Ogre::SceneManager* sceneMgr, Ogre::Camera* camera, Map* map);
 
-	void update(double elapsedTime);
+	void update(double elapsedTime, Real m_t, Real m_u);
     void update(Ogre::Real elapsedTime, OIS::Keyboard *input);
 	void keyReleased (Real elapsedTime, const OIS::KeyEvent& keyEvt);
 
+	void jump(Real elapsedTime, Real t, Real u);
+	void resetToStart();
+
+	Real getJumpHeight() { return m_jumpNode->getPosition().y; }
+
 private:
 	
-	void updateCamera();
-
+	void updateCamera(Real t);
 public:
 
 	// player
@@ -47,16 +51,12 @@ private:
     Ogre::Camera*					m_camera;               // actual camera
     Ogre::Real						m_tightness;            // determines the movement of the camera -> 1 means tight movement, while 0 means no movement
 
-	Map*							m_map;
+ 	Map*							m_map;
 
 	Ogre::Vector3					m_speed;				// speed vector
-	double							m_t;					// position on map
-	double							m_u;					// TODO: change to  (double) 0 to width
-	double							m_mass;
 
 	static const int				THROUGHHOLEHEIGHT = 0;	// height when fallen through Hole
 	bool							m_throughHole;			// true when player has fallen through hole
-	static const int				DEADHEIGHT = -300;		// height when player is dead
 	bool							m_jumping;				// true when player jumping
 
 	// for side-roll movement while steering

@@ -141,13 +141,6 @@ void Map::createRandomMap(unsigned int length, unsigned int width)
 
 //|||||||||||||||||||||||||||||||||||||||||||||||
 
-void Map::update(Ogre::Real elapsedTime, OIS::Keyboard *input)
-{
-	// empty
-}
-
-//|||||||||||||||||||||||||||||||||||||||||||||||
-
 Ogre::Quaternion Map::getOrientation(double t)
 {
 	if ( t < 0)
