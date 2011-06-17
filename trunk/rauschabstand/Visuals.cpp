@@ -345,7 +345,7 @@ void Visuals::createVisuals() {
 
 //|||||||||||||||||||||||||||||||||||||||||||||||
 
-void Visuals::createVisualBar(Ogre::Vector3& position, const Ogre::Quaternion& orienation) {
+void Visuals::createVisualBar(const Ogre::Vector3& position, const Ogre::Quaternion& orienation) {
 	// create bar itself
 	SceneNode* childCubeNode;
 	Entity* cubeEntity;
