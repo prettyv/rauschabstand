@@ -27,7 +27,14 @@ GameState::GameState()
 	m_Multiplier        = 2;
 
 	m_gameLogic			= 0;
+	m_audioPlayer		= 0;
 }
+
+GameState::~GameState()
+{
+	delete m_audioPlayer;
+}
+
 
 //|||||||||||||||||||||||||||||||||||||||||||||||
 
@@ -58,6 +65,8 @@ void GameState::enter()
 	buildGUI();
 	createScene();
     createOverlays();
+	m_audioPlayer = new AudioPlayer("/home/berion/Music/demovibes2-80mn_scene_music_compilation_mixed_by_willbe.ogg");
+	m_audioPlayer->play();
 }
 
 //|||||||||||||||||||||||||||||||||||||||||||||||
@@ -65,6 +74,7 @@ void GameState::enter()
 bool GameState::pause()
 {
     OgreFramework::getSingletonPtr()->m_pLog->logMessage("Pausing GameState...");
+	m_audioPlayer->pause();
 
     return true;
 }
@@ -74,6 +84,7 @@ bool GameState::pause()
 void GameState::resume()
 {
     OgreFramework::getSingletonPtr()->m_pLog->logMessage("Resuming GameState...");
+	m_audioPlayer->play();
 
     buildGUI();
 
@@ -90,6 +101,9 @@ void GameState::exit()
     m_pSceneMgr->destroyCamera(m_pCamera);
     if(m_pSceneMgr)
         OgreFramework::getSingletonPtr()->m_pRoot->destroySceneManager(m_pSceneMgr);
+	
+	delete m_audioPlayer;
+	m_audioPlayer->stop();
 }
 
 //|||||||||||||||||||||||||||||||||||||||||||||||
@@ -173,8 +187,8 @@ bool GameState::keyPressed(const OIS::KeyEvent &keyEventRef)
         return true;
     }
 
-    if(m_bSettingsMode && OgreFramework::getSingletonPtr()->m_pKeyboard->isKeyDown(OIS::KC_RETURN) ||
-        OgreFramework::getSingletonPtr()->m_pKeyboard->isKeyDown(OIS::KC_NUMPADENTER))
+    if((m_bSettingsMode && OgreFramework::getSingletonPtr()->m_pKeyboard->isKeyDown(OIS::KC_RETURN)) ||
+       (OgreFramework::getSingletonPtr()->m_pKeyboard->isKeyDown(OIS::KC_NUMPADENTER)))
     {
     }
 

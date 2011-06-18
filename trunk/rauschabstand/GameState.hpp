@@ -16,6 +16,7 @@
 #include "Map.hpp"
 #include "Visuals.hpp"
 #include "GameLogic.hpp"
+#include "AudioPlayer.hpp"
 
 //|||||||||||||||||||||||||||||||||||||||||||||||
 
@@ -31,6 +32,7 @@ class GameState : public AppState
 {
 public:
 	GameState();
+	virtual ~GameState();
 
 	DECLARE_APPSTATE_CLASS(GameState)
 
@@ -76,6 +78,7 @@ private:
     unsigned int                m_Multiplier;
 
 	GameLogic*					m_gameLogic;
+	AudioPlayer*				m_audioPlayer;
 };
 
 //|||||||||||||||||||||||||||||||||||||||||||||||

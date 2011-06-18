@@ -26,7 +26,8 @@
 
 #ifndef AUDIOPLAYER_HPP
 #define AUDIOPLAYER_HPP
-#include <CLAM/Network.hxx>
+
+#include <cAudio/include/cAudio.h>
 
 class AudioPlayer {
 
@@ -42,12 +43,11 @@ class AudioPlayer {
 		bool isPlaying();
 		void addFile(const std::string& file);
 		int getLength();
-		
-		void tempShit();
 
 	private:
 		
-		CLAM::Network* m_network;
+		cAudio::IAudioManager* audioMgr;
+		cAudio::IAudioSource* audioSrc;
 };
 
 #endif // AUDIOPLAYER_HPP

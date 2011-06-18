@@ -16,8 +16,8 @@ set(AUDIO_LIB_FILES
 
 set(AUDIO_BIN_FILES
 	AudioPlayer.cpp
-	TestMonitor.cpp
-	SpectrumXMLWriter.cpp
+	#TestMonitor.cpp
+	#SpectrumXMLWriter.cpp
 )
 
 set(OGRE_LIB_FILES
@@ -29,11 +29,13 @@ set(OGRE_BIN_FILES
 	AppStateManager.cpp
 	DemoApp.cpp
 	DotSceneLoader.cpp
+	GameLogic.cpp
 	GameState.cpp
 	Map.cpp
 	MenuState.cpp
 	PauseState.cpp
 	Player.cpp
+	Visuals.cpp
 )
 
 # explicitly include headers for Visual Studio
@@ -42,9 +44,10 @@ if (WIN32)
 	)
 
 	set(AUDIO_BIN_FILES ${AUDIO_BIN_FILES}
-		TestMonitor.hpp
-		TestDataSource.hpp
-		SpectrumXMLWriter.hpp
+		AudioPlayer.hpp
+		#TestMonitor.hpp
+		#TestDataSource.hpp
+		#SpectrumXMLWriter.hpp
 	)
 
 	set(OGRE_LIB_FILES ${OGRE_LIB_FILES}
@@ -56,12 +59,14 @@ if (WIN32)
 		AppStateManager.hpp
 		DemoApp.hpp
 		DotSceneLoader.hpp
+		GameLogic.hpp
 		GameState.hpp
 		Map.hpp
 		MenuState.hpp
 		PauseState.hpp
 		Player.hpp
 		rapidxml.hpp
+		Visuals.hpp
 	)
 endif (WIN32)
 
@@ -72,4 +77,5 @@ include_directories(${OGRE_INCLUDE_DIRS} ${OIS_INCLUDE_DIRS})
 add_executable(rauschgame ${OGRE_BIN_FILES} ${AUDIO_BIN_FILES})
 
 #target_link_libraries(rauschplayer clam_processing clam_audioio clam_core)
-target_link_libraries(rauschgame ${OGRE_LIBRARIES} OgreTerrain ${OIS_LIBRARIES} clam_processing clam_audioio clam_core)
+#target_link_libraries(rauschplayer cAudio)
+target_link_libraries(rauschgame ${OGRE_LIBRARIES} OgreTerrain ${OIS_LIBRARIES} cAudio)
