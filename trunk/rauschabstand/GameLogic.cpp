@@ -4,12 +4,13 @@
 
 //|||||||||||||||||||||||||||||||||||||||||||||||
 
-GameLogic::GameLogic(SceneManager* sceneMgr, Camera* camera)
+GameLogic::GameLogic(SceneManager* sceneMgr, Camera* camera, AudioPlayer* audioPlayer)
 {
 	m_gameLogicStates = INIT;
 
 	m_sceneMgr = sceneMgr;
 	m_camera = camera;
+	m_audioPlayer = audioPlayer;
 
 	m_map = new Map("map01", m_sceneMgr);
 	m_player = new Player("Player", m_sceneMgr, m_camera, m_map);
@@ -19,6 +20,9 @@ GameLogic::GameLogic(SceneManager* sceneMgr, Camera* camera)
 	m_score = 0;
 	m_multiplier = 1;
 	m_timeCloseToHole = 0;
+	m_countdownTime = 0;
+	m_blockMs = Real(0.014);
+	m_blockMsSide = Real(0.8);
 }
 
 GameLogic::~GameLogic()
@@ -29,7 +33,7 @@ GameLogic::~GameLogic()
 
 void GameLogic::init()
 {
-	m_map->createRandomMap(200, 12);
+	m_map->createRandomMap(84 * m_blockMs * 1000, 12);
 
 	start();
 }
@@ -48,10 +52,16 @@ void GameLogic::update(double timeSinceLastFrame)
 {
 	//TODO countdown
 	if (m_gameLogicStates == COUNTDOWN) {
-		m_gameLogicStates = RUNNING;
+		m_countdownTime += timeSinceLastFrame;
+		if (m_countdownTime > 5000)
+		{
+			m_gameLogicStates = RUNNING;
+			m_audioPlayer->play();
+		}
+		m_player->update(timeSinceLastFrame, m_t, m_u);
 	} else if (m_gameLogicStates == RUNNING) {
 		
-		double tdif = Real(0.2) * timeSinceLastFrame / Real(20);
+		double tdif = m_blockMs * timeSinceLastFrame;
 		m_t += tdif;
 		m_score += (unsigned long) (m_multiplier * tdif * 100);
 		m_t = m_t >= m_map->getLength() ? m_map->getLength() : m_t;
@@ -86,20 +96,18 @@ void GameLogic::update(Ogre::Real elapsedTime, OIS::Keyboard* input) {
 
 	if (input->isKeyDown(OIS::KC_A))
 	{
-		m_u += 0.4 * elapsedTime;
+		m_u += m_blockMsSide * elapsedTime;
 		m_u = m_u < m_map->getWidth() * 100 / (double) 2 ? m_u : m_map->getWidth() * 100 / (double) 2;
 	}
 	if (input->isKeyDown(OIS::KC_D))
 	{
-		m_u -= 0.4 * elapsedTime;
+		m_u -= m_blockMsSide * elapsedTime;
 		m_u = m_u > -m_map->getWidth() * 100 / (double) 2 ? m_u : -m_map->getWidth() * 100 / (double) 2;
 	}
 	if (input->isKeyDown(OIS::KC_SPACE))
 	{
 		m_player->jump(elapsedTime, m_t, m_u);
 	}
-
-	m_player->update(elapsedTime, input);
 }
 
 void GameLogic::keyReleased(Real timeSinceLastFrame, const OIS::KeyEvent & keyEventRef)

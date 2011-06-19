@@ -377,7 +377,7 @@ void Visuals::createVisualBar(const Ogre::Vector3& position, const Ogre::Quatern
 			break;
 		}
 
-		childCubeNode->scale(0.65, 0.5, 0.65);
+		childCubeNode->scale(0.65f, 0.5f, 0.65f);
 		childCubeNode->attachObject(cubeEntity);
 		childCubeNode->setOrientation(orienation);
 		childCubeNode->setPosition(position);

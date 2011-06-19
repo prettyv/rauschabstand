@@ -21,8 +21,8 @@ Player::Player(std::string name, SceneManager* sceneMgr, Camera* camera, Map* ma
     m_playerEntity = m_pSceneMgr->createEntity(m_name, "razor.mesh");
 	Ogre::Light* spotLight = m_pSceneMgr->createLight("spotLight");
 	spotLight->setType(Ogre::Light::LT_SPOTLIGHT);
-	spotLight->setDiffuseColour(Ogre::ColourValue(.9, .8, 0.8));
-	spotLight->setSpecularColour(Ogre::ColourValue(.9, .8, 0.8));
+	spotLight->setDiffuseColour(Ogre::ColourValue(0.9f, 0.8f, 0.8f));
+	spotLight->setSpecularColour(Ogre::ColourValue(0.9f, 0.8f, 0.8f));
 	spotLight->setDirection(Ogre::Vector3(0, 0, 1));
 	spotLight->setPosition(Vector3(0, 0, 0));
 	spotLight->setSpotlightRange(Ogre::Degree(35), Ogre::Degree(50));
@@ -75,7 +75,7 @@ void Player::update (double elapsedTime, Real t, Real u)
 	Quaternion orientation = m_map->getOrientation(t);
 	m_playerMainNode->setOrientation(orientation * Quaternion(0, 0, 1, 0));
 
-	Vector3 gravity = Vector3(0, -0.02, 0);
+	Vector3 gravity = Vector3(0.0f, -0.02f, 0.0f);
 
 	// calculate distanceToMap
 	double distanceToMap = m_jumpNode->getPosition().y - 50;
@@ -83,9 +83,9 @@ void Player::update (double elapsedTime, Real t, Real u)
 	// calculate mapAntiGravity with distanceToMap
 	Vector3 mapAntiGravity;
 	if (distanceToMap < 1) {	// prevent division by zero
-		mapAntiGravity = Vector3(0, 0.05, 0);
+		mapAntiGravity = Vector3(0.0f, 0.05f, 0.0f);
 	} else {
-		mapAntiGravity = Vector3(0, 0.05 / distanceToMap, 0);
+		mapAntiGravity = Vector3(0.0f, 0.05f / distanceToMap, 0.0f);
 	}
 
 	// TODO: remove mass??
@@ -96,7 +96,7 @@ void Player::update (double elapsedTime, Real t, Real u)
 	m_speed += gravity;
 
 	// simulate friction
-	m_speed *= 0.98;
+	m_speed *= Real(0.98);
 
 	// translate node
 	m_jumpNode->translate(m_speed * elapsedTime);

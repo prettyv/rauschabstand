@@ -33,9 +33,16 @@ void Map::createRandomMap(unsigned int length, unsigned int width)
 		std::vector<HolesOrObstacles> row;
 		for (unsigned int j = 0; j < m_width; j++)
 		{
-			HolesOrObstacles randomBool = rand() % 8 != 0 ? NORMAL : HOLE;
-			randomBool = rand() % 20 == 0 ? OBSTACLE : randomBool;
-			row.push_back(randomBool);
+			if (i < 10 || i > m_length - 10)
+			{
+				row.push_back(NORMAL);
+			}
+			else
+			{
+				HolesOrObstacles randomBool = rand() % 8 != 0 ? NORMAL : HOLE;
+				randomBool = rand() % 20 == 0 ? OBSTACLE : randomBool;
+				row.push_back(randomBool);
+			}
 		}
 		m_cubes.push_back(row);
 	}
@@ -58,7 +65,7 @@ void Map::createRandomMap(unsigned int length, unsigned int width)
 	timeQuat4.m_quanternion = Quaternion(Degree(90), Vector3(0, 0, 1));
 	timeQuaternions.push_back(timeQuat4);
 	TimeQuaternion timeQuat5;
-	timeQuat5.m_t = 200;
+	timeQuat5.m_t = length;
 	timeQuat5.m_quanternion = Quaternion(Degree(-90), Vector3(0, 1, 0));
 	timeQuaternions.push_back(timeQuat5);
 
@@ -101,7 +108,7 @@ void Map::createRandomMap(unsigned int length, unsigned int width)
 		quat = m_rotationalSpline.getPoint(i);
 		nextQuat = m_rotationalSpline.getPoint(i + 1);
 
-		for (int x = -100 * (m_width / (double) 2), j = 0; j < m_width; j++, x += 100)
+		for (int x = -100 * (m_width / (double) 2), j = 0; (unsigned) j < m_width; j++, x += 100)
 		{
 			int back = -100;
 			int left = x;
@@ -304,7 +311,7 @@ bool Map::isHoleInMap(double t, double u)
 	j = m_width - j;
 	j -= 1;
 	j = j < 0 ? 0 : j;
-	j = j > m_width ? m_width : j;
+	j = (unsigned int) j > m_width ? m_width : j;
 
 	return m_cubes.at(t).at(j) == HOLE;
 }
@@ -336,7 +343,7 @@ bool Map::isCloseToHole(double t, double u, double closeDistance)
 	}
 
 	int minDistance = 10000;
-	for (int i = 0; i < row.size(); i++)
+	for (unsigned int i = 0; i < row.size(); i++)
 	{
 		if (row[i] == HOLE)
 		{

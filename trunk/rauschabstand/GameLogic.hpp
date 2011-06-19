@@ -7,6 +7,7 @@
 
 #include "Player.hpp"
 #include "Map.hpp"
+#include "AudioPlayer.hpp"
 
 using namespace Ogre;
 
@@ -22,7 +23,7 @@ enum GameLogicStates {
 
 class GameLogic {
 public:
-	GameLogic(SceneManager* sceneMgr, Camera* camera);
+	GameLogic(SceneManager* sceneMgr, Camera* camera, AudioPlayer* audioPlayer);
 	~GameLogic();
 
 	void init();
@@ -47,15 +48,23 @@ private:
 
 	Map*				m_map;
 	Player*				m_player;
+	AudioPlayer*		m_audioPlayer;
 
 	Real				m_t;
 	Real				m_u;
 
 	unsigned long		m_score;
 	unsigned long		m_multiplier;
+
 	unsigned int		m_timeCloseToHole;
+	long				m_countdownTime;
 
 	static const int	DEADHEIGHT = -300;		// height when player is dead
+// 	static const float	BLOCKMS = 0.015f;
+// 	static const float	BLOCKMSSIDE = 1.0f;
+
+	Real				m_blockMs;
+	Real				m_blockMsSide;
 };
 
 //|||||||||||||||||||||||||||||||||||||||||||||||

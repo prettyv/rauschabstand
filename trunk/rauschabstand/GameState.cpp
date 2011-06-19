@@ -54,7 +54,8 @@ void GameState::enter()
     OgreFramework::getSingletonPtr()->m_pViewport->setCamera(m_pCamera);
 	m_pCurrentObject = 0;
 
-	m_gameLogic	= new GameLogic(m_pSceneMgr, m_pCamera);
+	m_audioPlayer = new AudioPlayer("daftp_84_fadeout.wav");
+	m_gameLogic	= new GameLogic(m_pSceneMgr, m_pCamera, m_audioPlayer);
 	m_gameLogic->init(); 
 
 	buildGUI();
@@ -63,8 +64,8 @@ void GameState::enter()
 
 
 
-	m_audioPlayer = new AudioPlayer("daftp.wav");
-	m_audioPlayer->play();
+	/*m_audioPlayer->play();*/
+
 	/*
 	//Create an Audio Manager
 	cAudio::IAudioManager* manager = cAudio::createAudioManager(true);
@@ -128,8 +129,8 @@ void GameState::createScene()
 
 	Ogre::Light* directionalLight = m_pSceneMgr->createLight("directionalLight");
 	directionalLight->setType(Ogre::Light::LT_DIRECTIONAL);
-	directionalLight->setDiffuseColour(Ogre::ColourValue(.9, .8, 0.8));
-	directionalLight->setSpecularColour(Ogre::ColourValue(.9, .8, 0.8));
+	directionalLight->setDiffuseColour(Ogre::ColourValue(0.9f, .8f, 0.8f));
+	directionalLight->setSpecularColour(Ogre::ColourValue(0.9f, .8f, 0.8f));
 	directionalLight->setDirection(Ogre::Vector3(0, -1, 1));
 
 
