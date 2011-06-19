@@ -66,6 +66,11 @@ void GameState::enter()
 	createScene();
     createOverlays();
 
+
+
+	m_audioPlayer = new AudioPlayer("cAudioTheme1.ogg");
+	m_audioPlayer->play();
+	/*
 	//Create an Audio Manager
 	cAudio::IAudioManager* manager = cAudio::createAudioManager(true);
 	//Create an audio source and load a sound from a file
@@ -77,11 +82,10 @@ void GameState::enter()
 		mysound->play2d(false);
 
 		//Wait for the sound to finish playing
-		/*
-		while(mysound->isPlaying())
-			cAudio::cAudioSleep(10);
-		*/
+		//while(mysound->isPlaying())
+		//	cAudio::cAudioSleep(10);
 	}
+	*/
 }
 
 //|||||||||||||||||||||||||||||||||||||||||||||||
