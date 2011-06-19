@@ -30,12 +30,6 @@ GameState::GameState()
 	m_audioPlayer		= 0;
 }
 
-GameState::~GameState()
-{
-	delete m_audioPlayer;
-}
-
-
 //|||||||||||||||||||||||||||||||||||||||||||||||
 
 void GameState::enter()
@@ -121,8 +115,8 @@ void GameState::exit()
     if(m_pSceneMgr)
         OgreFramework::getSingletonPtr()->m_pRoot->destroySceneManager(m_pSceneMgr);
 	
-	delete m_audioPlayer;
 	m_audioPlayer->stop();
+	delete m_audioPlayer;
 }
 
 //|||||||||||||||||||||||||||||||||||||||||||||||
@@ -369,6 +363,11 @@ void GameState::update(double timeSinceLastFrame)
     m_pHighscorePanel->setParamValue(0, Ogre::StringConverter::toString(m_Score));
     m_pHighscorePanel->setParamValue(1, Ogre::StringConverter::toString(m_Multiplier));
     // Update für Highscore end
+	
+	if (m_audioPlayer->getPitch() <= 2.0f) {
+		//std::cout << m_audioPlayer->getPitch() << std::endl;
+		m_audioPlayer->increasePitch((float) timeSinceLastFrame / 5000);
+	}
 }
 
 //|||||||||||||||||||||||||||||||||||||||||||||||

@@ -24,7 +24,7 @@ AudioPlayer::~AudioPlayer()
 
 void AudioPlayer::play()
 {
-	audioSrc->play2d(false);
+	audioSrc->play();
 	
 }
 
@@ -50,6 +50,18 @@ void AudioPlayer::addFile(const std::string& file) {
 int AudioPlayer::getLength()
 {
 	return (int) audioSrc->getTotalAudioTime();
+}
+
+float AudioPlayer::getPitch() {
+	return audioSrc->getPitch();
+}
+
+void AudioPlayer::increasePitch(float diff) {
+	audioSrc->setPitch(audioSrc->getPitch() + diff);
+}
+
+void AudioPlayer::decreasePitch(float diff) {
+	audioSrc->setPitch(audioSrc->getPitch() - diff);
 }
 
 /*

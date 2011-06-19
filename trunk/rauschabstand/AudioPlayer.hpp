@@ -43,6 +43,10 @@ class AudioPlayer {
 		bool isPlaying();
 		void addFile(const std::string& file);
 		int getLength();
+		
+		float getPitch();
+		void increasePitch(float diff);
+		void decreasePitch(float diff);
 
 	private:
 		

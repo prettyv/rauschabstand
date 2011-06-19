@@ -32,7 +32,6 @@ class GameState : public AppState
 {
 public:
 	GameState();
-	virtual ~GameState();
 
 	DECLARE_APPSTATE_CLASS(GameState)
 

@@ -3,6 +3,7 @@
 #include "AppStateManager.hpp"
 
 #include <OgreWindowEventUtilities.h>
+#include <unistd.h>
 
 //|||||||||||||||||||||||||||||||||||||||||||||||
 
@@ -97,7 +98,7 @@ void AppStateManager::start(AppState* state)
 		else
 		{
 #if OGRE_PLATFORM == OGRE_PLATFORM_WIN32
-            Sleep(1000);
+            sleep(1000);
 #else
             sleep(1);
 #endif
