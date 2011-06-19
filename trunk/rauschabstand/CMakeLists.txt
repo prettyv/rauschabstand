@@ -78,4 +78,4 @@ add_executable(rauschgame ${OGRE_BIN_FILES} ${AUDIO_BIN_FILES})
 
 #target_link_libraries(rauschplayer clam_processing clam_audioio clam_core)
 #target_link_libraries(rauschplayer cAudio)
-target_link_libraries(rauschgame ${OGRE_LIBRARIES} OgreTerrain ${OIS_LIBRARIES} cAudio)
+target_link_libraries(rauschgame ${OGRE_LIBRARIES} OgreTerrain ${OIS_LIBRARIES} cAudio cAp_MP3Decoder)

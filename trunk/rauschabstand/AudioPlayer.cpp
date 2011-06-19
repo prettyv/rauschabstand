@@ -1,5 +1,7 @@
 #include "AudioPlayer.hpp"
 
+#include <cAudio/plugins/mp3Decoder/cMP3Plugin.h>
+
 #include <iostream>
 
 int error(const std::string& msg)
@@ -11,7 +13,10 @@ int error(const std::string& msg)
 AudioPlayer::AudioPlayer(const std::string& audio)
 {
 	//Create an Audio Manager
-        audioMgr = cAudio::createAudioManager(true);
+	cAudio::IPluginManager* pluginMgr = cAudio::getPluginManager();
+	pluginMgr->installPlugin(new cMP3DecoderPlugin());
+	
+	    audioMgr = cAudio::createAudioManager(true);
         audioSrc = audioMgr->create("bgmusic", audio.c_str(), true);
 }
 
