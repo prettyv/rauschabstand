@@ -13,8 +13,8 @@ int error(const std::string& msg)
 AudioPlayer::AudioPlayer(const std::string& audio)
 {
 	//Create an Audio Manager
-	//cAudio::IPluginManager* pluginMgr = cAudio::getPluginManager();
-	//pluginMgr->installPlugin(new cMP3DecoderPlugin());
+	cAudio::IPluginManager* pluginMgr = cAudio::getPluginManager();
+	pluginMgr->installPlugin(new cMP3DecoderPlugin());
 	
 	    audioMgr = cAudio::createAudioManager(true);
         audioSrc = audioMgr->create("bgmusic", audio.c_str(), true);
