@@ -18,6 +18,7 @@ GameLogic::GameLogic(SceneManager* sceneMgr, Camera* camera)
 	m_u = 0;
 	m_score = 0;
 	m_multiplier = 1;
+	m_timeCloseToHole = 0;
 }
 
 GameLogic::~GameLogic()
@@ -60,6 +61,20 @@ void GameLogic::update(double timeSinceLastFrame)
 			m_t = 0;
 			m_u = 0;
 			m_player->resetToStart();
+		}
+
+		if (m_map->isCloseToHole(m_t, m_u, 50))
+		{
+			m_timeCloseToHole += timeSinceLastFrame;
+			if (m_timeCloseToHole > 80)
+			{
+				m_multiplier++;
+				m_timeCloseToHole = 0;
+			}
+		}
+		else
+		{
+			m_timeCloseToHole = 0;
 		}
 
 		m_player->update(timeSinceLastFrame, m_t, m_u);

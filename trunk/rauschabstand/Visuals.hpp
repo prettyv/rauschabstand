@@ -48,8 +48,8 @@ private:
 	
 
 	// helper methods to create visuals
-	MaterialPtr	getMaterial(std::string name, int red, int green, int blue);
 	void		createVisualBar(const Ogre::Vector3& position, const Ogre::Quaternion& orienation = Quaternion::IDENTITY);
+	MaterialPtr	getMaterial(std::string name, int red, int green, int blue, int alpha);
 	
 };
 

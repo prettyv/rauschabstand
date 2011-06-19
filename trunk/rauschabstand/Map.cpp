@@ -30,10 +30,11 @@ void Map::createRandomMap(unsigned int length, unsigned int width)
 
 	for (unsigned int i = 0; i < m_length; i++)
 	{
-		std::vector<bool> row;
+		std::vector<HolesOrObstacles> row;
 		for (unsigned int j = 0; j < m_width; j++)
 		{
-			bool randomBool = rand() % 4 != 0 ? true : false;
+			HolesOrObstacles randomBool = rand() % 8 != 0 ? NORMAL : HOLE;
+			randomBool = rand() % 20 == 0 ? OBSTACLE : randomBool;
 			row.push_back(randomBool);
 		}
 		m_cubes.push_back(row);
@@ -89,11 +90,12 @@ void Map::createRandomMap(unsigned int length, unsigned int width)
 	plane->estimateIndexCount(m_length * m_width * 4);
 	plane->estimateVertexCount(m_length * m_width * 4);
 	plane->clear();
-	plane->begin("");
+	plane->begin("Examples/Rockwall");
 	
 	Ogre::Vector3 pos = Ogre::Vector3(0, 0, 0);
 	Ogre::Quaternion quat;
 	Ogre::Quaternion nextQuat;
+	unsigned long planeNum = 0;
 	for (unsigned int i = 0; i < m_length; i++)
 	{
 		quat = m_rotationalSpline.getPoint(i);
@@ -104,6 +106,8 @@ void Map::createRandomMap(unsigned int length, unsigned int width)
 			int back = -100;
 			int left = x;
 			int right = x + 100;
+			int down = -100;
+			int up = 100;
 
 			Ogre::Vector3 nextPos = pos + quat * Ogre::Vector3(0, 0, back);
 			Ogre::Vector3 posMinus50 = pos + quat * Ogre::Vector3(left, 0, 0);
@@ -111,16 +115,108 @@ void Map::createRandomMap(unsigned int length, unsigned int width)
 			Ogre::Vector3 nextPosMinus50 = nextPos + nextQuat * Ogre::Vector3(left, 0, 0);
 			Ogre::Vector3 nextPosPlus50 = nextPos + nextQuat * Ogre::Vector3(right, 0, 0);
 
-			plane->position(posMinus50.x, posMinus50.y, posMinus50.z);
-			plane->position(nextPosMinus50.x, nextPosMinus50.y, nextPosMinus50.z);
-			plane->position(posPlus50.x, posPlus50.y, posPlus50.z);
-			plane->position(nextPosPlus50.x, nextPosPlus50.y, nextPosPlus50.z);
+			plane->position(posMinus50.x, posMinus50.y, posMinus50.z); plane->normal((quat * Vector3(0, 1, 0)).normalisedCopy()); plane->textureCoord(0, 0);
+			plane->position(nextPosMinus50.x, nextPosMinus50.y, nextPosMinus50.z); plane->normal((quat * Vector3(0, 1, 0)).normalisedCopy()); plane->textureCoord(0, 1);
+			plane->position(posPlus50.x, posPlus50.y, posPlus50.z); plane->normal((quat * Vector3(0, 1, 0)).normalisedCopy()); plane->textureCoord(1, 0);
+			plane->position(nextPosPlus50.x, nextPosPlus50.y, nextPosPlus50.z); plane->normal((quat * Vector3(0, 1, 0)).normalisedCopy()); plane->textureCoord(1, 1);
+
+			Ogre::Vector3 nextPosDown = nextPos + quat * Ogre::Vector3(0, down, 0);
+			Ogre::Vector3 posMinus50Down = posMinus50 + quat * Ogre::Vector3(0, down, 0);
+			Ogre::Vector3 posPlus50Down = posPlus50 + quat * Ogre::Vector3(0, down, 0);
+			Ogre::Vector3 nextPosMinus50Down = nextPosMinus50 + nextQuat * Ogre::Vector3(0, down, 0);
+			Ogre::Vector3 nextPosPlus50Down = nextPosPlus50 + nextQuat * Ogre::Vector3(0, down, 0);
+
+			plane->position(posMinus50Down.x, posMinus50Down.y, posMinus50Down.z); plane->normal((quat * Vector3(0, -1, 0)).normalisedCopy()); plane->textureCoord(0, 0);
+			plane->position(nextPosMinus50Down.x, nextPosMinus50Down.y, nextPosMinus50Down.z); plane->normal((quat * Vector3(0, -1, 0)).normalisedCopy()); plane->textureCoord(0, 1);
+			plane->position(posPlus50Down.x, posPlus50Down.y, posPlus50Down.z); plane->normal((quat * Vector3(0, -1, 0)).normalisedCopy()); plane->textureCoord(1, 0);
+			plane->position(nextPosPlus50Down.x, nextPosPlus50Down.y, nextPosPlus50Down.z); plane->normal((quat * Vector3(0, -1, 0)).normalisedCopy()); plane->textureCoord(1, 1);
+
+			Ogre::Vector3 nextPosUp = nextPos + quat * Ogre::Vector3(0, up, 0);
+			Ogre::Vector3 posMinus50Up = posMinus50 + quat * Ogre::Vector3(0, up, 0);
+			Ogre::Vector3 posPlus50Up = posPlus50 + quat * Ogre::Vector3(0, up, 0);
+			Ogre::Vector3 nextPosMinus50Up = nextPosMinus50 + nextQuat * Ogre::Vector3(0, up, 0);
+			Ogre::Vector3 nextPosPlus50Up = nextPosPlus50 + nextQuat * Ogre::Vector3(0, up, 0);
+
+			plane->position(posMinus50Up.x, posMinus50Up.y, posMinus50Up.z); plane->normal((quat * Vector3(-1, 1, 1)).normalisedCopy()); plane->textureCoord(0, 0);
+			plane->position(nextPosMinus50Up.x, nextPosMinus50Up.y, nextPosMinus50Up.z); plane->normal((quat * Vector3(-1, 1, -1)).normalisedCopy()); plane->textureCoord(0, 1);
+			plane->position(posPlus50Up.x, posPlus50Up.y, posPlus50Up.z); plane->normal((quat * Vector3(1, 1, 1)).normalisedCopy()); plane->textureCoord(1, 0);
+			plane->position(nextPosPlus50Up.x, nextPosPlus50Up.y, nextPosPlus50Up.z); plane->normal((quat * Vector3(1, 1, -1)).normalisedCopy()); plane->textureCoord(1, 1);
+
+			if (m_cubes[planeNum / (double) width][planeNum % width] != HOLE)
+			{
+				plane->triangle(0 + planeNum * 12, 1 + planeNum * 12, 2 + planeNum * 12);
+				plane->normal(quat * Vector3(0, 1, 0));
+				plane->triangle(2 + planeNum * 12, 1 + planeNum * 12, 0 + planeNum * 12);
+				plane->normal(quat * Vector3(0, 1, 0));
+				plane->triangle(1 + planeNum * 12, 3 + planeNum * 12, 2 + planeNum * 12);
+				plane->normal(quat * Vector3(0, 1, 0));
+				plane->triangle(2 + planeNum * 12, 3 + planeNum * 12, 1 + planeNum * 12);
+				plane->normal(quat * Vector3(0, 1, 0));
+
+				/*plane->triangle(4 + planeNum * 8, 5 + planeNum * 8, 6 + planeNum * 8);
+				plane->triangle(6 + planeNum * 8, 5 + planeNum * 8, 4 + planeNum * 8);
+				plane->triangle(5 + planeNum * 8, 7 + planeNum * 8, 6 + planeNum * 8);
+				plane->triangle(6 + planeNum * 8, 7 + planeNum * 8, 5 + planeNum * 8);*/
+			}
+			if (m_cubes[planeNum / (double) width][planeNum % width] == OBSTACLE)
+			{
+				//top
+				plane->triangle(8 + planeNum * 12, 9 + planeNum * 12, 10 + planeNum * 12);
+				plane->normal(quat * Vector3(0, 1, 0));
+				plane->triangle(10 + planeNum * 12, 9 + planeNum * 12, 8 + planeNum * 12);
+				plane->normal(quat * Vector3(0, 1, 0));
+				plane->triangle(9 + planeNum * 12, 11 + planeNum * 12, 10 + planeNum * 12);
+				plane->normal(quat * Vector3(0, 1, 0));
+				plane->triangle(10 + planeNum * 12, 11 + planeNum * 12, 9 + planeNum * 12);
+				plane->normal(quat * Vector3(0, 1, 0));
+
+				//left
+				plane->triangle(0 + planeNum * 12, 8 + planeNum * 12, 9 + planeNum * 12);
+				plane->normal(quat * Vector3(-1, 0, 0));
+				plane->triangle(9 + planeNum * 12, 8 + planeNum * 12, 0 + planeNum * 12);
+				plane->normal(quat * Vector3(-1, 0, 0));
+				plane->triangle(0 + planeNum * 12, 1 + planeNum * 12, 9 + planeNum * 12);
+				plane->normal(quat * Vector3(-1, 0, 0));
+				plane->triangle(9 + planeNum * 12, 1 + planeNum * 12, 0 + planeNum * 12);
+				plane->normal(quat * Vector3(-1, 0, 0));
+
+				//right
+				plane->triangle(2 + planeNum * 12, 10 + planeNum * 12, 11 + planeNum * 12);
+				plane->normal(quat * Vector3(1, 0, 0));
+				plane->triangle(11 + planeNum * 12, 10 + planeNum * 12, 2 + planeNum * 12);
+				plane->normal(quat * Vector3(1, 0, 0));
+				plane->triangle(2 + planeNum * 12, 3 + planeNum * 12, 11 + planeNum * 12);
+				plane->normal(quat * Vector3(1, 0, 0));
+				plane->triangle(11 + planeNum * 12, 3 + planeNum * 12, 2 + planeNum * 12);
+				plane->normal(quat * Vector3(1, 0, 0));
+
+				//back
+				plane->triangle(9 + planeNum * 12, 11 + planeNum * 12, 1 + planeNum * 12);
+				plane->normal(quat * Vector3(0, 0, -1));
+				plane->triangle(1 + planeNum * 12, 11 + planeNum * 12, 9 + planeNum * 12);
+				plane->normal(quat * Vector3(0, 0, -1));
+				plane->triangle(1 + planeNum * 12, 3 + planeNum * 12, 11 + planeNum * 12);
+				plane->normal(quat * Vector3(0, 0, -1));
+				plane->triangle(11 + planeNum * 12, 3 + planeNum * 12, 1 + planeNum * 12);
+				plane->normal(quat * Vector3(0, 0, -1));
+
+				//back
+				plane->triangle(2 + planeNum * 12, 10 + planeNum * 12, 8 + planeNum * 12);
+				plane->normal(quat * Vector3(0, 0, 1));
+				plane->triangle(8 + planeNum * 12, 10 + planeNum * 12, 2 + planeNum * 12);
+				plane->normal(quat * Vector3(0, 0, 1));
+				plane->triangle(0 + planeNum * 12, 8 + planeNum * 12, 2 + planeNum * 12);
+				plane->normal(quat * Vector3(0, 0, 1));
+				plane->triangle(2 + planeNum * 12, 8 + planeNum * 12, 0 + planeNum * 12);
+				plane->normal(quat * Vector3(0, 0, 1));
+			}
+			planeNum++;
 		}
 
 		pos = pos + quat * Ogre::Vector3(0, 0, -100);
 	}  
 
-	for (int i = 0; i < m_width * m_length; i++)
+	/*for (int i = 0; i < m_width * m_length; i++)
 	{
 		if (m_cubes[i / (double) width][i % width])
 		{
@@ -129,9 +225,10 @@ void Map::createRandomMap(unsigned int length, unsigned int width)
 			plane->triangle(1 + i * 4, 3 + i * 4, 2 + i * 4);
 			plane->triangle(2 + i * 4, 3 + i * 4, 1 + i * 4);
 		}
-	}
+	}*/
 
 	plane->end();
+	plane->setCastShadows(false);
 
 	m_mapMainNode->attachObject(plane);
 
@@ -185,7 +282,49 @@ bool Map::isHoleInMap(double t, double u)
 	j = j < 0 ? 0 : j;
 	j = j > m_width ? m_width : j;
 
-	return !m_cubes.at(t).at(j);
+	return m_cubes.at(t).at(j) == HOLE;
+}
+
+//|||||||||||||||||||||||||||||||||||||||||||||||
+
+bool Map::isCloseToHole(double t, double u, double closeDistance)
+{
+	t = t < 0 ? 0 : t;
+	t = t >= m_length ? m_length - 1 : t;
+	std::vector<HolesOrObstacles> row = m_cubes[t];
+
+	//TODO: wtf, fix this mess!
+	double j = u + (m_width / (double) 2) * 100;
+	j /= (double) 100;
+	j = m_width - j;
+	j -= 1;
+	j = j < 0 ? 0 : j;
+	j = j > m_width ? m_width : j;
+
+	u = u + (m_width / (double) 2) * 100;
+	u = m_width * 100 - u;
+	u = u < 0 ? 0 : u;
+	u = u > m_width * 100 ? m_width * 100 : u;
+
+	if (row[j] == HOLE)
+	{
+		return false;
+	}
+
+	int minDistance = 10000;
+	for (int i = 0; i < row.size(); i++)
+	{
+		if (row[i] == HOLE)
+		{
+			int distance = abs(u - i * 100);
+			if (distance < closeDistance)
+			{
+				return true;
+			}
+		}
+	}
+
+	return false;
 }
 
 //|||||||||||||||||||||||||||||||||||||||||||||||

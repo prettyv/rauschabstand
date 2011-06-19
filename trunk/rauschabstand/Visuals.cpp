@@ -54,11 +54,11 @@ Visuals::Visuals(SceneManager* pSceneMgr, Map* map, double totalTracklength,
 }
 
 
-MaterialPtr Visuals::getMaterial(std::string name, int red, int green, int blue) {
+MaterialPtr Visuals::getMaterial(std::string name, int red, int green, int blue, int alpha) {
 
 	// Create the texture
 	TexturePtr texture = TextureManager::getSingleton().createManual(
-		name, // name
+		name,				// name
 		ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME,
 		TEX_TYPE_2D,      // type
 		256, 256,         // width & height
@@ -84,7 +84,7 @@ MaterialPtr Visuals::getMaterial(std::string name, int red, int green, int blue)
 			*pDest++ = blue; // B
 			*pDest++ = green; // G
 			*pDest++ = red; // R
-			*pDest++ = 180; // A
+			*pDest++ = alpha; // A
 		}
 	}
 
@@ -314,11 +314,11 @@ void Visuals::updateVisual(double timeSinceLastFrame) {
 
 void Visuals::createVisuals() {
 	// create materials
-	MaterialPtr green = getMaterial("green", 0, 210, 25);
-	MaterialPtr darkGreen = getMaterial("darkGreen", 20, 110, 30);
-	MaterialPtr yellow = getMaterial("yellow", 250, 255, 0);
-	MaterialPtr orange = getMaterial("orange", 255, 160, 0);
-	MaterialPtr red = getMaterial("red", 210, 0, 0);
+	MaterialPtr green = getMaterial("green", 0, 210, 25, 180);
+	MaterialPtr darkGreen = getMaterial("darkGreen", 20, 110, 30, 180);
+	MaterialPtr yellow = getMaterial("yellow", 250, 255, 0, 180);
+	MaterialPtr orange = getMaterial("orange", 255, 160, 0, 180);
+	MaterialPtr red = getMaterial("red", 210, 0, 0, 180);
 
 	// create visuals
 	int width = m_map->getWidth() / 2.0 * 100;
@@ -357,7 +357,7 @@ void Visuals::createVisualBar(const Ogre::Vector3& position, const Ogre::Quatern
 	for (int i=0; i<5; ++i)
 	{
 		cubeEntity = m_pSceneMgr->createEntity("cubeEntity" + StringConverter::toString(m_numberOfCubes) + StringConverter::toString(i), "cube.mesh");
-
+		cubeEntity->setCastShadows(false);
 		
 		switch (m_numberOfCubes % 5) {
 		case 0:

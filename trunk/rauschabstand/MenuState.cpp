@@ -21,7 +21,7 @@ void MenuState::enter()
     OgreFramework::getSingletonPtr()->m_pLog->logMessage("Entering MenuState...");
 
     m_pSceneMgr = OgreFramework::getSingletonPtr()->m_pRoot->createSceneManager(ST_GENERIC, "MenuSceneMgr");
-    m_pSceneMgr->setAmbientLight(Ogre::ColourValue(0.7f, 0.7f, 0.7f));
+    m_pSceneMgr->setAmbientLight(Ogre::ColourValue(0.0f, 0.0f, 0.0f));
 
     m_pCamera = m_pSceneMgr->createCamera("MenuCam");
     m_pCamera->setPosition(Vector3(0, 25, -50));

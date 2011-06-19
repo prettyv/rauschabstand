@@ -16,9 +16,20 @@ Player::Player(std::string name, SceneManager* sceneMgr, Camera* camera, Map* ma
     // player
     m_playerMainNode = m_pSceneMgr->getRootSceneNode()->createChildSceneNode(m_name);
 	m_sideNode = m_playerMainNode->createChildSceneNode(m_name + "_sideNode");
-	m_jumpNode = m_sideNode->createChildSceneNode(m_name + "_sideNode" + "_jumpNode");
-	m_sideRollNode = m_jumpNode->createChildSceneNode(m_name + "_sideNode" + "_jumpNode" + "_sideRollNode");
+	m_jumpNode = m_sideNode->createChildSceneNode(m_name + "_jumpNode");
+	m_sideRollNode = m_jumpNode->createChildSceneNode(m_name + "_sideRollNode");
     m_playerEntity = m_pSceneMgr->createEntity(m_name, "razor.mesh");
+	Ogre::Light* spotLight = m_pSceneMgr->createLight("spotLight");
+	spotLight->setType(Ogre::Light::LT_SPOTLIGHT);
+	spotLight->setDiffuseColour(Ogre::ColourValue(.9, .8, 0.8));
+	spotLight->setSpecularColour(Ogre::ColourValue(.9, .8, 0.8));
+	spotLight->setDirection(Ogre::Vector3(0, 0, 1));
+	spotLight->setPosition(Vector3(0, 0, 0));
+	spotLight->setSpotlightRange(Ogre::Degree(35), Ogre::Degree(50));
+	SceneNode* lightNode = m_sideRollNode->createChildSceneNode(m_name + "_lightNode");
+	lightNode->attachObject(spotLight);
+	lightNode->setPosition(0, 0, 200);
+	m_playerEntity->setCastShadows(true);
 	m_sideRollNode->attachObject(m_playerEntity);
     m_cameraPosition = m_jumpNode->createChildSceneNode(m_name + "_sight", Vector3 (0, 100, -300));
     m_targetPosition = m_jumpNode->createChildSceneNode(m_name + "_chaseCamera", Vector3 (0, 0, 200));
@@ -119,12 +130,12 @@ void Player::update (double elapsedTime, Real t, Real u)
 		m_rollBack = false;
 	} else if (m_rollBack && m_rollFactor < -0.04f)		// rolling-back
 	{
-		m_rollFactor += 0.05f * elapsedTime / Real(10);
-		m_sideRollNode->roll(Ogre::Radian(0.05f) * elapsedTime / Real(10));
+		m_rollFactor += 0.005f * elapsedTime;
+		m_sideRollNode->roll(Ogre::Radian(0.005f) * elapsedTime);
 	} else if (m_rollBack && m_rollFactor > 0.04f)		// rolling-back
 	{
-		m_rollFactor -= 0.05f * elapsedTime / Real(10);
-		m_sideRollNode->roll(Ogre::Radian(-0.05f) * elapsedTime / Real(10));
+		m_rollFactor -= 0.005f * elapsedTime;
+		m_sideRollNode->roll(Ogre::Radian(-0.005f) * elapsedTime);
 	}
 	
 
@@ -135,21 +146,25 @@ void Player::update (double elapsedTime, Real t, Real u)
 
 //|||||||||||||||||||||||||||||||||||||||||||||||
 
-void Player::update (Real elapsedTime, OIS::Keyboard *input) {
-
-	if (input->isKeyDown (OIS::KC_A))
+void Player::update(Real elapsedTime, OIS::Keyboard *input) {
+	if (m_rollFactor < 0.5 && m_rollFactor > -0.5)
 	{
-		// for side-roll movement while steering
-		m_rollFactor -= 0.05f * elapsedTime / Real(10);
-		m_sideRollNode->roll(Ogre::Radian(-0.05f) * elapsedTime / Real(10));
+		if (input->isKeyDown (OIS::KC_A))
+		{
+			// for side-roll movement while steering
+			m_rollFactor -= 0.005f * elapsedTime;
+			m_sideRollNode->roll(Ogre::Radian(-0.005f) * elapsedTime);
+			m_rollBack = false;
+		}
+
+		if (input->isKeyDown (OIS::KC_D))
+		{
+			// for side-roll movement while steering
+			m_rollFactor += 0.005f * elapsedTime;
+			m_sideRollNode->roll(Ogre::Radian(0.005f) * elapsedTime);
+			m_rollBack = false;
+		}
 	}
-
-	if (input->isKeyDown (OIS::KC_D))
-	{
-		// for side-roll movement while steering
-		m_rollFactor += 0.05f * elapsedTime / Real(10);
-		m_sideRollNode->roll(Ogre::Radian(0.05f) * elapsedTime / Real(10));
-    }
 }
 
 //|||||||||||||||||||||||||||||||||||||||||||||||

@@ -36,8 +36,9 @@ void GameState::enter()
 {
     OgreFramework::getSingletonPtr()->m_pLog->logMessage("Entering GameState...");
 
-    m_pSceneMgr = OgreFramework::getSingletonPtr()->m_pRoot->createSceneManager(ST_GENERIC, "GameSceneMgr");
-	m_pSceneMgr->setAmbientLight(Ogre::ColourValue(0.7f, 0.7f, 0.7f));
+	m_pSceneMgr = OgreFramework::getSingletonPtr()->m_pRoot->createSceneManager(ST_GENERIC, "GameSceneMgr");
+	m_pSceneMgr->setAmbientLight(Ogre::ColourValue(0.3f, 0.3f, 0.3f));
+	m_pSceneMgr->setShadowTechnique(Ogre::SHADOWTYPE_TEXTURE_MODULATIVE);
 
 	m_pRSQ = m_pSceneMgr->createRayQuery(Ray());
 	m_pRSQ->setQueryMask(OGRE_HEAD_MASK);
@@ -123,11 +124,17 @@ void GameState::exit()
 
 void GameState::createScene()
 {
-    m_pSceneMgr->createLight("Light")->setPosition(75,75,75);
+	//m_pSceneMgr->createLight("Light")->setPosition(75,75,75);
+
+	Ogre::Light* directionalLight = m_pSceneMgr->createLight("directionalLight");
+	directionalLight->setType(Ogre::Light::LT_DIRECTIONAL);
+	directionalLight->setDiffuseColour(Ogre::ColourValue(.9, .8, 0.8));
+	directionalLight->setSpecularColour(Ogre::ColourValue(.9, .8, 0.8));
+	directionalLight->setDirection(Ogre::Vector3(0, -1, 1));
 
 
 	// AUDIO-VISUALS begin
-	double totalTrackLength = 150.0;	// should come from m_map
+	double totalTrackLength = m_gameLogic->getMap()->getLength();
 	// creating audio-data arrays
 	double* audioSpectrumData0 = new double[(int)std::ceil(totalTrackLength)];
 	double* audioSpectrumData1 = new double[(int)std::ceil(totalTrackLength)];

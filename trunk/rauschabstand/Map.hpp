@@ -23,6 +23,14 @@ struct TimeQuaternion
 
 //|||||||||||||||||||||||||||||||||||||||||||||||
 
+enum HolesOrObstacles {
+	NORMAL,
+	HOLE,
+	OBSTACLE
+};
+
+//|||||||||||||||||||||||||||||||||||||||||||||||
+
 class Map
 {
 public:
@@ -33,23 +41,25 @@ public:
 	Ogre::Quaternion getOrientation(double t);
 	Ogre::Vector3 getPosition(double t, double u);
 
+	bool isCloseToHole(double t, double u, double closeDistance);
+
 	bool isHoleInMap(double t, double u);
 
 	int getLength() { return m_length; }
 	int getWidth() { return m_width; }
 
 private:
-	int	m_length;
-	int	m_width;
+	unsigned int								m_length;
+	unsigned int								m_width;
 
-	std::vector<std::vector<bool> >	m_cubes;
-	RotationalSpline				m_rotationalSpline;
-	SimpleSpline					m_pointsSpline;
+	std::vector<std::vector<HolesOrObstacles> >	m_cubes;
+	RotationalSpline							m_rotationalSpline;
+	SimpleSpline								m_pointsSpline;
 	
-    SceneManager*					m_pSceneMgr;
-
-    SceneNode*						m_mapMainNode;
-    std::string						m_name;
+    SceneManager*								m_pSceneMgr;
+	
+    SceneNode*									m_mapMainNode;
+    std::string									m_name;
 };
 
 

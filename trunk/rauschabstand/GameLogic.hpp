@@ -53,6 +53,7 @@ private:
 
 	unsigned long		m_score;
 	unsigned long		m_multiplier;
+	unsigned int		m_timeCloseToHole;
 
 	static const int	DEADHEIGHT = -300;		// height when player is dead
 };
