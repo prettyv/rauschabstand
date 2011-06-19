@@ -45,7 +45,7 @@ Player::Player(std::string name, SceneManager* sceneMgr, Camera* camera, Map* ma
     m_camera = camera;
     //m_camera->setPosition(0.0, 0.0, 0.0);
     m_chaseCamera->attachObject(m_camera);
-    m_tightness = 1.0f;
+    m_tightness = 0.3f;
 
 	m_speed = Vector3(0, 0, 0);
 

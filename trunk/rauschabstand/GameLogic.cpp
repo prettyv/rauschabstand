@@ -21,8 +21,8 @@ GameLogic::GameLogic(SceneManager* sceneMgr, Camera* camera, AudioPlayer* audioP
 	m_multiplier = 1;
 	m_timeCloseToHole = 0;
 	m_countdownTime = 0;
-	m_blockMs = Real(0.014);
-	m_blockMsSide = Real(0.8);
+	m_blockMs = Real(0.015);
+	m_blockMsSide = Real(0.9);
 }
 
 GameLogic::~GameLogic()
@@ -33,7 +33,7 @@ GameLogic::~GameLogic()
 
 void GameLogic::init()
 {
-	m_map->createRandomMap(84 * m_blockMs * 1000, 12);
+	m_map->createRandomMap(84 * m_blockMs * 1000, 10);
 
 	start();
 }
