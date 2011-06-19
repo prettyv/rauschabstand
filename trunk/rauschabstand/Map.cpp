@@ -106,7 +106,7 @@ void Map::createRandomMap(unsigned int length, unsigned int width)
 			int back = -100;
 			int left = x;
 			int right = x + 100;
-			int down = -100;
+			int down = -20 ;
 			int up = 100;
 
 			Ogre::Vector3 nextPos = pos + quat * Ogre::Vector3(0, 0, back);
@@ -126,10 +126,10 @@ void Map::createRandomMap(unsigned int length, unsigned int width)
 			Ogre::Vector3 nextPosMinus50Down = nextPosMinus50 + nextQuat * Ogre::Vector3(0, down, 0);
 			Ogre::Vector3 nextPosPlus50Down = nextPosPlus50 + nextQuat * Ogre::Vector3(0, down, 0);
 
-			plane->position(posMinus50Down.x, posMinus50Down.y, posMinus50Down.z); plane->normal((quat * Vector3(0, -1, 0)).normalisedCopy()); plane->textureCoord(0, 0);
-			plane->position(nextPosMinus50Down.x, nextPosMinus50Down.y, nextPosMinus50Down.z); plane->normal((quat * Vector3(0, -1, 0)).normalisedCopy()); plane->textureCoord(0, 1);
-			plane->position(posPlus50Down.x, posPlus50Down.y, posPlus50Down.z); plane->normal((quat * Vector3(0, -1, 0)).normalisedCopy()); plane->textureCoord(1, 0);
-			plane->position(nextPosPlus50Down.x, nextPosPlus50Down.y, nextPosPlus50Down.z); plane->normal((quat * Vector3(0, -1, 0)).normalisedCopy()); plane->textureCoord(1, 1);
+			plane->position(posMinus50Down.x, posMinus50Down.y, posMinus50Down.z); plane->normal((quat * Vector3(-1, -1, 1)).normalisedCopy()); plane->textureCoord(0, 0);
+			plane->position(nextPosMinus50Down.x, nextPosMinus50Down.y, nextPosMinus50Down.z); plane->normal((quat * Vector3(-1, -1, -1)).normalisedCopy()); plane->textureCoord(0, 1);
+			plane->position(posPlus50Down.x, posPlus50Down.y, posPlus50Down.z); plane->normal((quat * Vector3(1, -1, 1)).normalisedCopy()); plane->textureCoord(1, 0);
+			plane->position(nextPosPlus50Down.x, nextPosPlus50Down.y, nextPosPlus50Down.z); plane->normal((quat * Vector3(1, -1, -1)).normalisedCopy()); plane->textureCoord(1, 1);
 
 			Ogre::Vector3 nextPosUp = nextPos + quat * Ogre::Vector3(0, up, 0);
 			Ogre::Vector3 posMinus50Up = posMinus50 + quat * Ogre::Vector3(0, up, 0);
@@ -144,71 +144,95 @@ void Map::createRandomMap(unsigned int length, unsigned int width)
 
 			if (m_cubes[planeNum / (double) width][planeNum % width] != HOLE)
 			{
-				plane->triangle(0 + planeNum * 12, 1 + planeNum * 12, 2 + planeNum * 12);
-				plane->normal(quat * Vector3(0, 1, 0));
-				plane->triangle(2 + planeNum * 12, 1 + planeNum * 12, 0 + planeNum * 12);
-				plane->normal(quat * Vector3(0, 1, 0));
-				plane->triangle(1 + planeNum * 12, 3 + planeNum * 12, 2 + planeNum * 12);
-				plane->normal(quat * Vector3(0, 1, 0));
-				plane->triangle(2 + planeNum * 12, 3 + planeNum * 12, 1 + planeNum * 12);
-				plane->normal(quat * Vector3(0, 1, 0));
+				if (m_cubes[planeNum / (double) width][planeNum % width] == NORMAL)
+				{
+					//top
+					plane->triangle(0 + planeNum * 12, 1 + planeNum * 12, 2 + planeNum * 12);
+					plane->triangle(2 + planeNum * 12, 1 + planeNum * 12, 0 + planeNum * 12);
+					plane->triangle(1 + planeNum * 12, 3 + planeNum * 12, 2 + planeNum * 12);
+					plane->triangle(2 + planeNum * 12, 3 + planeNum * 12, 1 + planeNum * 12);
+				}
 
-				/*plane->triangle(4 + planeNum * 8, 5 + planeNum * 8, 6 + planeNum * 8);
-				plane->triangle(6 + planeNum * 8, 5 + planeNum * 8, 4 + planeNum * 8);
-				plane->triangle(5 + planeNum * 8, 7 + planeNum * 8, 6 + planeNum * 8);
-				plane->triangle(6 + planeNum * 8, 7 + planeNum * 8, 5 + planeNum * 8);*/
+				//bottom
+ 				plane->triangle(4 + planeNum * 12, 5 + planeNum * 12, 6 + planeNum * 12);
+ 				plane->triangle(6 + planeNum * 12, 5 + planeNum * 12, 4 + planeNum * 12);
+ 				plane->triangle(5 + planeNum * 12, 7 + planeNum * 12, 6 + planeNum * 12);
+ 				plane->triangle(6 + planeNum * 12, 7 + planeNum * 12, 5 + planeNum * 12);
+
+				if (planeNum % width == 0 || m_cubes[planeNum / (double) width][(planeNum - 1) % width] == HOLE)
+				{
+					//left
+					plane->triangle(0 + planeNum * 12, 4 + planeNum * 12, 5 + planeNum * 12);
+					plane->triangle(5 + planeNum * 12, 4 + planeNum * 12, 0 + planeNum * 12);
+					plane->triangle(0 + planeNum * 12, 1 + planeNum * 12, 5 + planeNum * 12);
+					plane->triangle(5 + planeNum * 12, 1 + planeNum * 12, 0 + planeNum * 12);
+				}
+				if (planeNum % width == width - 1 || m_cubes[planeNum / (double) width][(planeNum + 1) % width] == HOLE)
+				{
+					//right
+					plane->triangle(2 + planeNum * 12, 6 + planeNum * 12, 7 + planeNum * 12);
+					plane->triangle(7 + planeNum * 12, 6 + planeNum * 12, 2 + planeNum * 12);
+					plane->triangle(2 + planeNum * 12, 3 + planeNum * 12, 7 + planeNum * 12);
+					plane->triangle(7 + planeNum * 12, 3 + planeNum * 12, 2 + planeNum * 12);
+				}
+				if (planeNum / (double) width >= m_length - 1 || m_cubes[(planeNum + width) / (double) width][planeNum % width] == HOLE)
+				{
+					//back
+					plane->triangle(5 + planeNum * 12, 7 + planeNum * 12, 1 + planeNum * 12);
+					plane->triangle(1 + planeNum * 12, 7 + planeNum * 12, 5 + planeNum * 12);
+					plane->triangle(1 + planeNum * 12, 3 + planeNum * 12, 7 + planeNum * 12);
+					plane->triangle(7 + planeNum * 12, 3 + planeNum * 12, 1 + planeNum * 12);
+				}
+				if (planeNum / (double) width <= width || m_cubes[(planeNum - width) / (double) width][planeNum % width] == HOLE)
+				{
+					//front
+					plane->triangle(2 + planeNum * 12, 6 + planeNum * 12, 4 + planeNum * 12);
+					plane->triangle(4 + planeNum * 12, 6 + planeNum * 12, 2 + planeNum * 12);
+					plane->triangle(0 + planeNum * 12, 4 + planeNum * 12, 2 + planeNum * 12);
+					plane->triangle(2 + planeNum * 12, 4 + planeNum * 12, 0 + planeNum * 12);
+				}
+
 			}
 			if (m_cubes[planeNum / (double) width][planeNum % width] == OBSTACLE)
 			{
 				//top
 				plane->triangle(8 + planeNum * 12, 9 + planeNum * 12, 10 + planeNum * 12);
-				plane->normal(quat * Vector3(0, 1, 0));
 				plane->triangle(10 + planeNum * 12, 9 + planeNum * 12, 8 + planeNum * 12);
-				plane->normal(quat * Vector3(0, 1, 0));
 				plane->triangle(9 + planeNum * 12, 11 + planeNum * 12, 10 + planeNum * 12);
-				plane->normal(quat * Vector3(0, 1, 0));
 				plane->triangle(10 + planeNum * 12, 11 + planeNum * 12, 9 + planeNum * 12);
-				plane->normal(quat * Vector3(0, 1, 0));
 
-				//left
-				plane->triangle(0 + planeNum * 12, 8 + planeNum * 12, 9 + planeNum * 12);
-				plane->normal(quat * Vector3(-1, 0, 0));
-				plane->triangle(9 + planeNum * 12, 8 + planeNum * 12, 0 + planeNum * 12);
-				plane->normal(quat * Vector3(-1, 0, 0));
-				plane->triangle(0 + planeNum * 12, 1 + planeNum * 12, 9 + planeNum * 12);
-				plane->normal(quat * Vector3(-1, 0, 0));
-				plane->triangle(9 + planeNum * 12, 1 + planeNum * 12, 0 + planeNum * 12);
-				plane->normal(quat * Vector3(-1, 0, 0));
-
-				//right
-				plane->triangle(2 + planeNum * 12, 10 + planeNum * 12, 11 + planeNum * 12);
-				plane->normal(quat * Vector3(1, 0, 0));
-				plane->triangle(11 + planeNum * 12, 10 + planeNum * 12, 2 + planeNum * 12);
-				plane->normal(quat * Vector3(1, 0, 0));
-				plane->triangle(2 + planeNum * 12, 3 + planeNum * 12, 11 + planeNum * 12);
-				plane->normal(quat * Vector3(1, 0, 0));
-				plane->triangle(11 + planeNum * 12, 3 + planeNum * 12, 2 + planeNum * 12);
-				plane->normal(quat * Vector3(1, 0, 0));
-
-				//back
-				plane->triangle(9 + planeNum * 12, 11 + planeNum * 12, 1 + planeNum * 12);
-				plane->normal(quat * Vector3(0, 0, -1));
-				plane->triangle(1 + planeNum * 12, 11 + planeNum * 12, 9 + planeNum * 12);
-				plane->normal(quat * Vector3(0, 0, -1));
-				plane->triangle(1 + planeNum * 12, 3 + planeNum * 12, 11 + planeNum * 12);
-				plane->normal(quat * Vector3(0, 0, -1));
-				plane->triangle(11 + planeNum * 12, 3 + planeNum * 12, 1 + planeNum * 12);
-				plane->normal(quat * Vector3(0, 0, -1));
-
-				//back
-				plane->triangle(2 + planeNum * 12, 10 + planeNum * 12, 8 + planeNum * 12);
-				plane->normal(quat * Vector3(0, 0, 1));
-				plane->triangle(8 + planeNum * 12, 10 + planeNum * 12, 2 + planeNum * 12);
-				plane->normal(quat * Vector3(0, 0, 1));
-				plane->triangle(0 + planeNum * 12, 8 + planeNum * 12, 2 + planeNum * 12);
-				plane->normal(quat * Vector3(0, 0, 1));
-				plane->triangle(2 + planeNum * 12, 8 + planeNum * 12, 0 + planeNum * 12);
-				plane->normal(quat * Vector3(0, 0, 1));
+				if (planeNum % width == 0 || m_cubes[planeNum / (double) width][(planeNum - 1) % width] != OBSTACLE)
+				{
+					//left
+					plane->triangle(0 + planeNum * 12, 8 + planeNum * 12, 9 + planeNum * 12);
+					plane->triangle(9 + planeNum * 12, 8 + planeNum * 12, 0 + planeNum * 12);
+					plane->triangle(0 + planeNum * 12, 1 + planeNum * 12, 9 + planeNum * 12);
+					plane->triangle(9 + planeNum * 12, 1 + planeNum * 12, 0 + planeNum * 12);
+				}
+				if (planeNum % width == width - 1 || m_cubes[planeNum / (double) width][(planeNum + 1) % width] != OBSTACLE)
+				{
+					//right
+					plane->triangle(2 + planeNum * 12, 10 + planeNum * 12, 11 + planeNum * 12);
+					plane->triangle(11 + planeNum * 12, 10 + planeNum * 12, 2 + planeNum * 12);
+					plane->triangle(2 + planeNum * 12, 3 + planeNum * 12, 11 + planeNum * 12);
+					plane->triangle(11 + planeNum * 12, 3 + planeNum * 12, 2 + planeNum * 12);
+				}
+				if (planeNum / (double) width >= m_length - 1 || m_cubes[(planeNum + width) / (double) width][planeNum % width] != OBSTACLE)
+				{
+					//back
+					plane->triangle(9 + planeNum * 12, 11 + planeNum * 12, 1 + planeNum * 12);
+					plane->triangle(1 + planeNum * 12, 11 + planeNum * 12, 9 + planeNum * 12);
+					plane->triangle(1 + planeNum * 12, 3 + planeNum * 12, 11 + planeNum * 12);
+					plane->triangle(11 + planeNum * 12, 3 + planeNum * 12, 1 + planeNum * 12);
+				}
+				if (planeNum / (double) width <= width || m_cubes[(planeNum - width) / (double) width][planeNum % width] != OBSTACLE)
+				{
+					//front
+					plane->triangle(2 + planeNum * 12, 10 + planeNum * 12, 8 + planeNum * 12);
+					plane->triangle(8 + planeNum * 12, 10 + planeNum * 12, 2 + planeNum * 12);
+					plane->triangle(0 + planeNum * 12, 8 + planeNum * 12, 2 + planeNum * 12);
+					plane->triangle(2 + planeNum * 12, 8 + planeNum * 12, 0 + planeNum * 12);
+				}
 			}
 			planeNum++;
 		}
