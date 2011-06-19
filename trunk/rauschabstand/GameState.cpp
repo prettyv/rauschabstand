@@ -63,7 +63,7 @@ void GameState::enter()
 
 
 
-	m_audioPlayer = new AudioPlayer("cAudioTheme1.ogg");
+	m_audioPlayer = new AudioPlayer("daftp.wav");
 	m_audioPlayer->play();
 	/*
 	//Create an Audio Manager
@@ -371,10 +371,12 @@ void GameState::update(double timeSinceLastFrame)
     m_pHighscorePanel->setParamValue(1, Ogre::StringConverter::toString(m_Multiplier));
     // Update für Highscore end
 	
+	/*
 	if (m_audioPlayer->getPitch() <= 2.0f) {
 		//std::cout << m_audioPlayer->getPitch() << std::endl;
 		m_audioPlayer->increasePitch((float) timeSinceLastFrame / 5000);
 	}
+	*/
 }
 
 //|||||||||||||||||||||||||||||||||||||||||||||||
