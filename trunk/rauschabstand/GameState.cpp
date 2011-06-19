@@ -60,13 +60,28 @@ void GameState::enter()
 	m_pCurrentObject = 0;
 
 	m_gameLogic	= new GameLogic(m_pSceneMgr, m_pCamera);
-	m_gameLogic->init();
+	m_gameLogic->init(); 
 
 	buildGUI();
 	createScene();
     createOverlays();
-	m_audioPlayer = new AudioPlayer("/home/berion/Music/demovibes2-80mn_scene_music_compilation_mixed_by_willbe.ogg");
-	m_audioPlayer->play();
+
+	//Create an Audio Manager
+	cAudio::IAudioManager* manager = cAudio::createAudioManager(true);
+	//Create an audio source and load a sound from a file
+	cAudio::IAudioSource* mysound = manager->create("music","cAudioTheme1.ogg",true);
+
+	if(mysound)
+	{
+		//Play our source in 2D once.
+		mysound->play2d(false);
+
+		//Wait for the sound to finish playing
+		/*
+		while(mysound->isPlaying())
+			cAudio::cAudioSleep(10);
+		*/
+	}
 }
 
 //|||||||||||||||||||||||||||||||||||||||||||||||

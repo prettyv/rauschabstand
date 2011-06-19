@@ -27,7 +27,7 @@
 #ifndef AUDIOPLAYER_HPP
 #define AUDIOPLAYER_HPP
 
-#include <cAudio/include/cAudio.h>
+#include "caudio.h"
 
 class AudioPlayer {
 
