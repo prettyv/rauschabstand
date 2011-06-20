@@ -160,9 +160,9 @@ void GameState::createScene()
 		audioSpectrumData4[i] = std::rand() % 5;
 	}
 
-	// crating visuals
+	// creating visuals
 	m_visuals = new Visuals(m_pSceneMgr, m_gameLogic->getMap(), totalTrackLength, audioSpectrumData0, audioSpectrumData1, audioSpectrumData2, audioSpectrumData3, audioSpectrumData4);
-	m_visuals->createVisuals();
+	//m_visuals->createVisuals();
 	// AUDIO-VISUALS end
 }
 
