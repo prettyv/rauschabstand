@@ -197,7 +197,7 @@ bool OgreFramework::mouseReleased(const OIS::MouseEvent &evt, OIS::MouseButtonID
 
 //|||||||||||||||||||||||||||||||||||||||||||||||
 
-void OgreFramework::updateOgre(double timeSinceLastFrame)
+void OgreFramework::updateOgre(Ogre::Real timeSinceLastFrame)
 {
 }
 

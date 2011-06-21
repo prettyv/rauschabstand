@@ -2,6 +2,9 @@
 
 #include "GameView.hpp"
 
+#include <OgreOverlayManager.h>
+#include <OgreMaterialManager.h>
+
 //|||||||||||||||||||||||||||||||||||||||||||||||
 GameView::GameView() {
     m_highscorePanel    = 0;
@@ -41,8 +44,8 @@ void GameView::engage(GameLogic* gameLogic, Ogre::SceneManager* sceneManager) {
 }
 
 void GameView::createHUD() {
-    OverlayManager& overlayManager = OgreFramework::getSingletonPtr()->m_pTrayMgr->getOverlayManager();
-    MaterialManager& materialManager = OgreFramework::getSingletonPtr()->m_pTrayMgr->getMaterialManager();
+    OverlayManager& overlayManager = Ogre::OverlayManager::getSingleton();
+    MaterialManager& materialManager = Ogre::MaterialManager::getSingleton();
     
     //Bildschirmauflösung feststellen
     //GetSystemMetrics(SM_CXSCREEN);
@@ -158,7 +161,7 @@ void GameView::disengage() {
 
 }
 
-void GameView::update(double timeSinceLastFrame) {
+void GameView::update(Ogre::Real timeSinceLastFrame) {
     // Update für Highscore
     m_score  = m_gameLogic->getScore();
     m_multiplier = m_gameLogic->getMultiplier();
@@ -171,7 +174,7 @@ void GameView::update(double timeSinceLastFrame) {
     }
 }
 
-void GameView::updateHUD(double timeSinceLastFrame) {
+void GameView::updateHUD(Ogre::Real timeSinceLastFrame) {
     //Update für Visuals Test
     m_timeTest += timeSinceLastFrame;
     if(m_scaleInvert) {

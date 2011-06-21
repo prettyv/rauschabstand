@@ -65,7 +65,7 @@ Player::Player(std::string name, SceneManager* sceneMgr, Camera* camera, Map* ma
 
 //|||||||||||||||||||||||||||||||||||||||||||||||
 
-void Player::update (double elapsedTime, Real t, Real u)
+void Player::update (Ogre::Real elapsedTime, Real t, Real u)
 {
 	//TODO: cleanup, remove magic numbers, move to gamestate.cpp(?), pack into functions
 

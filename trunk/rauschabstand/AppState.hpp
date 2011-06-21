@@ -41,7 +41,7 @@ public:
 	virtual void exit() = 0;
 	virtual bool pause(){return true;}
 	virtual void resume(){};
-	virtual void update(double timeSinceLastFrame) = 0;
+	virtual void update(Ogre::Real timeSinceLastFrame) = 0;
 
 protected:
 	AppState(){};

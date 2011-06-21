@@ -31,6 +31,7 @@ set(OGRE_BIN_FILES
 	DotSceneLoader.cpp
 	GameLogic.cpp
 	GameState.cpp
+	GameView.cpp
 	Map.cpp
 	MenuState.cpp
 	PauseState.cpp
@@ -61,6 +62,7 @@ if (WIN32)
 		DotSceneLoader.hpp
 		GameLogic.hpp
 		GameState.hpp
+		GameView.hpp
 		Map.hpp
 		MenuState.hpp
 		PauseState.hpp

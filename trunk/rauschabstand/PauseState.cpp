@@ -117,7 +117,7 @@ bool PauseState::mouseReleased(const OIS::MouseEvent &evt, OIS::MouseButtonID id
 
 //|||||||||||||||||||||||||||||||||||||||||||||||
 
-void PauseState::update(double timeSinceLastFrame)
+void PauseState::update(Ogre::Real timeSinceLastFrame)
 {
     m_FrameEvent.timeSinceLastFrame = timeSinceLastFrame;
     OgreFramework::getSingletonPtr()->m_pTrayMgr->frameRenderingQueued(m_FrameEvent);

@@ -55,7 +55,7 @@ public:
 	void onLeftPressed(const OIS::MouseEvent &evt);
     void itemSelected(OgreBites::SelectMenu* menu);
 
-	void update(double timeSinceLastFrame);
+	void update(Ogre::Real timeSinceLastFrame);
 
 private:
 	OgreBites::ParamsPanel*		m_pDetailsPanel;

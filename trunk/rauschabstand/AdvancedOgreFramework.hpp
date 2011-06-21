@@ -33,7 +33,7 @@ public:
 	~OgreFramework();
 
 	bool initOgre(Ogre::String wndTitle, OIS::KeyListener *pKeyListener = 0, OIS::MouseListener *pMouseListener = 0);
-	void updateOgre(double timeSinceLastFrame);
+	void updateOgre(Ogre::Real timeSinceLastFrame);
 
 	bool keyPressed(const OIS::KeyEvent &keyEventRef);
 	bool keyReleased(const OIS::KeyEvent &keyEventRef);

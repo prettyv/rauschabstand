@@ -16,7 +16,7 @@ class Player {
 public:
     Player(std::string name, Ogre::SceneManager* sceneMgr, Ogre::Camera* camera, Map* map);
 
-	void update(double elapsedTime, Real m_t, Real m_u);
+	void update(Ogre::Real elapsedTime, Real m_t, Real m_u);
     void update(Ogre::Real elapsedTime, OIS::Keyboard *input);
 	void keyReleased (Real elapsedTime, const OIS::KeyEvent& keyEvt);
 

@@ -29,8 +29,8 @@ public:
 	void init();
 	void start();
 	void reset();
-	void update(double timeSinceLastFrame);
-	void updatePlayer(double timeSinceLastFrame);
+	void update(Ogre::Real timeSinceLastFrame);
+	void updatePlayer(Ogre::Real timeSinceLastFrame);
 
 	//input
 	void update(Ogre::Real elapsedTime, OIS::Keyboard *input);

@@ -24,14 +24,14 @@ public:
 
     void engage(GameLogic* gameLogic, Ogre::SceneManager* sceneManager);
     void disengage();
-    void update(double timeSinceLastFrame);
+    void update(Ogre::Real timeSinceLastFrame);
 
     //getters
     OgreBites::ParamsPanel* getHighscorePanel();
 
 private:
     void createHUD();
-    void updateHUD(double timeSinceLastFrame);
+    void updateHUD(Ogre::Real timeSinceLastFrame);
 
 private:
     // For Highscore
@@ -39,7 +39,7 @@ private:
     unsigned int                m_multiplier;
 
     // For Overlays
-    double                      m_timeTest;
+    Ogre::Real                      m_timeTest;
     MaterialPtr                 m_materialBoost;
     MaterialPtr                 m_materialLogo;
     MaterialPtr                 m_materialTrack;

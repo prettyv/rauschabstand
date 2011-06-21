@@ -101,11 +101,11 @@ MaterialPtr Visuals::getMaterial(std::string name, int red, int green, int blue,
 
 //|||||||||||||||||||||||||||||||||||||||||||||||
 
-void Visuals::updateVisual(double timeSinceLastFrame) {
+void Visuals::updateVisual(Ogre::Real timeSinceLastFrame) {
 
 	m_countTime += timeSinceLastFrame;
 	int currentSecond = m_countTime / 1000;	// timeSinceLastFrame is updated in ms
-	double currentMs = m_countTime / 1000 - (int)(m_countTime / 1000);
+	Ogre::Real currentMs = m_countTime / 1000 - (int)(m_countTime / 1000);
 
 	if (currentSecond > m_totalTracklength)
 	{
@@ -118,7 +118,7 @@ void Visuals::updateVisual(double timeSinceLastFrame) {
 
 	for (int i=1; i<=std::abs(spectrumDifference0); ++i)
 	{
-		if (currentMs < (double)(i)/(double)(std::abs(spectrumDifference0)))
+		if (currentMs < (Ogre::Real)(i)/(Ogre::Real)(std::abs(spectrumDifference0)))
 		{
 
 			if (spectrumDifference0 > 0)
@@ -157,7 +157,7 @@ void Visuals::updateVisual(double timeSinceLastFrame) {
 
 	for (int i=1; i<=std::abs(spectrumDifference1); ++i)
 	{
-		if (currentMs < (double)(i)/(double)(std::abs(spectrumDifference1)))
+		if (currentMs < (Ogre::Real)(i)/(Ogre::Real)(std::abs(spectrumDifference1)))
 		{
 
 			if (spectrumDifference1 > 0)
@@ -196,7 +196,7 @@ void Visuals::updateVisual(double timeSinceLastFrame) {
 
 	for (int i=1; i<=std::abs(spectrumDifference2); ++i)
 	{
-		if (currentMs < (double)(i)/(double)(std::abs(spectrumDifference2)))
+		if (currentMs < (Ogre::Real)(i)/(Ogre::Real)(std::abs(spectrumDifference2)))
 		{
 
 			if (spectrumDifference2 > 0)
@@ -235,7 +235,7 @@ void Visuals::updateVisual(double timeSinceLastFrame) {
 
 	for (int i=1; i<=std::abs(spectrumDifference3); ++i)
 	{
-		if (currentMs < (double)(i)/(double)(std::abs(spectrumDifference3)))
+		if (currentMs < (Ogre::Real)(i)/(Ogre::Real)(std::abs(spectrumDifference3)))
 		{
 
 			if (spectrumDifference3 > 0)
@@ -274,7 +274,7 @@ void Visuals::updateVisual(double timeSinceLastFrame) {
 
 	for (int i=1; i<=std::abs(spectrumDifference4); ++i)
 	{
-		if (currentMs < (double)(i)/(double)(std::abs(spectrumDifference4)))
+		if (currentMs < (Ogre::Real)(i)/(Ogre::Real)(std::abs(spectrumDifference4)))
 		{
 
 			if (spectrumDifference4 > 0)

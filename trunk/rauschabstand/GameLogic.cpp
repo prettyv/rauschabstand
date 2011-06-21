@@ -48,7 +48,7 @@ void GameLogic::reset()
 
 }
 
-void GameLogic::update(double timeSinceLastFrame)
+void GameLogic::update(Ogre::Real timeSinceLastFrame)
 {
 	//TODO countdown
 	if (m_gameLogicStates == COUNTDOWN) {
@@ -61,7 +61,7 @@ void GameLogic::update(double timeSinceLastFrame)
 		m_player->update(timeSinceLastFrame, m_t, m_u);
 	} else if (m_gameLogicStates == RUNNING) {
 		
-		double tdif = m_blockMs * timeSinceLastFrame;
+		Ogre::Real tdif = m_blockMs * timeSinceLastFrame;
 		m_t += tdif;
 		m_score += (unsigned long) (m_multiplier * tdif * 100);
 		m_t = m_t >= m_map->getLength() ? m_map->getLength() : m_t;

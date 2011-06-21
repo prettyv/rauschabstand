@@ -29,7 +29,7 @@ public:
 
 	void buttonHit(OgreBites::Button* button);
 
-	void update(double timeSinceLastFrame);
+	void update(Ogre::Real timeSinceLastFrame);
 
 private:
 	bool m_bQuit;

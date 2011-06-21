@@ -19,7 +19,7 @@ public:
 		    double* audioSpectrumData0, double* audioSpectrumData1, double* audioSpectrumData2, double* audioSpectrumData3, double* audioSpectrumData4);
 
 	void	createVisuals();
-	void	updateVisual(double timeSinceLastFrame);
+	void	updateVisual(Ogre::Real timeSinceLastFrame);
 
 private:
 	SceneManager*				m_pSceneMgr;
@@ -37,7 +37,7 @@ private:
 	double*						m_audioSpectrumData4;
 
 	// counting the seconds that already passed
-	double						m_countTime;
+	Ogre::Real						m_countTime;
 
 	double						m_totalTracklength;
 
