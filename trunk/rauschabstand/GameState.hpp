@@ -17,6 +17,7 @@
 #include "Visuals.hpp"
 #include "GameLogic.hpp"
 #include "AudioPlayer.hpp"
+#include "GameView.hpp"
 
 //|||||||||||||||||||||||||||||||||||||||||||||||
 
@@ -57,9 +58,6 @@ public:
 	void update(double timeSinceLastFrame);
 
 private:
-	void createOverlays();
-
-private:
 	OgreBites::ParamsPanel*		m_pDetailsPanel;
 	bool						m_bQuit;
 
@@ -71,13 +69,10 @@ private:
 
 	Visuals*					m_visuals;
 
-    // For Highscore
-	OgreBites::ParamsPanel*		m_pHighscorePanel;
-    unsigned long               m_Score;
-    unsigned int                m_Multiplier;
-
 	GameLogic*					m_gameLogic;
 	AudioPlayer*				m_audioPlayer;
+
+    GameView*                   m_gameView;
 };
 
 //|||||||||||||||||||||||||||||||||||||||||||||||

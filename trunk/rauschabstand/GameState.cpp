@@ -21,13 +21,11 @@ GameState::GameState()
 
     m_pDetailsPanel		= 0;
 
-	//Highscore
-	m_pHighscorePanel   = 0;
-	m_Score				= 0;
-	m_Multiplier        = 2;
-
 	m_gameLogic			= 0;
 	m_audioPlayer		= 0;
+
+    //Visuals
+    m_gameView = new GameView();
 }
 
 //|||||||||||||||||||||||||||||||||||||||||||||||
@@ -60,7 +58,6 @@ void GameState::enter()
 
 	buildGUI();
 	createScene();
-    createOverlays();
 
 
 
@@ -87,6 +84,9 @@ void GameState::enter()
 		//	cAudio::cAudioSleep(10);
 	}
 	*/
+
+    //Visuals
+    m_gameView->engage(m_gameLogic, m_pSceneMgr);
 }
 
 //|||||||||||||||||||||||||||||||||||||||||||||||
@@ -124,6 +124,9 @@ void GameState::exit()
 	
 	m_audioPlayer->stop();
 	delete m_audioPlayer;
+
+    //Visuals
+    m_gameView->disengage();
 }
 
 //|||||||||||||||||||||||||||||||||||||||||||||||
@@ -370,12 +373,7 @@ void GameState::update(double timeSinceLastFrame)
 	m_visuals->updateVisual(timeSinceLastFrame);
 	// AUDIO-VISUALS end
 
-    // Update für Highscore
-    m_Score  = m_gameLogic->getScore();
-	m_Multiplier = m_gameLogic->getMultiplier();
-    m_pHighscorePanel->setParamValue(0, Ogre::StringConverter::toString(m_Score));
-    m_pHighscorePanel->setParamValue(1, Ogre::StringConverter::toString(m_Multiplier));
-    // Update für Highscore end
+    
 	
 	/*
 	if (m_audioPlayer->getPitch() <= 2.0f) {
@@ -383,6 +381,8 @@ void GameState::update(double timeSinceLastFrame)
 		m_audioPlayer->increasePitch((float) timeSinceLastFrame / 5000);
 	}
 	*/
+
+    m_gameView->update(timeSinceLastFrame);
 }
 
 //|||||||||||||||||||||||||||||||||||||||||||||||
@@ -427,16 +427,6 @@ void GameState::itemSelected(OgreBites::SelectMenu* menu)
     case 2:
         m_pCamera->setPolygonMode(Ogre::PM_POINTS);break;
     }
-}
-
-void GameState::createOverlays()
-{
-    Ogre::StringVector items;
-    items.push_back("Score");
-    items.push_back("Multiplier");
-
-    m_pHighscorePanel = OgreFramework::getSingletonPtr()->m_pTrayMgr->createParamsPanel(OgreBites::TL_TOP, "Highscore", 160, items);
-    m_pHighscorePanel->show();
 }
 
 //|||||||||||||||||||||||||||||||||||||||||||||||
