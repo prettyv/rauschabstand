@@ -52,7 +52,7 @@ void GameState::enter()
     OgreFramework::getSingletonPtr()->m_pViewport->setCamera(m_pCamera);
 	m_pCurrentObject = 0;
 
-	m_audioPlayer = new AudioPlayer("daftp.wav");
+	m_audioPlayer = new AudioPlayer("daftp_84_fadeout.wav");
 	m_gameLogic	= new GameLogic(m_pSceneMgr, m_pCamera, m_audioPlayer);
 	m_gameLogic->init(); 
 
