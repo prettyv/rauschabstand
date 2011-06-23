@@ -51,6 +51,31 @@ Visuals::Visuals(SceneManager* pSceneMgr, Map* map, double totalTracklength,
 
 	// actually useless var, just for "faking" the audio-input:
 	m_countTime = 0.0;
+
+
+	// creating staticGeometry
+	for (int i=0; i<5; ++i)
+	{
+		m_staticCubes0[i] = m_pSceneMgr->createStaticGeometry("Visuals0" + StringConverter::toString(i));
+		m_staticCubes0[i]->setRegionDimensions(Ogre::Vector3(1000000, 1000000, 1000000));
+		m_staticCubes0[i]->setOrigin(Ogre::Vector3(0, 0, 0));
+
+		m_staticCubes1[i] = m_pSceneMgr->createStaticGeometry("Visuals1" + StringConverter::toString(i));
+		m_staticCubes1[i]->setRegionDimensions(Ogre::Vector3(1000000, 1000000, 1000000));
+		m_staticCubes1[i]->setOrigin(Ogre::Vector3(0, 0, 0));
+
+		m_staticCubes2[i] = m_pSceneMgr->createStaticGeometry("Visuals2" + StringConverter::toString(i));
+		m_staticCubes2[i]->setRegionDimensions(Ogre::Vector3(1000000, 1000000, 1000000));
+		m_staticCubes2[i]->setOrigin(Ogre::Vector3(0, 0, 0));
+
+		m_staticCubes3[i] = m_pSceneMgr->createStaticGeometry("Visuals3" + StringConverter::toString(i));
+		m_staticCubes3[i]->setRegionDimensions(Ogre::Vector3(1000000, 1000000, 1000000));
+		m_staticCubes3[i]->setOrigin(Ogre::Vector3(0, 0, 0));
+
+		m_staticCubes4[i] = m_pSceneMgr->createStaticGeometry("Visuals4" + StringConverter::toString(i));
+		m_staticCubes4[i]->setRegionDimensions(Ogre::Vector3(1000000, 1000000, 1000000));
+		m_staticCubes4[i]->setOrigin(Ogre::Vector3(0, 0, 0));
+	}
 }
 
 
@@ -126,24 +151,24 @@ void Visuals::updateVisual(Ogre::Real timeSinceLastFrame) {
 
 				for (int j=0; j<=m_audioSpectrumData0[currentSecond]+i; ++j)
 				{
-					m_parentCubeNode0[j]->setVisible(true);
+					m_staticCubes0[j]->setVisible(true);
 				}
 
 				for (int j=1; j<5-(m_audioSpectrumData0[currentSecond]+i); ++j)
 				{
-					m_parentCubeNode0[5-j]->setVisible(false);
+					m_staticCubes0[5-j]->setVisible(false);
 				}
 
 			} else {
 
 				for (int j=0; j<=m_audioSpectrumData0[currentSecond]-i; ++j)
 				{
-					m_parentCubeNode0[j]->setVisible(true);
+					m_staticCubes0[j]->setVisible(true);
 				}
 
 				for (int j=1; j<5-(m_audioSpectrumData0[currentSecond]-i); ++j)
 				{
-					m_parentCubeNode0[5-j]->setVisible(false);
+					m_staticCubes0[5-j]->setVisible(false);
 				}
 
 			}
@@ -165,24 +190,24 @@ void Visuals::updateVisual(Ogre::Real timeSinceLastFrame) {
 
 				for (int j=0; j<=m_audioSpectrumData1[currentSecond]+i; ++j)
 				{
-					m_parentCubeNode1[j]->setVisible(true);
+					m_staticCubes1[j]->setVisible(true);
 				}
 
 				for (int j=1; j<5-(m_audioSpectrumData1[currentSecond]+i); ++j)
 				{
-					m_parentCubeNode1[5-j]->setVisible(false);
+					m_staticCubes1[5-j]->setVisible(false);
 				}
 
 			} else {
 
 				for (int j=0; j<=m_audioSpectrumData1[currentSecond]-i; ++j)
 				{
-					m_parentCubeNode1[j]->setVisible(true);
+					m_staticCubes1[j]->setVisible(true);
 				}
 
 				for (int j=1; j<5-(m_audioSpectrumData1[currentSecond]-i); ++j)
 				{
-					m_parentCubeNode1[5-j]->setVisible(false);
+					m_staticCubes1[5-j]->setVisible(false);
 				}
 
 			}
@@ -204,24 +229,24 @@ void Visuals::updateVisual(Ogre::Real timeSinceLastFrame) {
 
 				for (int j=0; j<=m_audioSpectrumData2[currentSecond]+i; ++j)
 				{
-					m_parentCubeNode2[j]->setVisible(true);
+					m_staticCubes2[j]->setVisible(true);
 				}
 
 				for (int j=1; j<5-(m_audioSpectrumData2[currentSecond]+i); ++j)
 				{
-					m_parentCubeNode2[5-j]->setVisible(false);
+					m_staticCubes2[5-j]->setVisible(false);
 				}
 
 			} else {
 
 				for (int j=0; j<=m_audioSpectrumData2[currentSecond]-i; ++j)
 				{
-					m_parentCubeNode2[j]->setVisible(true);
+					m_staticCubes2[j]->setVisible(true);
 				}
 
 				for (int j=1; j<5-(m_audioSpectrumData2[currentSecond]-i); ++j)
 				{
-					m_parentCubeNode2[5-j]->setVisible(false);
+					m_staticCubes2[5-j]->setVisible(false);
 				}
 
 			}
@@ -243,24 +268,24 @@ void Visuals::updateVisual(Ogre::Real timeSinceLastFrame) {
 
 				for (int j=0; j<=m_audioSpectrumData3[currentSecond]+i; ++j)
 				{
-					m_parentCubeNode3[j]->setVisible(true);
+					m_staticCubes3[j]->setVisible(true);
 				}
 
 				for (int j=1; j<5-(m_audioSpectrumData3[currentSecond]+i); ++j)
 				{
-					m_parentCubeNode3[5-j]->setVisible(false);
+					m_staticCubes3[5-j]->setVisible(false);
 				}
 
 			} else {
 
 				for (int j=0; j<=m_audioSpectrumData3[currentSecond]-i; ++j)
 				{
-					m_parentCubeNode3[j]->setVisible(true);
+					m_staticCubes3[j]->setVisible(true);
 				}
 
 				for (int j=1; j<5-(m_audioSpectrumData3[currentSecond]-i); ++j)
 				{
-					m_parentCubeNode3[5-j]->setVisible(false);
+					m_staticCubes3[5-j]->setVisible(false);
 				}
 
 			}
@@ -282,24 +307,24 @@ void Visuals::updateVisual(Ogre::Real timeSinceLastFrame) {
 
 				for (int j=0; j<=m_audioSpectrumData4[currentSecond]+i; ++j)
 				{
-					m_parentCubeNode4[j]->setVisible(true);
+					m_staticCubes4[j]->setVisible(true);
 				}
 
 				for (int j=1; j<5-(m_audioSpectrumData4[currentSecond]+i); ++j)
 				{
-					m_parentCubeNode4[5-j]->setVisible(false);
+					m_staticCubes4[5-j]->setVisible(false);
 				}
 
 			} else {
 
 				for (int j=0; j<=m_audioSpectrumData4[currentSecond]-i; ++j)
 				{
-					m_parentCubeNode4[j]->setVisible(true);
+					m_staticCubes4[j]->setVisible(true);
 				}
 
 				for (int j=1; j<5-(m_audioSpectrumData4[currentSecond]-i); ++j)
 				{
-					m_parentCubeNode4[5-j]->setVisible(false);
+					m_staticCubes4[5-j]->setVisible(false);
 				}
 
 			}
@@ -332,15 +357,43 @@ void Visuals::createVisuals() {
 		createVisualBar(m_map->getPosition(i, -m_map->getWidth() / 2.0 * 100.0), m_map->getOrientation(i));
 	}
 
-	// for testing only:
+	// INSTANCING BEGIN
+	// adding scenenodes to staticCubes in order to render all cube entities in one batch
 	for (int i=0; i<5; ++i)
 	{
-		m_parentCubeNode1[i]->setVisible(false);
-		m_parentCubeNode2[i]->setVisible(false);
-		m_parentCubeNode3[i]->setVisible(false);
-		m_parentCubeNode4[i]->setVisible(false);
-		m_parentCubeNode0[i]->setVisible(false);
+		m_staticCubes0[i]->addSceneNode(m_parentCubeNode0[i]);
+		m_staticCubes1[i]->addSceneNode(m_parentCubeNode1[i]);
+		m_staticCubes2[i]->addSceneNode(m_parentCubeNode2[i]);
+		m_staticCubes3[i]->addSceneNode(m_parentCubeNode3[i]);
+		m_staticCubes4[i]->addSceneNode(m_parentCubeNode4[i]);
+
+		// creating staticGeometry
+		m_staticCubes0[i]->build();
+		m_staticCubes1[i]->build();
+		m_staticCubes2[i]->build();
+		m_staticCubes3[i]->build();
+		m_staticCubes4[i]->build();
 	}
+
+	// destroy entities since they are now instanced via the staticCubes
+	/*
+	for (int i=0; i<m_numberOfCubes; ++i)
+	{
+		for (int j=0; j<5; ++j)
+		{
+			m_pSceneMgr->destroyEntity("cubeEntity" + StringConverter::toString(i) + StringConverter::toString(j));
+		}
+	}
+	*/
+	for (int i=0; i<5; ++i)
+	{
+		m_pSceneMgr->destroySceneNode(m_parentCubeNode0[i]);
+		m_pSceneMgr->destroySceneNode(m_parentCubeNode1[i]);
+		m_pSceneMgr->destroySceneNode(m_parentCubeNode2[i]);
+		m_pSceneMgr->destroySceneNode(m_parentCubeNode3[i]);
+		m_pSceneMgr->destroySceneNode(m_parentCubeNode4[i]);
+	}
+	// INSTANCING END
 }
 
 //|||||||||||||||||||||||||||||||||||||||||||||||
@@ -349,7 +402,8 @@ void Visuals::createVisualBar(const Ogre::Vector3& position, const Ogre::Quatern
 	// create bar itself
 	SceneNode* childCubeNode;
 	Entity* cubeEntity;
-	
+
+
 	//wievielte runde?
 	//runde = (derzeitige anzahl durchläufe - (derzeitige anzahl % 5)) : 5
 	//runde = (m_numberOfCubes - (m_numberOfCubes%5)) : 5
@@ -358,7 +412,7 @@ void Visuals::createVisualBar(const Ogre::Vector3& position, const Ogre::Quatern
 	{
 		cubeEntity = m_pSceneMgr->createEntity("cubeEntity" + StringConverter::toString(m_numberOfCubes) + StringConverter::toString(i), "cube.mesh");
 		cubeEntity->setCastShadows(false);
-		
+
 		switch (m_numberOfCubes % 5) {
 		case 0:
 			childCubeNode = m_parentCubeNode0[i]->createChildSceneNode("childCubeNode" + StringConverter::toString(m_numberOfCubes) + StringConverter::toString(i));
