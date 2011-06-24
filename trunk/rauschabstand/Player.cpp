@@ -65,7 +65,7 @@ Player::Player(std::string name, SceneManager* sceneMgr, Camera* camera, Map* ma
 
 //|||||||||||||||||||||||||||||||||||||||||||||||
 
-void Player::update (Ogre::Real elapsedTime, Real t, Real u)
+void Player::update (Real timeSinceLastFrame, Real t, Real u)
 {
 	//TODO: cleanup, remove magic numbers, move to gamestate.cpp(?), pack into functions
 
@@ -99,7 +99,7 @@ void Player::update (Ogre::Real elapsedTime, Real t, Real u)
 	m_speed *= Real(0.98);
 
 	// translate node
-	m_jumpNode->translate(m_speed * elapsedTime);
+	m_jumpNode->translate(m_speed * timeSinceLastFrame);
 
 	// if jumpposition < THROUGHHOLE -> speed auf 0
 	Vector3 jumpPosition = m_jumpNode->getPosition();
@@ -130,12 +130,12 @@ void Player::update (Ogre::Real elapsedTime, Real t, Real u)
 		m_rollBack = false;
 	} else if (m_rollBack && m_rollFactor < -0.04f)		// rolling-back
 	{
-		m_rollFactor += 0.005f * elapsedTime;
-		m_sideRollNode->roll(Ogre::Radian(0.005f) * elapsedTime);
+		m_rollFactor += 0.005f * timeSinceLastFrame;
+		m_sideRollNode->roll(Ogre::Radian(0.005f) * timeSinceLastFrame);
 	} else if (m_rollBack && m_rollFactor > 0.04f)		// rolling-back
 	{
-		m_rollFactor -= 0.005f * elapsedTime;
-		m_sideRollNode->roll(Ogre::Radian(-0.005f) * elapsedTime);
+		m_rollFactor -= 0.005f * timeSinceLastFrame;
+		m_sideRollNode->roll(Ogre::Radian(-0.005f) * timeSinceLastFrame);
 	}
 	
 

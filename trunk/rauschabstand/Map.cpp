@@ -101,9 +101,13 @@ void Map::createRandomMap(unsigned int length, unsigned int width)
 		std::vector<HolesOrObstacles> row;
 		for (unsigned int j = 0; j < m_width; j++)
 		{
-			if (i < 10 || i > m_length - 10)
+			if (i < 10)
 			{
 				row.push_back(NORMAL);
+			}
+			else if (i > m_length - 4)
+			{
+				row.push_back(HOLE);
 			}
 			else
 			{
@@ -218,10 +222,10 @@ void Map::createRandomMap(unsigned int length, unsigned int width)
 			Ogre::Vector3 nextPosMinus50 = nextPos + nextQuat * Ogre::Vector3(left, 0, 0);
 			Ogre::Vector3 nextPosPlus50 = nextPos + nextQuat * Ogre::Vector3(right, 0, 0);
 
-			plane->position(posMinus50.x, posMinus50.y, posMinus50.z); plane->normal((quat * Vector3(0, 1, 0)).normalisedCopy()); plane->textureCoord(0, 0);
-			plane->position(nextPosMinus50.x, nextPosMinus50.y, nextPosMinus50.z); plane->normal((quat * Vector3(0, 1, 0)).normalisedCopy()); plane->textureCoord(0, 1);
-			plane->position(posPlus50.x, posPlus50.y, posPlus50.z); plane->normal((quat * Vector3(0, 1, 0)).normalisedCopy()); plane->textureCoord(1, 0);
-			plane->position(nextPosPlus50.x, nextPosPlus50.y, nextPosPlus50.z); plane->normal((quat * Vector3(0, 1, 0)).normalisedCopy()); plane->textureCoord(1, 1);
+			plane->position(posMinus50.x, posMinus50.y, posMinus50.z); plane->normal((quat * Vector3(0, 1, 0)).normalisedCopy()); plane->textureCoord(1, 1);
+			plane->position(nextPosMinus50.x, nextPosMinus50.y, nextPosMinus50.z); plane->normal((quat * Vector3(0, 1, 0)).normalisedCopy()); plane->textureCoord(1, 0);
+			plane->position(posPlus50.x, posPlus50.y, posPlus50.z); plane->normal((quat * Vector3(0, 1, 0)).normalisedCopy()); plane->textureCoord(0, 1);
+			plane->position(nextPosPlus50.x, nextPosPlus50.y, nextPosPlus50.z); plane->normal((quat * Vector3(0, 1, 0)).normalisedCopy()); plane->textureCoord(0, 0);
 
 			Ogre::Vector3 nextPosDown = nextPos + quat * Ogre::Vector3(0, down, 0);
 			Ogre::Vector3 posMinus50Down = posMinus50 + quat * Ogre::Vector3(0, down, 0);
