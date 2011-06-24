@@ -92,8 +92,6 @@ void GameLogic::update(Ogre::Real timeSinceLastFrame)
 }
 
 void GameLogic::update(Ogre::Real elapsedTime, OIS::Keyboard* input) {
-	//TODO: move Inputcontrol from player here
-
 	if (input->isKeyDown(OIS::KC_A))
 	{
 		m_u += m_blockMsSide * elapsedTime;
@@ -108,6 +106,7 @@ void GameLogic::update(Ogre::Real elapsedTime, OIS::Keyboard* input) {
 	{
 		m_player->jump(elapsedTime, m_t, m_u);
 	}
+	m_player->update(elapsedTime, input);
 }
 
 void GameLogic::keyReleased(Real timeSinceLastFrame, const OIS::KeyEvent & keyEventRef)
