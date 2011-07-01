@@ -143,28 +143,8 @@ void GameState::createScene()
 
 
 	// AUDIO-VISUALS begin
-	double totalTrackLength = m_gameLogic->getMap()->getLength();
-	// creating audio-data arrays
-	double* audioSpectrumData0 = new double[(int)std::ceil(totalTrackLength)];
-	double* audioSpectrumData1 = new double[(int)std::ceil(totalTrackLength)];
-	double* audioSpectrumData2 = new double[(int)std::ceil(totalTrackLength)];
-	double* audioSpectrumData3 = new double[(int)std::ceil(totalTrackLength)];
-	double* audioSpectrumData4 = new double[(int)std::ceil(totalTrackLength)];
-
-	// faking the audio-data
-	std::srand(time(0));
-
-	for (int i=0; i<totalTrackLength; ++i)
-	{
-		audioSpectrumData0[i] = std::rand() % 5;
-		audioSpectrumData1[i] = std::rand() % 5;
-		audioSpectrumData2[i] = std::rand() % 5;
-		audioSpectrumData3[i] = std::rand() % 5;
-		audioSpectrumData4[i] = std::rand() % 5;
-	}
-
 	// creating visuals
-	m_visuals = new Visuals(m_pSceneMgr, m_gameLogic->getMap(), totalTrackLength, audioSpectrumData0, audioSpectrumData1, audioSpectrumData2, audioSpectrumData3, audioSpectrumData4);
+	m_visuals = new Visuals(m_pSceneMgr, m_gameLogic->getMap());
 	m_visuals->createVisuals();
 	// AUDIO-VISUALS end
 }
@@ -369,11 +349,17 @@ void GameState::update(Ogre::Real timeSinceLastFrame)
 
     getInput();
 
+
 	// AUDIO-VISUALS begin
-	m_visuals->updateVisual(timeSinceLastFrame);
+	static int countdown = 0;
+	countdown += timeSinceLastFrame;
+
+	if (countdown > 5000)
+	{
+		m_visuals->updateVisual(timeSinceLastFrame);
+	}
 	// AUDIO-VISUALS end
 
-    
 	
 	/*
 	if (m_audioPlayer->getPitch() <= 2.0f) {

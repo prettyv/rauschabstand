@@ -1,6 +1,7 @@
 //|||||||||||||||||||||||||||||||||||||||||||||||
 
-#include <math.h>
+#include <fstream>
+#include <string>
 
 #include "Visuals.hpp"
 
@@ -10,71 +11,39 @@ using namespace Ogre;
 
 //|||||||||||||||||||||||||||||||||||||||||||||||
 
-Visuals::Visuals(SceneManager* pSceneMgr, Map* map, double totalTracklength,  
-				 double* audioSpectrumData0, double* audioSpectrumData1, double* audioSpectrumData2, double* audioSpectrumData3, double* audioSpectrumData4)
+Visuals::Visuals(SceneManager* pSceneMgr, Map* map) : m_numberOfCubesCreated(0), m_countTime(0.0), m_pSceneMgr(pSceneMgr), m_map(map)
 {
-	m_pSceneMgr = pSceneMgr;
-	m_map = map;
-
-	m_totalTracklength = totalTracklength;
-
-	m_audioSpectrumData0 = audioSpectrumData0;
-	m_audioSpectrumData1 = audioSpectrumData1;
-	m_audioSpectrumData2 = audioSpectrumData2;
-	m_audioSpectrumData3 = audioSpectrumData3;
-	m_audioSpectrumData4 = audioSpectrumData4;
-
-	m_numberOfCubes = 0;
-
-
-	for (int i=0; i<5; ++i)
+	// filling up audioData with double vectors
+	for (int i=0; i<BAR_COUNT; ++i)
 	{
-		m_parentCubeNode0[i] = m_pSceneMgr->getRootSceneNode()->createChildSceneNode("parentCubeNode0" + StringConverter::toString(i));
+		std::vector<double> currentAudioData;
+		m_audioData.push_back(currentAudioData);
 	}
-	for (int i=0; i<5; ++i)
-	{
-		m_parentCubeNode1[i] = m_pSceneMgr->getRootSceneNode()->createChildSceneNode("parentCubeNode1" + StringConverter::toString(i));
-	}
-	for (int i=0; i<5; ++i)
-	{
-		m_parentCubeNode2[i] = m_pSceneMgr->getRootSceneNode()->createChildSceneNode("parentCubeNode2" + StringConverter::toString(i));
-	}
-	for (int i=0; i<5; ++i)
-	{
-		m_parentCubeNode3[i] = m_pSceneMgr->getRootSceneNode()->createChildSceneNode("parentCubeNode3" + StringConverter::toString(i));
-	}
-	for (int i=0; i<5; ++i)
-	{
-		m_parentCubeNode4[i] = m_pSceneMgr->getRootSceneNode()->createChildSceneNode("parentCubeNode4" + StringConverter::toString(i));
-	}
-	
 
-	// actually useless var, just for "faking" the audio-input:
-	m_countTime = 0.0;
-
+	// creating SceneNode for cubes
+	for (int i=0; i<BAR_COUNT; ++i)
+	{
+		std::vector<Ogre::SceneNode*> cubeNodeVector;
+		cubeNodeVector.clear();
+		for (int j=0; j<CUBE_COUNT; ++j)
+		{
+			cubeNodeVector.push_back(m_pSceneMgr->getRootSceneNode()->createChildSceneNode("cubeNode" + StringConverter::toString(i) + StringConverter::toString(j)));
+		}
+		m_barNodes.push_back(cubeNodeVector);
+	}
 
 	// creating staticGeometry
-	for (int i=0; i<5; ++i)
+	for (int i=0; i<BAR_COUNT; ++i)
 	{
-		m_staticCubes0[i] = m_pSceneMgr->createStaticGeometry("Visuals0" + StringConverter::toString(i));
-		m_staticCubes0[i]->setRegionDimensions(Ogre::Vector3(1000000, 1000000, 1000000));
-		m_staticCubes0[i]->setOrigin(Ogre::Vector3(0, 0, 0));
-
-		m_staticCubes1[i] = m_pSceneMgr->createStaticGeometry("Visuals1" + StringConverter::toString(i));
-		m_staticCubes1[i]->setRegionDimensions(Ogre::Vector3(1000000, 1000000, 1000000));
-		m_staticCubes1[i]->setOrigin(Ogre::Vector3(0, 0, 0));
-
-		m_staticCubes2[i] = m_pSceneMgr->createStaticGeometry("Visuals2" + StringConverter::toString(i));
-		m_staticCubes2[i]->setRegionDimensions(Ogre::Vector3(1000000, 1000000, 1000000));
-		m_staticCubes2[i]->setOrigin(Ogre::Vector3(0, 0, 0));
-
-		m_staticCubes3[i] = m_pSceneMgr->createStaticGeometry("Visuals3" + StringConverter::toString(i));
-		m_staticCubes3[i]->setRegionDimensions(Ogre::Vector3(1000000, 1000000, 1000000));
-		m_staticCubes3[i]->setOrigin(Ogre::Vector3(0, 0, 0));
-
-		m_staticCubes4[i] = m_pSceneMgr->createStaticGeometry("Visuals4" + StringConverter::toString(i));
-		m_staticCubes4[i]->setRegionDimensions(Ogre::Vector3(1000000, 1000000, 1000000));
-		m_staticCubes4[i]->setOrigin(Ogre::Vector3(0, 0, 0));
+		std::vector<Ogre::StaticGeometry*> staticCubeNodeVector;
+		staticCubeNodeVector.clear();
+		for (int j=0; j<CUBE_COUNT; ++j)
+		{
+			staticCubeNodeVector.push_back(m_pSceneMgr->createStaticGeometry("staticCube" + StringConverter::toString(i) + StringConverter::toString(j)));
+			staticCubeNodeVector[j]->setRegionDimensions(Ogre::Vector3(1000000, 1000000, 1000000));
+			staticCubeNodeVector[j]->setOrigin(Ogre::Vector3(0, 0, 0));
+		}
+		m_staticCubes.push_back(staticCubeNodeVector);
 	}
 }
 
@@ -126,274 +95,166 @@ MaterialPtr Visuals::getMaterial(std::string name, int red, int green, int blue,
 
 //|||||||||||||||||||||||||||||||||||||||||||||||
 
+void Visuals::parseAudioData() {
+	int countLinenumbers = 0;
+	double audioData = 0.0;
+	int spectrumHit = 0;
+	std::stringstream sstr;
+
+	std::string line;
+	std::ifstream myfile ("spectralAnalysis_16384_samples.txt");
+
+	// EINGABEGROESSE (BARCOUNT, CUBECOUNT) ABHAENGIG!
+	if (myfile.is_open())
+	{
+		while ( myfile.good() )
+		{
+			getline (myfile,line);
+
+			if (line.size()>0)
+			{
+				sstr.str(line);
+				std::string tmpstr = sstr.str();
+				
+				sstr >> audioData;
+
+
+				// TODO automate range determination
+				// get the data in range 0-7
+				if (audioData != 0)
+				{
+					audioData -= 1;
+					audioData *= 100000;
+				}
+				
+				if (audioData == 0)
+				{
+					spectrumHit = 0;
+				} else if (audioData > 0 && audioData <= 40)
+				{
+					spectrumHit = 1;
+				} else if (audioData > 40 && audioData <= 100)
+				{
+					spectrumHit = 2;
+				} else if (audioData > 100 && audioData <= 200)
+				{
+					spectrumHit = 3;
+				} else if (audioData > 200 && audioData <= 400)
+				{
+					spectrumHit = 4;
+				} else if (audioData > 400 && audioData <= 1000)
+				{
+					spectrumHit = 5;
+				} else if (audioData > 1000)
+				{
+					spectrumHit = 6;
+				}
+
+
+				m_audioData[countLinenumbers % BAR_COUNT].push_back(spectrumHit);
+
+				sstr.clear();
+				line.clear();
+				tmpstr.clear();
+				audioData = 0.0;
+				spectrumHit = 0;
+			}
+
+			++countLinenumbers;
+		}
+		myfile.close();
+	}
+}
+
+//|||||||||||||||||||||||||||||||||||||||||||||||
+
 void Visuals::updateVisual(Ogre::Real timeSinceLastFrame) {
-
 	m_countTime += timeSinceLastFrame;
-	int currentSecond = m_countTime / 1000;	// timeSinceLastFrame is updated in ms
-	Ogre::Real currentMs = m_countTime / 1000 - (int)(m_countTime / 1000);
+	
+	// TODO automate interval determination (-> no manual input of 370ms interval window
+	static int timeChanged = 0;	// making sure the visual bars are just updated when needed
+	int currentTime = (int)(m_countTime / 370.0);	// 12 bands, 16384 samples buffer ~= 0,37s window -> / 370ms
 
-	if (currentSecond > m_totalTracklength)
+	if (timeChanged != currentTime)
 	{
-		return ;
-	}
-
-
-	// m_audioSpectrumData0
-	int spectrumDifference0 = m_audioSpectrumData0[currentSecond+1] - m_audioSpectrumData0[currentSecond];
-
-	for (int i=1; i<=std::abs(spectrumDifference0); ++i)
-	{
-		if (currentMs < (Ogre::Real)(i)/(Ogre::Real)(std::abs(spectrumDifference0)))
+		for (int bar=0; bar<BAR_COUNT; ++bar)
 		{
-
-			if (spectrumDifference0 > 0)
+			for (int spectrum=0; spectrum<=m_audioData[bar][currentTime]; ++spectrum)
 			{
-
-				for (int j=0; j<=m_audioSpectrumData0[currentSecond]+i; ++j)
-				{
-					m_staticCubes0[j]->setVisible(true);
-				}
-
-				for (int j=1; j<5-(m_audioSpectrumData0[currentSecond]+i); ++j)
-				{
-					m_staticCubes0[5-j]->setVisible(false);
-				}
-
-			} else {
-
-				for (int j=0; j<=m_audioSpectrumData0[currentSecond]-i; ++j)
-				{
-					m_staticCubes0[j]->setVisible(true);
-				}
-
-				for (int j=1; j<5-(m_audioSpectrumData0[currentSecond]-i); ++j)
-				{
-					m_staticCubes0[5-j]->setVisible(false);
-				}
-
+				m_staticCubes[bar][spectrum]->setVisible(true);
 			}
-
-			break;
-		}
-	}
-
-	// m_audioSpectrumData1
-	int spectrumDifference1 = m_audioSpectrumData1[currentSecond+1] - m_audioSpectrumData1[currentSecond];
-
-	for (int i=1; i<=std::abs(spectrumDifference1); ++i)
-	{
-		if (currentMs < (Ogre::Real)(i)/(Ogre::Real)(std::abs(spectrumDifference1)))
-		{
-
-			if (spectrumDifference1 > 0)
+			for (int spectrum=CUBE_COUNT-1; spectrum>m_audioData[bar][currentTime]; --spectrum)
 			{
-
-				for (int j=0; j<=m_audioSpectrumData1[currentSecond]+i; ++j)
-				{
-					m_staticCubes1[j]->setVisible(true);
-				}
-
-				for (int j=1; j<5-(m_audioSpectrumData1[currentSecond]+i); ++j)
-				{
-					m_staticCubes1[5-j]->setVisible(false);
-				}
-
-			} else {
-
-				for (int j=0; j<=m_audioSpectrumData1[currentSecond]-i; ++j)
-				{
-					m_staticCubes1[j]->setVisible(true);
-				}
-
-				for (int j=1; j<5-(m_audioSpectrumData1[currentSecond]-i); ++j)
-				{
-					m_staticCubes1[5-j]->setVisible(false);
-				}
-
+				m_staticCubes[bar][spectrum]->setVisible(false);
 			}
-
-			break;
 		}
+
+		timeChanged = currentTime;
 	}
-
-	// m_audioSpectrumData2
-	int spectrumDifference2 = m_audioSpectrumData2[currentSecond+1] - m_audioSpectrumData2[currentSecond];
-
-	for (int i=1; i<=std::abs(spectrumDifference2); ++i)
-	{
-		if (currentMs < (Ogre::Real)(i)/(Ogre::Real)(std::abs(spectrumDifference2)))
-		{
-
-			if (spectrumDifference2 > 0)
-			{
-
-				for (int j=0; j<=m_audioSpectrumData2[currentSecond]+i; ++j)
-				{
-					m_staticCubes2[j]->setVisible(true);
-				}
-
-				for (int j=1; j<5-(m_audioSpectrumData2[currentSecond]+i); ++j)
-				{
-					m_staticCubes2[5-j]->setVisible(false);
-				}
-
-			} else {
-
-				for (int j=0; j<=m_audioSpectrumData2[currentSecond]-i; ++j)
-				{
-					m_staticCubes2[j]->setVisible(true);
-				}
-
-				for (int j=1; j<5-(m_audioSpectrumData2[currentSecond]-i); ++j)
-				{
-					m_staticCubes2[5-j]->setVisible(false);
-				}
-
-			}
-
-			break;
-		}
-	}
-
-	// m_audioSpectrumData3
-	int spectrumDifference3 = m_audioSpectrumData3[currentSecond+1] - m_audioSpectrumData3[currentSecond];
-
-	for (int i=1; i<=std::abs(spectrumDifference3); ++i)
-	{
-		if (currentMs < (Ogre::Real)(i)/(Ogre::Real)(std::abs(spectrumDifference3)))
-		{
-
-			if (spectrumDifference3 > 0)
-			{
-
-				for (int j=0; j<=m_audioSpectrumData3[currentSecond]+i; ++j)
-				{
-					m_staticCubes3[j]->setVisible(true);
-				}
-
-				for (int j=1; j<5-(m_audioSpectrumData3[currentSecond]+i); ++j)
-				{
-					m_staticCubes3[5-j]->setVisible(false);
-				}
-
-			} else {
-
-				for (int j=0; j<=m_audioSpectrumData3[currentSecond]-i; ++j)
-				{
-					m_staticCubes3[j]->setVisible(true);
-				}
-
-				for (int j=1; j<5-(m_audioSpectrumData3[currentSecond]-i); ++j)
-				{
-					m_staticCubes3[5-j]->setVisible(false);
-				}
-
-			}
-
-			break;
-		}
-	}
-
-	// m_audioSpectrumData4
-	int spectrumDifference4 = m_audioSpectrumData4[currentSecond+1] - m_audioSpectrumData4[currentSecond];
-
-	for (int i=1; i<=std::abs(spectrumDifference4); ++i)
-	{
-		if (currentMs < (Ogre::Real)(i)/(Ogre::Real)(std::abs(spectrumDifference4)))
-		{
-
-			if (spectrumDifference4 > 0)
-			{
-
-				for (int j=0; j<=m_audioSpectrumData4[currentSecond]+i; ++j)
-				{
-					m_staticCubes4[j]->setVisible(true);
-				}
-
-				for (int j=1; j<5-(m_audioSpectrumData4[currentSecond]+i); ++j)
-				{
-					m_staticCubes4[5-j]->setVisible(false);
-				}
-
-			} else {
-
-				for (int j=0; j<=m_audioSpectrumData4[currentSecond]-i; ++j)
-				{
-					m_staticCubes4[j]->setVisible(true);
-				}
-
-				for (int j=1; j<5-(m_audioSpectrumData4[currentSecond]-i); ++j)
-				{
-					m_staticCubes4[5-j]->setVisible(false);
-				}
-
-			}
-
-			break;
-		}
-	}
-
+	
 }
 
 //|||||||||||||||||||||||||||||||||||||||||||||||
 
 void Visuals::createVisuals() {
 	// create materials
+	// TODO automate material creation (should work with CUBE_COUNT somehow)
+	// EINGABEGROESSE (BARCOUNT, CUBECOUNT) ABHAENGIG!
+	/*
 	MaterialPtr green = getMaterial("green", 0, 210, 25, 180);
 	MaterialPtr darkGreen = getMaterial("darkGreen", 20, 110, 30, 180);
 	MaterialPtr yellow = getMaterial("yellow", 250, 255, 0, 180);
 	MaterialPtr orange = getMaterial("orange", 255, 160, 0, 180);
 	MaterialPtr red = getMaterial("red", 210, 0, 0, 180);
+	*/
+	MaterialPtr lightblue1 = getMaterial("lightblue1", 209, 237, 255, 160);
+	MaterialPtr lightblue2 = getMaterial("lightblue2", 152, 215, 255, 165);
+	MaterialPtr lightblue3 = getMaterial("lightblue3", 96, 193, 255, 170);
+	MaterialPtr blue1 = getMaterial("blue1", 24, 134, 255, 175);
+	MaterialPtr blue2 = getMaterial("blue2", 0, 108, 229, 180);
+	MaterialPtr blue3 = getMaterial("blue3", 0, 86, 204, 185);
+	MaterialPtr darkblue1 = getMaterial("darkblue1", 0, 34, 204, 190);
+	MaterialPtr darkblue2 = getMaterial("darkblue2", 0, 28, 167, 195);
+	MaterialPtr darkblue3 = getMaterial("darkblue3", 0, 18, 109, 200);
 
 	// create visuals
 	int width = m_map->getWidth() / 2.0 * 100;
 	for (int i=0; i<m_map->getLength(); i=i+2)
 	{
-		createVisualBar(m_map->getPosition(i, m_map->getWidth() / 2.0 * 100.0), m_map->getOrientation(i));
+		createVisualBar(m_map->getPosition(i, m_map->getWidth() / 2.0 * 100.0 + 20), m_map->getOrientation(i));
 	}
 
 	for (int i=0; i<m_map->getLength(); i=i+2)
 	{
-		createVisualBar(m_map->getPosition(i, -m_map->getWidth() / 2.0 * 100.0), m_map->getOrientation(i));
+		createVisualBar(m_map->getPosition(i, -m_map->getWidth() / 2.0 * 100.0 - 20), m_map->getOrientation(i));
 	}
-
+	
 	// INSTANCING BEGIN
 	// adding scenenodes to staticCubes in order to render all cube entities in one batch
-	for (int i=0; i<5; ++i)
+	for (int i=0; i<BAR_COUNT; ++i)
 	{
-		m_staticCubes0[i]->addSceneNode(m_parentCubeNode0[i]);
-		m_staticCubes1[i]->addSceneNode(m_parentCubeNode1[i]);
-		m_staticCubes2[i]->addSceneNode(m_parentCubeNode2[i]);
-		m_staticCubes3[i]->addSceneNode(m_parentCubeNode3[i]);
-		m_staticCubes4[i]->addSceneNode(m_parentCubeNode4[i]);
+		for (int j=0; j<CUBE_COUNT; ++j)
+		{
+			m_staticCubes[i][j]->addSceneNode(m_barNodes[i][j]);
 
-		// creating staticGeometry
-		m_staticCubes0[i]->build();
-		m_staticCubes1[i]->build();
-		m_staticCubes2[i]->build();
-		m_staticCubes3[i]->build();
-		m_staticCubes4[i]->build();
+			// building staticGeometry
+			m_staticCubes[i][j]->build();
+		}
 	}
 
 	// destroy entities since they are now instanced via the staticCubes
-	/*
-	for (int i=0; i<m_numberOfCubes; ++i)
+	for (int i=0; i<BAR_COUNT; ++i)
 	{
-		for (int j=0; j<5; ++j)
+		for (int j=0; j<CUBE_COUNT; ++j)
 		{
-			m_pSceneMgr->destroyEntity("cubeEntity" + StringConverter::toString(i) + StringConverter::toString(j));
+			m_pSceneMgr->destroySceneNode(m_barNodes[i][j]);
 		}
 	}
-	*/
-	for (int i=0; i<5; ++i)
-	{
-		m_pSceneMgr->destroySceneNode(m_parentCubeNode0[i]);
-		m_pSceneMgr->destroySceneNode(m_parentCubeNode1[i]);
-		m_pSceneMgr->destroySceneNode(m_parentCubeNode2[i]);
-		m_pSceneMgr->destroySceneNode(m_parentCubeNode3[i]);
-		m_pSceneMgr->destroySceneNode(m_parentCubeNode4[i]);
-	}
+
 	// INSTANCING END
+
+	// parse wo anders hinverschieben + aufteilen wieviel würfel sichtbar gleich im parse und nurmehr anzahl sichtbarer würferl in m_audioData speichern
+	parseAudioData();
 }
 
 //|||||||||||||||||||||||||||||||||||||||||||||||
@@ -403,64 +264,52 @@ void Visuals::createVisualBar(const Ogre::Vector3& position, const Ogre::Quatern
 	SceneNode* childCubeNode;
 	Entity* cubeEntity;
 
-
-	//wievielte runde?
-	//runde = (derzeitige anzahl durchläufe - (derzeitige anzahl % 5)) : 5
-	//runde = (m_numberOfCubes - (m_numberOfCubes%5)) : 5
-
-	for (int i=0; i<5; ++i)
+	for (int j=0; j<CUBE_COUNT; ++j)
 	{
-		cubeEntity = m_pSceneMgr->createEntity("cubeEntity" + StringConverter::toString(m_numberOfCubes) + StringConverter::toString(i), "cube.mesh");
+		cubeEntity = m_pSceneMgr->createEntity("cubeEntity" + StringConverter::toString(m_numberOfCubesCreated) + StringConverter::toString(j), "cube.mesh");
 		cubeEntity->setCastShadows(false);
 
-		switch (m_numberOfCubes % 5) {
-		case 0:
-			childCubeNode = m_parentCubeNode0[i]->createChildSceneNode("childCubeNode" + StringConverter::toString(m_numberOfCubes) + StringConverter::toString(i));
-			break;
-		case 1:
-			childCubeNode = m_parentCubeNode1[i]->createChildSceneNode("childCubeNode" + StringConverter::toString(m_numberOfCubes) + StringConverter::toString(i));
-			break;
-		case 2:
-			childCubeNode = m_parentCubeNode2[i]->createChildSceneNode("childCubeNode" + StringConverter::toString(m_numberOfCubes) + StringConverter::toString(i));
-			break;
-		case 3:
-			childCubeNode = m_parentCubeNode3[i]->createChildSceneNode("childCubeNode" + StringConverter::toString(m_numberOfCubes) + StringConverter::toString(i));
-			break;
-		case 4:
-			childCubeNode = m_parentCubeNode4[i]->createChildSceneNode("childCubeNode" + StringConverter::toString(m_numberOfCubes) + StringConverter::toString(i));
-			break;
-		}
-
-		childCubeNode->scale(0.65f, 0.5f, 0.65f);
+		childCubeNode = m_barNodes[m_numberOfCubesCreated % BAR_COUNT][j]->createChildSceneNode("cubeEntityNode" + StringConverter::toString(m_numberOfCubesCreated) + StringConverter::toString(j));
+		
+		childCubeNode->scale(0.70f, 0.25f, 0.70f);
 		childCubeNode->attachObject(cubeEntity);
 		childCubeNode->setOrientation(orienation);
 		childCubeNode->setPosition(position);
 
-		switch (i) {
+		// TODO automate setmaterial (should work with CUBE_COUNT somehow)
+		// EINGABEGROESSE (BARCOUNT, CUBECOUNT) ABHAENGIG!
+		switch (j) {
 		case 0:
-			cubeEntity->setMaterialName("green");
-			
+			cubeEntity->setMaterialName("lightblue1");
 			break;
 		case 1:
-			cubeEntity->setMaterialName("darkGreen");
-			childCubeNode->translate(0, 55, 0, Ogre::Node::TS_LOCAL);
+			cubeEntity->setMaterialName("lightblue2");
+			childCubeNode->translate(0, 30, 0, Ogre::Node::TS_LOCAL);
 			break;
 		case 2:
-			cubeEntity->setMaterialName("yellow");
-			childCubeNode->translate(0, 110, 0, Ogre::Node::TS_LOCAL);
+			cubeEntity->setMaterialName("lightblue3");
+			childCubeNode->translate(0, 60, 0, Ogre::Node::TS_LOCAL);
 			break;
 		case 3:
-			cubeEntity->setMaterialName("orange");
-			childCubeNode->translate(0, 165, 0, Ogre::Node::TS_LOCAL);
+			cubeEntity->setMaterialName("blue1");
+			childCubeNode->translate(0, 90, 0, Ogre::Node::TS_LOCAL);
 			break;
 		case 4:
-			cubeEntity->setMaterialName("red");
-			childCubeNode->translate(0, 220, 0, Ogre::Node::TS_LOCAL);
+			cubeEntity->setMaterialName("blue2");
+			childCubeNode->translate(0, 120, 0, Ogre::Node::TS_LOCAL);
+			break;
+		case 5:
+			cubeEntity->setMaterialName("darkblue1");
+			childCubeNode->translate(0, 150, 0, Ogre::Node::TS_LOCAL);
+			break;
+		case 6:
+			cubeEntity->setMaterialName("darkblue2");
+			childCubeNode->translate(0, 180, 0, Ogre::Node::TS_LOCAL);
 			break;
 		}
 	}
 
-	++m_numberOfCubes;
+	++m_numberOfCubesCreated;
 }
 
 //|||||||||||||||||||||||||||||||||||||||||||||||
