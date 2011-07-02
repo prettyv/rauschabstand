@@ -43,7 +43,6 @@ public:
 	void resume();
 
 	void getInput();
-    void buildGUI();
 
 	bool keyPressed(const OIS::KeyEvent &keyEventRef);
 	bool keyReleased(const OIS::KeyEvent &keyEventRef);

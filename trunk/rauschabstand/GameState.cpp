@@ -56,9 +56,13 @@ void GameState::enter()
 	m_gameLogic	= new GameLogic(m_pSceneMgr, m_pCamera, m_audioPlayer);
 	m_gameLogic->init(); 
 
-	buildGUI();
 	createScene();
 
+	//Ogre::CompositorManager::getSingleton().addCompositor(OgreFramework::getSingletonPtr()->m_pViewport, "Bloom");
+	//Ogre::CompositorManager::getSingleton().setCompositorEnabled(OgreFramework::getSingletonPtr()->m_pViewport, "Bloom", true);
+	//Ogre::CompositorManager::getSingleton().addCompositor(OgreFramework::getSingletonPtr()->m_pViewport, "Radial Blur");
+	//Ogre::CompositorManager::getSingleton().setCompositorEnabled(OgreFramework::getSingletonPtr()->m_pViewport, "Radial Blur", true);
+	
 	/*m_audioPlayer->play();*/
 
 	/*
@@ -78,25 +82,19 @@ void GameState::enter()
 	}
 	*/
 
-
-	Ogre::CompositorManager::getSingleton().addCompositor(OgreFramework::getSingletonPtr()->m_pViewport, "Bloom");
-	Ogre::CompositorManager::getSingleton().setCompositorEnabled(OgreFramework::getSingletonPtr()->m_pViewport, "Bloom", true);
-	//Ogre::CompositorManager::getSingleton().addCompositor(OgreFramework::getSingletonPtr()->m_pViewport, "Radial Blur");
-	//Ogre::CompositorManager::getSingleton().setCompositorEnabled(OgreFramework::getSingletonPtr()->m_pViewport, "Radial Blur", true);
-
     //Visuals
-    m_gameView->engage(m_gameLogic, m_pSceneMgr);
+    m_gameView->engage(m_gameLogic, m_pSceneMgr, m_pCamera, m_FrameEvent);
 }
 
 //|||||||||||||||||||||||||||||||||||||||||||||||
 
 bool GameState::pause()
 {
+    //HUD - Visuals
+    m_gameView->pauseGame();
+    //HUD - Visuals End
+
     OgreFramework::getSingletonPtr()->m_pLog->logMessage("Pausing GameState...");
-
-	Ogre::CompositorManager::getSingleton().setCompositorEnabled(OgreFramework::getSingletonPtr()->m_pViewport, "Bloom", false);
-	Ogre::CompositorManager::getSingleton().removeCompositor(OgreFramework::getSingletonPtr()->m_pViewport, "Bloom");
-
 	m_audioPlayer->pause();
 
     return true;
@@ -106,17 +104,14 @@ bool GameState::pause()
 
 void GameState::resume()
 {
-    OgreFramework::getSingletonPtr()->m_pLog->logMessage("Resuming GameState...");
+    //HUD - Visuals
+    m_gameView->resumeGame();
+    //HUD - Visuals End
 
+    OgreFramework::getSingletonPtr()->m_pLog->logMessage("Resuming GameState...");
 	m_audioPlayer->play();
 
-    buildGUI();
-
     OgreFramework::getSingletonPtr()->m_pViewport->setCamera(m_pCamera);
-
-	Ogre::CompositorManager::getSingleton().addCompositor(OgreFramework::getSingletonPtr()->m_pViewport, "Bloom");
-	Ogre::CompositorManager::getSingleton().setCompositorEnabled(OgreFramework::getSingletonPtr()->m_pViewport, "Bloom", true);
-
     m_bQuit = false;
 }
 
@@ -125,9 +120,6 @@ void GameState::resume()
 void GameState::exit()
 {
     OgreFramework::getSingletonPtr()->m_pLog->logMessage("Leaving GameState...");
-
-	Ogre::CompositorManager::getSingleton().setCompositorEnabled(OgreFramework::getSingletonPtr()->m_pViewport, "Bloom", false);
-	Ogre::CompositorManager::getSingleton().removeCompositor(OgreFramework::getSingletonPtr()->m_pViewport, "Bloom");
 
     m_pSceneMgr->destroyCamera(m_pCamera);
     if(m_pSceneMgr)
@@ -164,56 +156,14 @@ void GameState::createScene()
 
 bool GameState::keyPressed(const OIS::KeyEvent &keyEventRef)
 {
-    if(m_bSettingsMode == true)
-    {
-        if(OgreFramework::getSingletonPtr()->m_pKeyboard->isKeyDown(OIS::KC_S))
-        {
-            OgreBites::SelectMenu* pMenu = (OgreBites::SelectMenu*)OgreFramework::getSingletonPtr()->m_pTrayMgr->getWidget("ChatModeSelMenu");
-            if(pMenu->getSelectionIndex() + 1 < (int)pMenu->getNumItems())
-                pMenu->selectItem(pMenu->getSelectionIndex() + 1);
-        }
-
-        if(OgreFramework::getSingletonPtr()->m_pKeyboard->isKeyDown(OIS::KC_W))
-        {
-            OgreBites::SelectMenu* pMenu = (OgreBites::SelectMenu*)OgreFramework::getSingletonPtr()->m_pTrayMgr->getWidget("ChatModeSelMenu");
-            if(pMenu->getSelectionIndex() - 1 >= 0)
-                pMenu->selectItem(pMenu->getSelectionIndex() - 1);
-        }
-    }
-
     if(OgreFramework::getSingletonPtr()->m_pKeyboard->isKeyDown(OIS::KC_ESCAPE))
     {
         pushAppState(findByName("PauseState"));
         return true;
     }
-
-    if(OgreFramework::getSingletonPtr()->m_pKeyboard->isKeyDown(OIS::KC_I))
-    {
-        if(m_pDetailsPanel->getTrayLocation() == OgreBites::TL_NONE)
-        {
-            OgreFramework::getSingletonPtr()->m_pTrayMgr->moveWidgetToTray(m_pDetailsPanel, OgreBites::TL_TOPLEFT, 0);
-            m_pDetailsPanel->show();
-        }
-        else
-        {
-            OgreFramework::getSingletonPtr()->m_pTrayMgr->removeWidgetFromTray(m_pDetailsPanel);
-            m_pDetailsPanel->hide();
-        }
-    }
-
-    if(OgreFramework::getSingletonPtr()->m_pKeyboard->isKeyDown(OIS::KC_TAB))
-    {
-        m_bSettingsMode = !m_bSettingsMode;
-        return true;
-    }
-
-    if((m_bSettingsMode && OgreFramework::getSingletonPtr()->m_pKeyboard->isKeyDown(OIS::KC_RETURN)) ||
-       (OgreFramework::getSingletonPtr()->m_pKeyboard->isKeyDown(OIS::KC_NUMPADENTER)))
-    {
-    }
-
-    if(!m_bSettingsMode || (m_bSettingsMode && !OgreFramework::getSingletonPtr()->m_pKeyboard->isKeyDown(OIS::KC_O)))
-        OgreFramework::getSingletonPtr()->keyPressed(keyEventRef);
+    
+    //Update für die GameView
+    m_gameView->keyPressed();
 
     return true;
 }
@@ -232,14 +182,15 @@ bool GameState::keyReleased(const OIS::KeyEvent &keyEventRef)
 
 bool GameState::mouseMoved(const OIS::MouseEvent &evt)
 {
+    
     if(OgreFramework::getSingletonPtr()->m_pTrayMgr->injectMouseMove(evt)) return true;
-
+    /*
     if(m_bRMouseDown)
     {
         m_pCamera->yaw(Degree(evt.state.X.rel * -0.1f));
         m_pCamera->pitch(Degree(evt.state.Y.rel * -0.1f));
     }
-
+    */
     return true;
 }
 
@@ -247,6 +198,7 @@ bool GameState::mouseMoved(const OIS::MouseEvent &evt)
 
 bool GameState::mousePressed(const OIS::MouseEvent &evt, OIS::MouseButtonID id)
 {
+    
     if(OgreFramework::getSingletonPtr()->m_pTrayMgr->injectMouseDown(evt, id)) return true;
 
     if(id == OIS::MB_Left)
@@ -258,7 +210,7 @@ bool GameState::mousePressed(const OIS::MouseEvent &evt, OIS::MouseButtonID id)
     {
         m_bRMouseDown = true;
     }
-
+    
     return true;
 }
 
@@ -266,6 +218,7 @@ bool GameState::mousePressed(const OIS::MouseEvent &evt, OIS::MouseButtonID id)
 
 bool GameState::mouseReleased(const OIS::MouseEvent &evt, OIS::MouseButtonID id)
 {
+    
     if(OgreFramework::getSingletonPtr()->m_pTrayMgr->injectMouseUp(evt, id)) return true;
 
     if(id == OIS::MB_Left)
@@ -276,7 +229,7 @@ bool GameState::mouseReleased(const OIS::MouseEvent &evt, OIS::MouseButtonID id)
     {
         m_bRMouseDown = false;
     }
-
+    
     return true;
 }
 
@@ -284,6 +237,7 @@ bool GameState::mouseReleased(const OIS::MouseEvent &evt, OIS::MouseButtonID id)
 
 void GameState::onLeftPressed(const OIS::MouseEvent &evt)
 {
+    /*
     if(m_pCurrentObject)
     {
         m_pCurrentObject->showBoundingBox(false);
@@ -309,6 +263,7 @@ void GameState::onLeftPressed(const OIS::MouseEvent &evt)
             break;
         }
     }
+    */
 }
 
 //|||||||||||||||||||||||||||||||||||||||||||||||
@@ -339,25 +294,7 @@ void GameState::update(Ogre::Real timeSinceLastFrame)
         popAppState();
         return;
     }
-
-    if(!OgreFramework::getSingletonPtr()->m_pTrayMgr->isDialogVisible())
-    {
-        if(m_pDetailsPanel->isVisible())
-        {
-            m_pDetailsPanel->setParamValue(0, Ogre::StringConverter::toString(m_pCamera->getDerivedPosition().x));
-            m_pDetailsPanel->setParamValue(1, Ogre::StringConverter::toString(m_pCamera->getDerivedPosition().y));
-            m_pDetailsPanel->setParamValue(2, Ogre::StringConverter::toString(m_pCamera->getDerivedPosition().z));
-            m_pDetailsPanel->setParamValue(3, Ogre::StringConverter::toString(m_pCamera->getDerivedOrientation().w));
-            m_pDetailsPanel->setParamValue(4, Ogre::StringConverter::toString(m_pCamera->getDerivedOrientation().x));
-            m_pDetailsPanel->setParamValue(5, Ogre::StringConverter::toString(m_pCamera->getDerivedOrientation().y));
-            m_pDetailsPanel->setParamValue(6, Ogre::StringConverter::toString(m_pCamera->getDerivedOrientation().z));
-            if(m_bSettingsMode)
-                m_pDetailsPanel->setParamValue(7, "Buffered Input");
-            else
-                m_pDetailsPanel->setParamValue(7, "Un-Buffered Input");
-        }
-    }
-
+    
     getInput();
 
 
@@ -380,35 +317,6 @@ void GameState::update(Ogre::Real timeSinceLastFrame)
 	*/
 
     m_gameView->update(timeSinceLastFrame);
-}
-
-//|||||||||||||||||||||||||||||||||||||||||||||||
-
-void GameState::buildGUI()
-{
-    OgreFramework::getSingletonPtr()->m_pTrayMgr->showFrameStats(OgreBites::TL_BOTTOMLEFT);
-    OgreFramework::getSingletonPtr()->m_pTrayMgr->showLogo(OgreBites::TL_BOTTOMRIGHT);
-    //OgreFramework::getSingletonPtr()->m_pTrayMgr->createLabel(OgreBites::TL_TOP, "GameLbl", "Game mode", 250);
-    OgreFramework::getSingletonPtr()->m_pTrayMgr->showCursor();
-
-    Ogre::StringVector items;
-    items.push_back("cam.pX");
-    items.push_back("cam.pY");
-    items.push_back("cam.pZ");
-    items.push_back("cam.oW");
-    items.push_back("cam.oX");
-    items.push_back("cam.oY");
-    items.push_back("cam.oZ");
-    items.push_back("Mode");
-
-    m_pDetailsPanel = OgreFramework::getSingletonPtr()->m_pTrayMgr->createParamsPanel(OgreBites::TL_TOPLEFT, "DetailsPanel", 200, items);
-    m_pDetailsPanel->show();
-
-    Ogre::StringVector chatModes;
-    chatModes.push_back("Solid mode");
-    chatModes.push_back("Wireframe mode");
-    chatModes.push_back("Point mode");
-    OgreFramework::getSingletonPtr()->m_pTrayMgr->createLongSelectMenu(OgreBites::TL_TOPRIGHT, "ChatModeSelMenu", "ChatMode", 200, 3, chatModes);
 }
 
 //|||||||||||||||||||||||||||||||||||||||||||||||

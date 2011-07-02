@@ -10,6 +10,7 @@
 #include "DotSceneLoader.hpp"
 
 #include "GameLogic.hpp"
+#include "OgreFontManager.h"
 
 #include <OgreSubEntity.h>
 #include <OgreMaterialManager.h>
@@ -22,34 +23,113 @@ public:
     GameView();
     ~GameView();
 
-    void engage(GameLogic* gameLogic, Ogre::SceneManager* sceneManager);
+    void engage(GameLogic* gameLogic, Ogre::SceneManager* sceneManager, Ogre::Camera* pCamera,Ogre::FrameEvent FrameEvent);
     void disengage();
     void update(Ogre::Real timeSinceLastFrame);
+
+    void keyPressed();
+
+    void pauseGame();
+    void resumeGame();
 
     //getters
     OgreBites::ParamsPanel* getHighscorePanel();
 
 private:
+    void showAllHUDElements();
+    void hideAllHUDElements();
     void createHUD();
+    void createHUDForDebug();
+    void createAllMaterials();
+    void calculateDimensions();
     void updateHUD(Ogre::Real timeSinceLastFrame);
+    void updateHUDForDebug(Ogre::Real timeSinceLastFrame);
+    void updateScore();
 
 private:
+    bool                        m_showHUD;
+    
+    OgreBites::ParamsPanel*		m_pDetailsPanel;
+    
+    bool						m_bSettingsMode;
+    Ogre::Camera*				m_pCamera;
+    Ogre::FrameEvent            m_FrameEvent;
     // For Highscore
     unsigned long               m_score;
     unsigned int                m_multiplier;
 
+    //Material Names
+    String                      m_materialNameBoostBar;
+    String                      m_materialNameTrack;
+    String                      m_materialNameLogo;
+    String                      m_materialNameNumbers;
     // For Overlays
-    Ogre::Real                      m_timeTest;
-    MaterialPtr                 m_materialBoost;
-    MaterialPtr                 m_materialLogo;
-    MaterialPtr                 m_materialTrack;
-    double                      m_scale;
-    bool                        m_scaleInvert;  //nur zum Testen
-    bool                        m_showHUD;
+    OverlayContainer*           m_panelLogo;
+    OverlayContainer*           m_panelBoost;
+    OverlayContainer*           m_panelTrack;
 
+    OverlayContainer*           m_panelNum1;
+    OverlayContainer*           m_panelNum2;
+    OverlayContainer*           m_panelNum3;
+    OverlayContainer*           m_panelNum4;
+    OverlayContainer*           m_panelNum5;
+    OverlayContainer*           m_panelNum6;
+
+    Ogre::Overlay*              m_overlayBoost;
+    
     Ogre::SceneManager*         m_sceneManager;
     GameLogic*					m_gameLogic;
     OgreBites::ParamsPanel*		m_highscorePanel;
+
+    //Variabeln für den Fortschritt
+    int                         m_boostCharge;
+    int                         m_levelProgress;
+
+    //Variabeln für die Positionierung und die Größe der Overlays
+    double                      m_PosTrackLeft;
+    double                      m_PosTrackTop;
+    double                      m_DimTrackWidth;
+    double                      m_DimTrackHeight;
+    int                         m_PixelTrackWidth;
+    int                         m_PixelTrackHeight;
+
+    double                      m_PosBoostLeft;
+    double                      m_PosBoostTop;
+    double                      m_DimBoostWidth;
+    double                      m_DimBoostHeight;
+    int                         m_PixelBoostWidth;
+    int                         m_PixelBoostHeight;
+
+    double                      m_PosLogoLeft;
+    double                      m_PosLogoTop;
+    double                      m_DimLogoWidth;
+    double                      m_DimLogoHeight;
+    int                         m_PixelLogoWidth;
+    int                         m_PixelLogoHeight;
+
+    double                      m_PosNum1Left;
+    double                      m_PosNum1Top;
+    double                      m_PosNum2Left;
+    double                      m_PosNum2Top;
+    double                      m_PosNum3Left;
+    double                      m_PosNum3Top;
+    double                      m_PosNum4Left;
+    double                      m_PosNum4Top;
+    double                      m_PosNum5Left;
+    double                      m_PosNum5Top;
+    double                      m_PosNum6Left;
+    double                      m_PosNum6Top;
+
+    double                      m_DimNumWidth;
+    double                      m_DimNumHeight;
+    int                         m_PixelNumWidth;
+    int                         m_PixelNumHeight;
+
+    //Test
+    double                      m_positionLogo;
+    double                      m_scale;
+    bool                        m_scaleInvert;  //nur zum Testen
+    Ogre::Real                  m_timeTest;
 };
 
 //|||||||||||||||||||||||||||||||||||||||||||||||
