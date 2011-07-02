@@ -129,25 +129,31 @@ void Visuals::parseAudioData() {
 				
 				if (audioData == 0)
 				{
-					spectrumHit = 0;
-				} else if (audioData > 0 && audioData <= 40)
-				{
 					spectrumHit = 1;
-				} else if (audioData > 40 && audioData <= 100)
+				} else if (audioData > 0 && audioData <= 20)
 				{
 					spectrumHit = 2;
-				} else if (audioData > 100 && audioData <= 200)
+				} else if (audioData > 20 && audioData <= 50)
 				{
 					spectrumHit = 3;
-				} else if (audioData > 200 && audioData <= 400)
+				} else if (audioData > 50 && audioData <= 100)
 				{
 					spectrumHit = 4;
-				} else if (audioData > 400 && audioData <= 1000)
+				} else if (audioData > 100 && audioData <= 175)
 				{
 					spectrumHit = 5;
-				} else if (audioData > 1000)
+				} else if (audioData > 175 && audioData <= 250)
 				{
 					spectrumHit = 6;
+				} else if (audioData > 250 && audioData <= 500)
+				{
+					spectrumHit = 7;
+				} else if (audioData > 500 && audioData <= 1500)
+				{
+					spectrumHit = 8;
+				} else if (audioData > 1500)
+				{
+					spectrumHit = 9;
 				}
 
 
@@ -216,17 +222,18 @@ void Visuals::createVisuals() {
 	MaterialPtr darkblue1 = getMaterial("darkblue1", 0, 34, 204, 190);
 	MaterialPtr darkblue2 = getMaterial("darkblue2", 0, 28, 167, 195);
 	MaterialPtr darkblue3 = getMaterial("darkblue3", 0, 18, 109, 200);
+	MaterialPtr black = getMaterial("black", 0, 21, 82, 205);
 
 	// create visuals
 	int width = m_map->getWidth() / 2.0 * 100;
 	for (int i=0; i<m_map->getLength(); i=i+2)
 	{
-		createVisualBar(m_map->getPosition(i, m_map->getWidth() / 2.0 * 100.0 + 20), m_map->getOrientation(i));
+		createVisualBar(m_map->getPosition(i, m_map->getWidth() / 2.0 * 100.0 + 40), m_map->getOrientation(i));
 	}
 
 	for (int i=0; i<m_map->getLength(); i=i+2)
 	{
-		createVisualBar(m_map->getPosition(i, -m_map->getWidth() / 2.0 * 100.0 - 20), m_map->getOrientation(i));
+		createVisualBar(m_map->getPosition(i, -m_map->getWidth() / 2.0 * 100.0 - 40), m_map->getOrientation(i));
 	}
 	
 	// INSTANCING BEGIN
@@ -271,7 +278,7 @@ void Visuals::createVisualBar(const Ogre::Vector3& position, const Ogre::Quatern
 
 		childCubeNode = m_barNodes[m_numberOfCubesCreated % BAR_COUNT][j]->createChildSceneNode("cubeEntityNode" + StringConverter::toString(m_numberOfCubesCreated) + StringConverter::toString(j));
 		
-		childCubeNode->scale(0.70f, 0.25f, 0.70f);
+		childCubeNode->scale(0.70f, 0.15f, 0.70f);
 		childCubeNode->attachObject(cubeEntity);
 		childCubeNode->setOrientation(orienation);
 		childCubeNode->setPosition(position);
@@ -284,26 +291,38 @@ void Visuals::createVisualBar(const Ogre::Vector3& position, const Ogre::Quatern
 			break;
 		case 1:
 			cubeEntity->setMaterialName("lightblue2");
-			childCubeNode->translate(0, 30, 0, Ogre::Node::TS_LOCAL);
+			childCubeNode->translate(0, 20, 0, Ogre::Node::TS_LOCAL);
 			break;
 		case 2:
 			cubeEntity->setMaterialName("lightblue3");
-			childCubeNode->translate(0, 60, 0, Ogre::Node::TS_LOCAL);
+			childCubeNode->translate(0, 40, 0, Ogre::Node::TS_LOCAL);
 			break;
 		case 3:
 			cubeEntity->setMaterialName("blue1");
-			childCubeNode->translate(0, 90, 0, Ogre::Node::TS_LOCAL);
+			childCubeNode->translate(0, 60, 0, Ogre::Node::TS_LOCAL);
 			break;
 		case 4:
 			cubeEntity->setMaterialName("blue2");
-			childCubeNode->translate(0, 120, 0, Ogre::Node::TS_LOCAL);
+			childCubeNode->translate(0, 80, 0, Ogre::Node::TS_LOCAL);
 			break;
 		case 5:
-			cubeEntity->setMaterialName("darkblue1");
-			childCubeNode->translate(0, 150, 0, Ogre::Node::TS_LOCAL);
+			cubeEntity->setMaterialName("blue3");
+			childCubeNode->translate(0, 100, 0, Ogre::Node::TS_LOCAL);
 			break;
 		case 6:
+			cubeEntity->setMaterialName("darkblue1");
+			childCubeNode->translate(0, 120, 0, Ogre::Node::TS_LOCAL);
+			break;
+		case 7:
 			cubeEntity->setMaterialName("darkblue2");
+			childCubeNode->translate(0, 140, 0, Ogre::Node::TS_LOCAL);
+			break;
+		case 8:
+			cubeEntity->setMaterialName("darkblue3");
+			childCubeNode->translate(0, 160, 0, Ogre::Node::TS_LOCAL);
+			break;
+		case 9:
+			cubeEntity->setMaterialName("black");
 			childCubeNode->translate(0, 180, 0, Ogre::Node::TS_LOCAL);
 			break;
 		}

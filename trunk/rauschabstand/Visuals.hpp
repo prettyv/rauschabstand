@@ -21,7 +21,7 @@ public:
 	void	updateVisual(Ogre::Real timeSinceLastFrame);
 
 private:
-	static const int CUBE_COUNT = 7;
+	static const int CUBE_COUNT = 10;
 	static const int BAR_COUNT = 12;
 
 	SceneManager*				m_pSceneMgr;
