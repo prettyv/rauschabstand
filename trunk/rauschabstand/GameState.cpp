@@ -59,13 +59,6 @@ void GameState::enter()
 	buildGUI();
 	createScene();
 
-
-
-	//Ogre::CompositorManager::getSingleton().addCompositor(OgreFramework::getSingletonPtr()->m_pViewport, "Bloom");
-	//Ogre::CompositorManager::getSingleton().setCompositorEnabled(OgreFramework::getSingletonPtr()->m_pViewport, "Bloom", true);
-	//Ogre::CompositorManager::getSingleton().addCompositor(OgreFramework::getSingletonPtr()->m_pViewport, "Radial Blur");
-	//Ogre::CompositorManager::getSingleton().setCompositorEnabled(OgreFramework::getSingletonPtr()->m_pViewport, "Radial Blur", true);
-	
 	/*m_audioPlayer->play();*/
 
 	/*
@@ -85,6 +78,12 @@ void GameState::enter()
 	}
 	*/
 
+
+	Ogre::CompositorManager::getSingleton().addCompositor(OgreFramework::getSingletonPtr()->m_pViewport, "Bloom");
+	Ogre::CompositorManager::getSingleton().setCompositorEnabled(OgreFramework::getSingletonPtr()->m_pViewport, "Bloom", true);
+	//Ogre::CompositorManager::getSingleton().addCompositor(OgreFramework::getSingletonPtr()->m_pViewport, "Radial Blur");
+	//Ogre::CompositorManager::getSingleton().setCompositorEnabled(OgreFramework::getSingletonPtr()->m_pViewport, "Radial Blur", true);
+
     //Visuals
     m_gameView->engage(m_gameLogic, m_pSceneMgr);
 }
@@ -94,6 +93,10 @@ void GameState::enter()
 bool GameState::pause()
 {
     OgreFramework::getSingletonPtr()->m_pLog->logMessage("Pausing GameState...");
+
+	Ogre::CompositorManager::getSingleton().setCompositorEnabled(OgreFramework::getSingletonPtr()->m_pViewport, "Bloom", false);
+	Ogre::CompositorManager::getSingleton().removeCompositor(OgreFramework::getSingletonPtr()->m_pViewport, "Bloom");
+
 	m_audioPlayer->pause();
 
     return true;
@@ -104,11 +107,16 @@ bool GameState::pause()
 void GameState::resume()
 {
     OgreFramework::getSingletonPtr()->m_pLog->logMessage("Resuming GameState...");
+
 	m_audioPlayer->play();
 
     buildGUI();
 
     OgreFramework::getSingletonPtr()->m_pViewport->setCamera(m_pCamera);
+
+	Ogre::CompositorManager::getSingleton().addCompositor(OgreFramework::getSingletonPtr()->m_pViewport, "Bloom");
+	Ogre::CompositorManager::getSingleton().setCompositorEnabled(OgreFramework::getSingletonPtr()->m_pViewport, "Bloom", true);
+
     m_bQuit = false;
 }
 
@@ -117,6 +125,9 @@ void GameState::resume()
 void GameState::exit()
 {
     OgreFramework::getSingletonPtr()->m_pLog->logMessage("Leaving GameState...");
+
+	Ogre::CompositorManager::getSingleton().setCompositorEnabled(OgreFramework::getSingletonPtr()->m_pViewport, "Bloom", false);
+	Ogre::CompositorManager::getSingleton().removeCompositor(OgreFramework::getSingletonPtr()->m_pViewport, "Bloom");
 
     m_pSceneMgr->destroyCamera(m_pCamera);
     if(m_pSceneMgr)
