@@ -21,6 +21,7 @@
     <ClCompile Include="GameView.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Map.cpp" />
+    <ClCompile Include="MapGenerator.cpp" />
     <ClCompile Include="MenuState.cpp" />
     <ClCompile Include="PauseState.cpp" />
     <ClCompile Include="Player.cpp" />
@@ -37,6 +38,7 @@
     <ClInclude Include="GameState.hpp" />
     <ClInclude Include="GameView.hpp" />
     <ClInclude Include="Map.hpp" />
+    <ClInclude Include="MapGenerator.hpp" />
     <ClInclude Include="MenuState.hpp" />
     <ClInclude Include="PauseState.hpp" />
     <ClInclude Include="Player.hpp" />

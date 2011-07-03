@@ -6,6 +6,7 @@
 //|||||||||||||||||||||||||||||||||||||||||||||||
 
 #include "Player.hpp"
+#include "MapGenerator.hpp"
 #include "Map.hpp"
 #include "AudioPlayer.hpp"
 
@@ -46,6 +47,7 @@ private:
 	SceneManager*		m_sceneMgr;
 	Camera*				m_camera;
 
+	MapGenerator*		m_mapGenerator;
 	Map*				m_map;
 	Player*				m_player;
 	AudioPlayer*		m_audioPlayer;

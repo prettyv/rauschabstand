@@ -443,7 +443,7 @@ void GameView::updateScore() {
     m_multiplier = m_gameLogic->getMultiplier();
     String score = Ogre::StringConverter::toString(m_score);
 
-    for(int i = 0; i < score.size(); i++) {
+    for(unsigned int i = 0; i < score.size(); i++) {
         //int test = 3;
         int test = score.at(score.size()-1-i) - 48;
   

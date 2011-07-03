@@ -12,7 +12,11 @@ GameLogic::GameLogic(SceneManager* sceneMgr, Camera* camera, AudioPlayer* audioP
 	m_camera = camera;
 	m_audioPlayer = audioPlayer;
 
-	m_map = new Map("map01", m_sceneMgr);
+	m_blockMs = Real(0.015);
+	m_blockMsSide = Real(0.9);
+
+	m_mapGenerator = new MapGenerator("map01", m_sceneMgr, 84 * m_blockMs * 1000, 10);
+	m_map = m_mapGenerator->getMap();
 	m_player = new Player("Player", m_sceneMgr, m_camera, m_map);
 
 	m_t = 0;
@@ -21,19 +25,18 @@ GameLogic::GameLogic(SceneManager* sceneMgr, Camera* camera, AudioPlayer* audioP
 	m_multiplier = 1;
 	m_timeCloseToHole = 0;
 	m_countdownTime = 0;
-	m_blockMs = Real(0.015);
-	m_blockMsSide = Real(0.9);
 }
 
 GameLogic::~GameLogic()
 {
 	delete m_map;
 	delete m_player;
+	delete m_mapGenerator;
 }
 
 void GameLogic::init()
 {
-	m_map->createRandomMap(84 * m_blockMs * 1000, 10);
+	m_mapGenerator->generateMap();
 
 	start();
 }
@@ -45,7 +48,7 @@ void GameLogic::start()
 
 void GameLogic::reset()
 {
-
+	//TODO
 }
 
 void GameLogic::update(Ogre::Real timeSinceLastFrame)
@@ -111,7 +114,6 @@ void GameLogic::update(Ogre::Real elapsedTime, OIS::Keyboard* input) {
 
 void GameLogic::keyReleased(Real timeSinceLastFrame, const OIS::KeyEvent & keyEventRef)
 {
-	//TODO: move Inputcontrol from player here
 	m_player->keyReleased(timeSinceLastFrame, keyEventRef);
 }
 

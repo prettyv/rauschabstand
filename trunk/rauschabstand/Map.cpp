@@ -8,13 +8,13 @@ using namespace Ogre;
 
 //|||||||||||||||||||||||||||||||||||||||||||||||
 
-Map::Map(std::string name, SceneManager* sceneMgr)
+Map::Map(std::string name, SceneManager* sceneMgr, 
+	unsigned int length, unsigned int width)
 {
 	m_name = name;
 	m_pSceneMgr = sceneMgr;
-
-	m_length = 100;
-	m_width	= 5;
+	m_length = length;
+	m_width	= width;
 	
 	m_mapMainNode = m_pSceneMgr->getRootSceneNode()->createChildSceneNode(m_name);
 	m_rotationalSpline = Ogre::RotationalSpline();
@@ -91,39 +91,44 @@ void Raise(std::vector<TimeQuaternion>& timeQuaternions, int degree, int time,
 
 //|||||||||||||||||||||||||||||||||||||||||||||||
 
-void Map::createRandomMap(unsigned int length, unsigned int width)
+void Map::resetCubes() 
 {
-	m_length = length;
-	m_width	= width;
-
 	for (unsigned int i = 0; i < m_length; i++)
 	{
 		std::vector<HolesOrObstacles> row;
 		for (unsigned int j = 0; j < m_width; j++)
 		{
-			if (i < 10)
-			{
-				row.push_back(NORMAL);
-			}
-			else if (i > m_length - 4)
-			{
-				row.push_back(HOLE);
-			}
-			else
-			{
-				HolesOrObstacles randomBool = rand() % 8 != 0 ? NORMAL : HOLE;
-				randomBool = rand() % 20 == 0 ? OBSTACLE : randomBool;
-				row.push_back(randomBool);
-			}
+			row.push_back(NORMAL);
 		}
 		m_cubes.push_back(row);
 	}
+}
 
-	std::vector<TimeQuaternion> timeQuaternions;
+//|||||||||||||||||||||||||||||||||||||||||||||||
+
+void Map::setCubesRow(int start, unsigned int length, HolesOrObstacles holeOrObstacle) 
+{
+	start = start < 0 ? m_length + start : start;
+
+	std::vector<HolesOrObstacles> row;
+	for (unsigned int i = 0; i < m_width; i++)
+	{
+		row.push_back(holeOrObstacle);
+	}
+	for (unsigned int i = start; i < start + length && i < m_length; i++)
+	{
+		m_cubes[i] = row;
+	}
+}
+
+//|||||||||||||||||||||||||||||||||||||||||||||||
+
+void Map::setTimeQuaternions() 
+{
 	TimeQuaternion timeQuat;
 	timeQuat.m_t = 0;
 	timeQuat.m_quanternion = Quaternion(1, 0, 0, 0);
-	timeQuaternions.push_back(timeQuat);
+	m_timeQuaternions.push_back(timeQuat);
 
 	TimeQuaternion timeQuat1;
 	TimeQuaternion timeQuat2;
@@ -133,52 +138,58 @@ void Map::createRandomMap(unsigned int length, unsigned int width)
 	TimeQuaternion timeQuat6;
 	TimeQuaternion timeQuat7;
 
-	Raise(timeQuaternions, 3, 4, timeQuat1, timeQuat2, timeQuat3, timeQuat4);
-	mediumRaise(timeQuaternions, 15, 48, timeQuat1, timeQuat2);
-	Raise(timeQuaternions, 3, 59, timeQuat1, timeQuat2, timeQuat3, timeQuat4);
-	mediumRaise(timeQuaternions, 15, 105, timeQuat1, timeQuat2);
-	Raise(timeQuaternions, 3, 115, timeQuat1, timeQuat2, timeQuat3, timeQuat4);
-	mediumRaise(timeQuaternions, 15, 160, timeQuat1, timeQuat2);
+	Raise(m_timeQuaternions, 3, 4, timeQuat1, timeQuat2, timeQuat3, timeQuat4);
+	mediumRaise(m_timeQuaternions, 15, 48, timeQuat1, timeQuat2);
+	Raise(m_timeQuaternions, 3, 59, timeQuat1, timeQuat2, timeQuat3, timeQuat4);
+	mediumRaise(m_timeQuaternions, 15, 105, timeQuat1, timeQuat2);
+	Raise(m_timeQuaternions, 3, 115, timeQuat1, timeQuat2, timeQuat3, timeQuat4);
+	mediumRaise(m_timeQuaternions, 15, 160, timeQuat1, timeQuat2);
 
-	sideRollUp(timeQuaternions, 60, 170, timeQuat1, timeQuat2);
+	sideRollUp(m_timeQuaternions, 60, 170, timeQuat1, timeQuat2);
 
-	Raise(timeQuaternions, 3, 235, timeQuat1, timeQuat2, timeQuat3, timeQuat4);
-	mediumRaise(timeQuaternions, 15, 281, timeQuat1, timeQuat2);
-	Raise(timeQuaternions, 3, 292, timeQuat1, timeQuat2, timeQuat3, timeQuat4);
-	mediumRaise(timeQuaternions, 15, 338, timeQuat1, timeQuat2);
-	Raise(timeQuaternions, 3, 349, timeQuat1, timeQuat2, timeQuat3, timeQuat4);
-	mediumRaise(timeQuaternions, 15, 394, timeQuat1, timeQuat2);
+	Raise(m_timeQuaternions, 3, 235, timeQuat1, timeQuat2, timeQuat3, timeQuat4);
+	mediumRaise(m_timeQuaternions, 15, 281, timeQuat1, timeQuat2);
+	Raise(m_timeQuaternions, 3, 292, timeQuat1, timeQuat2, timeQuat3, timeQuat4);
+	mediumRaise(m_timeQuaternions, 15, 338, timeQuat1, timeQuat2);
+	Raise(m_timeQuaternions, 3, 349, timeQuat1, timeQuat2, timeQuat3, timeQuat4);
+	mediumRaise(m_timeQuaternions, 15, 394, timeQuat1, timeQuat2);
 
-	sideRollDown(timeQuaternions, 60, 404, timeQuat1, timeQuat2);
+	sideRollDown(m_timeQuaternions, 60, 404, timeQuat1, timeQuat2);
 
-	Raise(timeQuaternions, 3, 469, timeQuat1, timeQuat2, timeQuat3, timeQuat4);
-	mediumRaise(timeQuaternions, 15, 514, timeQuat1, timeQuat2);
-	Raise(timeQuaternions, 3, 526, timeQuat1, timeQuat2, timeQuat3, timeQuat4);
-	mediumRaise(timeQuaternions, 15, 571, timeQuat1, timeQuat2);
-	Raise(timeQuaternions, 3, 583, timeQuat1, timeQuat2, timeQuat3, timeQuat4);
-	mediumRaise(timeQuaternions, 15, 628, timeQuat1, timeQuat2);
+	Raise(m_timeQuaternions, 3, 469, timeQuat1, timeQuat2, timeQuat3, timeQuat4);
+	mediumRaise(m_timeQuaternions, 15, 514, timeQuat1, timeQuat2);
+	Raise(m_timeQuaternions, 3, 526, timeQuat1, timeQuat2, timeQuat3, timeQuat4);
+	mediumRaise(m_timeQuaternions, 15, 571, timeQuat1, timeQuat2);
+	Raise(m_timeQuaternions, 3, 583, timeQuat1, timeQuat2, timeQuat3, timeQuat4);
+	mediumRaise(m_timeQuaternions, 15, 628, timeQuat1, timeQuat2);
 
-	sideRollDown(timeQuaternions, 60, 628, timeQuat1, timeQuat2);
+	sideRollDown(m_timeQuaternions, 60, 628, timeQuat1, timeQuat2);
 
-	lightBump(timeQuaternions, 5, 698, timeQuat1, timeQuat2, timeQuat3, timeQuat4);
-	lightBump(timeQuaternions, 5, 712, timeQuat1, timeQuat2, timeQuat3, timeQuat4);
-	lightBump(timeQuaternions, 5, 726, timeQuat1, timeQuat2, timeQuat3, timeQuat4);
+	lightBump(m_timeQuaternions, 5, 698, timeQuat1, timeQuat2, timeQuat3, timeQuat4);
+	lightBump(m_timeQuaternions, 5, 712, timeQuat1, timeQuat2, timeQuat3, timeQuat4);
+	lightBump(m_timeQuaternions, 5, 726, timeQuat1, timeQuat2, timeQuat3, timeQuat4);
 
 	TimeQuaternion timeQuat0;
-	timeQuat0.m_t = length;
+	timeQuat0.m_t = m_length;
 	timeQuat0.m_quanternion = Quaternion(1, 0, 0, 0);
-	timeQuaternions.push_back(timeQuat0);
+	m_timeQuaternions.push_back(timeQuat0);
+}
 
-	for (unsigned int i = 0; i < timeQuaternions.size() - 1; i++)
+void Map::addUpTimeQuaternions() 
+{
+	for (unsigned int i = 0; i < m_timeQuaternions.size() - 1; i++)
 	{
-		timeQuaternions[i + 1].m_quanternion = timeQuaternions[i].m_quanternion * timeQuaternions[i + 1].m_quanternion;
+		m_timeQuaternions[i + 1].m_quanternion = m_timeQuaternions[i].m_quanternion * m_timeQuaternions[i + 1].m_quanternion;
 	}
+}
 
+void Map::interpolateTimeQuaternions() 
+{
 	Vector3 currentPos = Vector3(0, 0, 0);
-	for (unsigned int i = 0; i < timeQuaternions.size() - 1; i++)
+	for (unsigned int i = 0; i < m_timeQuaternions.size() - 1; i++)
 	{
-		TimeQuaternion from = timeQuaternions[i];
-		TimeQuaternion to = timeQuaternions[i + 1];
+		TimeQuaternion from = m_timeQuaternions[i];
+		TimeQuaternion to = m_timeQuaternions[i + 1];
 		float slerpFactor = 0;
 		for (unsigned int t = from.m_t; t < to.m_t; t++)
 		{
@@ -192,7 +203,12 @@ void Map::createRandomMap(unsigned int length, unsigned int width)
 	}
 	m_rotationalSpline.addPoint(m_rotationalSpline.getPoint(m_rotationalSpline.getNumPoints() - 1));
 	m_pointsSpline.addPoint(currentPos);
+}
 
+//|||||||||||||||||||||||||||||||||||||||||||||||
+
+void Map::generateMesh()
+{
 	Ogre::ManualObject* plane = new Ogre::ManualObject("plane");
 	plane->estimateIndexCount(m_length * m_width * 4);
 	plane->estimateVertexCount(m_length * m_width * 4);
@@ -249,9 +265,9 @@ void Map::createRandomMap(unsigned int length, unsigned int width)
 			plane->position(posPlus50Up.x, posPlus50Up.y, posPlus50Up.z); plane->normal((quat * Vector3(1, 1, 1)).normalisedCopy()); plane->textureCoord(1, 0);
 			plane->position(nextPosPlus50Up.x, nextPosPlus50Up.y, nextPosPlus50Up.z); plane->normal((quat * Vector3(1, 1, -1)).normalisedCopy()); plane->textureCoord(1, 1);
 
-			if (m_cubes[planeNum / (double) width][planeNum % width] != HOLE)
+			if (m_cubes[planeNum / (double) m_width][planeNum % m_width] != HOLE)
 			{
-				if (m_cubes[planeNum / (double) width][planeNum % width] == NORMAL)
+				if (m_cubes[planeNum / (double) m_width][planeNum % m_width] == NORMAL)
 				{
 					//top
 					plane->triangle(0 + planeNum * 12, 1 + planeNum * 12, 2 + planeNum * 12);
@@ -266,7 +282,7 @@ void Map::createRandomMap(unsigned int length, unsigned int width)
  				plane->triangle(5 + planeNum * 12, 7 + planeNum * 12, 6 + planeNum * 12);
  				plane->triangle(6 + planeNum * 12, 7 + planeNum * 12, 5 + planeNum * 12);
 
-				if (planeNum % width == 0 || m_cubes[planeNum / (double) width][(planeNum - 1) % width] == HOLE)
+				if (planeNum % m_width == 0 || m_cubes[planeNum / (double) m_width][(planeNum - 1) % m_width] == HOLE)
 				{
 					//left
 					plane->triangle(0 + planeNum * 12, 4 + planeNum * 12, 5 + planeNum * 12);
@@ -274,7 +290,7 @@ void Map::createRandomMap(unsigned int length, unsigned int width)
 					plane->triangle(0 + planeNum * 12, 1 + planeNum * 12, 5 + planeNum * 12);
 					plane->triangle(5 + planeNum * 12, 1 + planeNum * 12, 0 + planeNum * 12);
 				}
-				if (planeNum % width == width - 1 || m_cubes[planeNum / (double) width][(planeNum + 1) % width] == HOLE)
+				if (planeNum % m_width == m_width - 1 || m_cubes[planeNum / (double) m_width][(planeNum + 1) % m_width] == HOLE)
 				{
 					//right
 					plane->triangle(2 + planeNum * 12, 6 + planeNum * 12, 7 + planeNum * 12);
@@ -282,7 +298,7 @@ void Map::createRandomMap(unsigned int length, unsigned int width)
 					plane->triangle(2 + planeNum * 12, 3 + planeNum * 12, 7 + planeNum * 12);
 					plane->triangle(7 + planeNum * 12, 3 + planeNum * 12, 2 + planeNum * 12);
 				}
-				if (planeNum / (double) width >= m_length - 1 || m_cubes[(planeNum + width) / (double) width][planeNum % width] == HOLE)
+				if (planeNum / (double) m_width >= m_length - 1 || m_cubes[(planeNum + m_width) / (double) m_width][planeNum % m_width] == HOLE)
 				{
 					//back
 					plane->triangle(5 + planeNum * 12, 7 + planeNum * 12, 1 + planeNum * 12);
@@ -290,7 +306,7 @@ void Map::createRandomMap(unsigned int length, unsigned int width)
 					plane->triangle(1 + planeNum * 12, 3 + planeNum * 12, 7 + planeNum * 12);
 					plane->triangle(7 + planeNum * 12, 3 + planeNum * 12, 1 + planeNum * 12);
 				}
-				if (planeNum / (double) width <= width || m_cubes[(planeNum - width) / (double) width][planeNum % width] == HOLE)
+				if (planeNum / (double) m_width <= m_width || m_cubes[(planeNum - m_width) / (double) m_width][planeNum % m_width] == HOLE)
 				{
 					//front
 					plane->triangle(2 + planeNum * 12, 6 + planeNum * 12, 4 + planeNum * 12);
@@ -300,7 +316,7 @@ void Map::createRandomMap(unsigned int length, unsigned int width)
 				}
 
 			}
-			if (m_cubes[planeNum / (double) width][planeNum % width] == OBSTACLE)
+			if (m_cubes[planeNum / (double) m_width][planeNum % m_width] == OBSTACLE)
 			{
 				//top
 				plane->triangle(8 + planeNum * 12, 9 + planeNum * 12, 10 + planeNum * 12);
@@ -308,7 +324,7 @@ void Map::createRandomMap(unsigned int length, unsigned int width)
 				plane->triangle(9 + planeNum * 12, 11 + planeNum * 12, 10 + planeNum * 12);
 				plane->triangle(10 + planeNum * 12, 11 + planeNum * 12, 9 + planeNum * 12);
 
-				if (planeNum % width == 0 || m_cubes[planeNum / (double) width][(planeNum - 1) % width] != OBSTACLE)
+				if (planeNum % m_width == 0 || m_cubes[planeNum / (double) m_width][(planeNum - 1) % m_width] != OBSTACLE)
 				{
 					//left
 					plane->triangle(0 + planeNum * 12, 8 + planeNum * 12, 9 + planeNum * 12);
@@ -316,7 +332,7 @@ void Map::createRandomMap(unsigned int length, unsigned int width)
 					plane->triangle(0 + planeNum * 12, 1 + planeNum * 12, 9 + planeNum * 12);
 					plane->triangle(9 + planeNum * 12, 1 + planeNum * 12, 0 + planeNum * 12);
 				}
-				if (planeNum % width == width - 1 || m_cubes[planeNum / (double) width][(planeNum + 1) % width] != OBSTACLE)
+				if (planeNum % m_width == m_width - 1 || m_cubes[planeNum / (double) m_width][(planeNum + 1) % m_width] != OBSTACLE)
 				{
 					//right
 					plane->triangle(2 + planeNum * 12, 10 + planeNum * 12, 11 + planeNum * 12);
@@ -324,7 +340,7 @@ void Map::createRandomMap(unsigned int length, unsigned int width)
 					plane->triangle(2 + planeNum * 12, 3 + planeNum * 12, 11 + planeNum * 12);
 					plane->triangle(11 + planeNum * 12, 3 + planeNum * 12, 2 + planeNum * 12);
 				}
-				if (planeNum / (double) width >= m_length - 1 || m_cubes[(planeNum + width) / (double) width][planeNum % width] != OBSTACLE)
+				if (planeNum / (double) m_width >= m_length - 1 || m_cubes[(planeNum + m_width) / (double) m_width][planeNum % m_width] != OBSTACLE)
 				{
 					//back
 					plane->triangle(9 + planeNum * 12, 11 + planeNum * 12, 1 + planeNum * 12);
@@ -332,7 +348,7 @@ void Map::createRandomMap(unsigned int length, unsigned int width)
 					plane->triangle(1 + planeNum * 12, 3 + planeNum * 12, 11 + planeNum * 12);
 					plane->triangle(11 + planeNum * 12, 3 + planeNum * 12, 1 + planeNum * 12);
 				}
-				if (planeNum / (double) width <= width || m_cubes[(planeNum - width) / (double) width][planeNum % width] != OBSTACLE)
+				if (planeNum / (double) m_width <= m_width || m_cubes[(planeNum - m_width) / (double) m_width][planeNum % m_width] != OBSTACLE)
 				{
 					//front
 					plane->triangle(2 + planeNum * 12, 10 + planeNum * 12, 8 + planeNum * 12);
@@ -346,17 +362,6 @@ void Map::createRandomMap(unsigned int length, unsigned int width)
 
 		pos = pos + quat * Ogre::Vector3(0, 0, -100);
 	}  
-
-	/*for (int i = 0; i < m_width * m_length; i++)
-	{
-		if (m_cubes[i / (double) width][i % width])
-		{
-			plane->triangle(0 + i * 4, 1 + i * 4, 2 + i * 4);
-			plane->triangle(2 + i * 4, 1 + i * 4, 0 + i * 4);
-			plane->triangle(1 + i * 4, 3 + i * 4, 2 + i * 4);
-			plane->triangle(2 + i * 4, 3 + i * 4, 1 + i * 4);
-		}
-	}*/
 
 	plane->end();
 	plane->setCastShadows(false);
