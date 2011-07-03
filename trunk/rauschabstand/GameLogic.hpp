@@ -67,6 +67,12 @@ private:
 
 	Real				m_blockMs;
 	Real				m_blockMsSide;
+
+	// COUNTDOWN BEGIN
+	OverlayManager& overlayManager;
+	OverlayContainer* m_countDown;
+	Overlay* overlayCountDown;
+	// COUNTDOWN END
 };
 
 //|||||||||||||||||||||||||||||||||||||||||||||||

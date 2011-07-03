@@ -4,7 +4,7 @@
 
 //|||||||||||||||||||||||||||||||||||||||||||||||
 
-GameLogic::GameLogic(SceneManager* sceneMgr, Camera* camera, AudioPlayer* audioPlayer)
+GameLogic::GameLogic(SceneManager* sceneMgr, Camera* camera, AudioPlayer* audioPlayer) : overlayManager(Ogre::OverlayManager::getSingleton())
 {
 	m_gameLogicStates = INIT;
 
@@ -12,7 +12,7 @@ GameLogic::GameLogic(SceneManager* sceneMgr, Camera* camera, AudioPlayer* audioP
 	m_camera = camera;
 	m_audioPlayer = audioPlayer;
 
-	m_blockMs = Real(0.015);
+	m_blockMs = Real(0.0175);
 	m_blockMsSide = Real(0.9);
 
 	m_mapGenerator = new MapGenerator("map01", m_sceneMgr, 84 * m_blockMs * 1000, 10);
@@ -25,6 +25,32 @@ GameLogic::GameLogic(SceneManager* sceneMgr, Camera* camera, AudioPlayer* audioP
 	m_multiplier = 1;
 	m_timeCloseToHole = 0;
 	m_countdownTime = 0;
+
+
+	// COUNTDOWN BEGIN
+	//overlayManager = Ogre::OverlayManager::getSingleton();
+	m_countDown = 0;
+	overlayCountDown = 0;
+
+	// create material
+	MaterialManager& materialManager = Ogre::MaterialManager::getSingleton();
+	for(int i = 1; i < 4; i++) {
+		MaterialPtr material = materialManager.create("CountDown" + Ogre::StringConverter::toString(i), "General");
+		material->getTechnique(0)->getPass(0)->createTextureUnitState("rauschabstand Visuals/Num_" + Ogre::StringConverter::toString(i) + ".png");
+		material->getTechnique(0)->getPass(0)->setDepthCheckEnabled(false);
+		material->getTechnique(0)->getPass(0)->setDepthWriteEnabled(false);
+		material->getTechnique(0)->getPass(0)->setLightingEnabled(false);
+		material->getTechnique(0)->getPass(0)->setSceneBlending(Ogre::SBT_TRANSPARENT_ALPHA);
+	}
+
+	m_countDown = static_cast<OverlayContainer*>(overlayManager.createOverlayElement("Panel", "CountDown"));
+	m_countDown->setPosition(0.4, 0.4);
+	m_countDown->setDimensions(0.2, 0.2);
+	m_countDown->setMaterialName("CountDown3");
+	overlayCountDown = overlayManager.create("Overlay_CountDown");
+	overlayCountDown->add2D(m_countDown);
+	overlayCountDown->hide();
+	// COUNTDOWN END
 }
 
 GameLogic::~GameLogic()
@@ -53,10 +79,60 @@ void GameLogic::reset()
 
 void GameLogic::update(Ogre::Real timeSinceLastFrame)
 {
+	Ogre::Real tdif = m_blockMs * timeSinceLastFrame;
+	m_t += tdif;
+	m_score += (unsigned long) (m_multiplier * tdif * 100);
+	m_t = m_t >= m_map->getLength() ? m_map->getLength() : m_t;
+
+	if (m_player->getJumpHeight() < DEADHEIGHT)
+	{
+		m_t = 0;
+		m_u = 0;
+		m_player->resetToStart();
+	}
+
+	if (m_map->isCloseToHole(m_t, m_u, 50))
+	{
+		m_timeCloseToHole += timeSinceLastFrame;
+		if (m_timeCloseToHole > 80)
+		{
+			m_multiplier++;
+			m_timeCloseToHole = 0;
+		}
+	}
+	else
+	{
+		m_timeCloseToHole = 0;
+	}
+
+	m_player->update(timeSinceLastFrame, m_t, m_u);
+
+
+
+	if (m_gameLogicStates == COUNTDOWN) {
+		m_score = 0;
+
+		m_countdownTime += timeSinceLastFrame;
+
+		if (m_countdownTime >= 7000 && m_countdownTime < 8000) {
+			overlayCountDown->show();
+		} else if (m_countdownTime >= 8000 && m_countdownTime < 9000) {
+			m_countDown->setMaterialName("CountDown2");
+		} else if (m_countdownTime >= 9000 && m_countdownTime < 10000) {
+			m_countDown->setMaterialName("CountDown1");
+		} else if (m_countdownTime > 10000) {
+			overlayCountDown->hide();
+
+			m_gameLogicStates = RUNNING;
+			m_audioPlayer->play();
+		}
+	}
+
+	/*
 	//TODO countdown
 	if (m_gameLogicStates == COUNTDOWN) {
 		m_countdownTime += timeSinceLastFrame;
-		if (m_countdownTime > 5000)
+		if (m_countdownTime > 10000)
 		{
 			m_gameLogicStates = RUNNING;
 			m_audioPlayer->play();
@@ -92,6 +168,7 @@ void GameLogic::update(Ogre::Real timeSinceLastFrame)
 
 		m_player->update(timeSinceLastFrame, m_t, m_u);
 	}
+	*/
 }
 
 void GameLogic::update(Ogre::Real elapsedTime, OIS::Keyboard* input) {

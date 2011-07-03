@@ -11,7 +11,7 @@ using namespace Ogre;
 
 //|||||||||||||||||||||||||||||||||||||||||||||||
 
-Visuals::Visuals(SceneManager* pSceneMgr, Map* map) : m_numberOfCubesCreated(0), m_countTime(0.0), m_pSceneMgr(pSceneMgr), m_map(map)
+Visuals::Visuals(SceneManager* pSceneMgr, Map* map) : m_numberOfCubesCreated(0), m_countTime(0.0), m_pSceneMgr(pSceneMgr), m_map(map), timeLowered(false)
 {
 	// filling up audioData with double vectors
 	for (int i=0; i<BAR_COUNT; ++i)
@@ -174,8 +174,107 @@ void Visuals::parseAudioData() {
 
 //|||||||||||||||||||||||||||||||||||||||||||||||
 
+void Visuals::countDownVisuals(void) {
+		if (m_countTime < 10000 && m_countTime > 9500)
+		{
+			for (int i=0; i<BAR_COUNT; ++i)
+			{
+				for (int j=CUBE_COUNT-1; j>0; --j)
+				{
+					m_staticCubes[i][j]->setVisible(false);
+				}
+			}
+
+			if (!timeLowered)
+			{
+				m_countTime -= 10000;
+				timeLowered = true;
+			}
+		} else if (m_countTime < 9500 && m_countTime > 9000)
+		{
+			for (int i=0; i<BAR_COUNT; ++i)
+			{
+				for (int j=CUBE_COUNT-1; j>1; --j)
+				{
+					m_staticCubes[i][j]->setVisible(false);
+				}
+			}
+		} else if (m_countTime < 9000 && m_countTime > 8500)
+		{
+			for (int i=0; i<BAR_COUNT; ++i)
+			{
+				for (int j=CUBE_COUNT-1; j>2; --j)
+				{
+					m_staticCubes[i][j]->setVisible(false);
+				}
+			}
+		} else if (m_countTime < 8500 && m_countTime > 7500)
+		{
+			for (int i=0; i<BAR_COUNT; ++i)
+			{
+				for (int j=CUBE_COUNT-1; j>3; --j)
+				{
+					m_staticCubes[i][j]->setVisible(false);
+				}
+			}
+		} else if (m_countTime < 7500 && m_countTime > 7000)
+		{
+			for (int i=0; i<BAR_COUNT; ++i)
+			{
+				for (int j=CUBE_COUNT-1; j>4; --j)
+				{
+					m_staticCubes[i][j]->setVisible(false);
+				}
+			}
+		} else if (m_countTime < 7000 && m_countTime > 6500)
+		{
+			for (int i=0; i<BAR_COUNT; ++i)
+			{
+				for (int j=CUBE_COUNT-1; j>5; --j)
+				{
+					m_staticCubes[i][j]->setVisible(false);
+				}
+			}
+		} else if (m_countTime < 6500 && m_countTime > 6000)
+		{
+			for (int i=0; i<BAR_COUNT; ++i)
+			{
+				for (int j=CUBE_COUNT-1; j>6; --j)
+				{
+					m_staticCubes[i][j]->setVisible(false);
+				}
+			}
+		} else if (m_countTime < 6000 && m_countTime > 5500)
+		{
+			for (int i=0; i<BAR_COUNT; ++i)
+			{
+				for (int j=CUBE_COUNT-1; j>7; --j)
+				{
+					m_staticCubes[i][j]->setVisible(false);
+				}
+			}
+		} else if (m_countTime < 5500 && m_countTime > 5000)
+		{
+			for (int i=0; i<BAR_COUNT; ++i)
+			{
+				for (int j=CUBE_COUNT-1; j>8; --j)
+				{
+					m_staticCubes[i][j]->setVisible(false);
+				}
+			}
+		}
+}
+
+//|||||||||||||||||||||||||||||||||||||||||||||||
+
 void Visuals::updateVisual(Ogre::Real timeSinceLastFrame) {
 	m_countTime += timeSinceLastFrame;
+
+	// COUNTDOWN_BEGIN
+	if (!timeLowered && m_countTime < 10000) {
+		countDownVisuals();
+	} else {
+	// COUNTDOWN_END
 	
 	// TODO automate interval determination (-> no manual input of 370ms interval window
 	static int timeChanged = 0;	// making sure the visual bars are just updated when needed
@@ -196,6 +295,10 @@ void Visuals::updateVisual(Ogre::Real timeSinceLastFrame) {
 		}
 
 		timeChanged = currentTime;
+	}
+
+
+
 	}
 	
 }
@@ -247,6 +350,10 @@ void Visuals::createVisuals() {
 
 			// building staticGeometry
 			m_staticCubes[i][j]->build();
+
+			if (j != 0) {
+				//m_staticCubes[i][j]->setVisible(false);
+			}
 		}
 	}
 

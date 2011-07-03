@@ -336,10 +336,8 @@ void GameState::update(Ogre::Real timeSinceLastFrame)
 	static int countdown = 0;
 	countdown += timeSinceLastFrame;
 
-	if (countdown > 5000)
-	{
-		m_visuals->updateVisual(timeSinceLastFrame);
-	}
+	m_visuals->updateVisual(timeSinceLastFrame);
+	
 	// AUDIO-VISUALS end
 
 	

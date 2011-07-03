@@ -23,74 +23,6 @@ Map::Map(std::string name, SceneManager* sceneMgr,
 
 //|||||||||||||||||||||||||||||||||||||||||||||||
 
-void lightBump(std::vector<TimeQuaternion>& timeQuaternions, int degree, int time, 
-	TimeQuaternion& timeQuat1, TimeQuaternion& timeQuat2, TimeQuaternion& timeQuat3, TimeQuaternion& timeQuat4) {
-
-		timeQuat1.m_t = time;
-		timeQuat1.m_quanternion = Quaternion(Degree(degree), Vector3(1, 0, 0));
-		timeQuaternions.push_back(timeQuat1);
-		timeQuat2.m_t = time+1;
-		timeQuat2.m_quanternion = Quaternion(Degree(-degree), Vector3(1, 0, 0));
-		timeQuaternions.push_back(timeQuat2);
-		timeQuat3.m_t = time+2;
-		timeQuat3.m_quanternion = Quaternion(Degree(-degree), Vector3(1, 0, 0));
-		timeQuaternions.push_back(timeQuat3);
-		timeQuat4.m_t = time+3;
-		timeQuat4.m_quanternion = Quaternion(Degree(degree), Vector3(1, 0, 0));
-		timeQuaternions.push_back(timeQuat4);
-}
-
-//|||||||||||||||||||||||||||||||||||||||||||||||
-
-void mediumRaise(std::vector<TimeQuaternion>& timeQuaternions, int degree, int time, 
-	TimeQuaternion& timeQuat1, TimeQuaternion& timeQuat2) {
-
-		timeQuat1.m_t = time;
-		timeQuat1.m_quanternion = Quaternion(Degree(degree), Vector3(1, 0, 0));
-		timeQuaternions.push_back(timeQuat1);
-		timeQuat2.m_t = time+5;
-		timeQuat2.m_quanternion = Quaternion(Degree(-degree), Vector3(1, 0, 0));
-		timeQuaternions.push_back(timeQuat2);
-}
-
-//|||||||||||||||||||||||||||||||||||||||||||||||
-
-void sideRollUp(std::vector<TimeQuaternion>& timeQuaternions, int degree, int time, 
-	TimeQuaternion& timeQuat1, TimeQuaternion& timeQuat2) {
-
-		timeQuat1.m_t = time;
-		timeQuat1.m_quanternion = Quaternion(1, 0, 0, 0);
-		timeQuaternions.push_back(timeQuat1);
-		timeQuat2.m_t = time+60;
-		timeQuat2.m_quanternion = Quaternion(Degree(degree), Vector3(0, -1, 1));
-		timeQuaternions.push_back(timeQuat2);
-}
-
-//|||||||||||||||||||||||||||||||||||||||||||||||
-
-void sideRollDown(std::vector<TimeQuaternion>& timeQuaternions, int degree, int time, 
-	TimeQuaternion& timeQuat1, TimeQuaternion& timeQuat2) {
-
-		timeQuat1.m_t = time;
-		timeQuat1.m_quanternion = Quaternion(1, 0, 0, 0);
-		timeQuaternions.push_back(timeQuat1);
-		timeQuat2.m_t = time+60;
-		timeQuat2.m_quanternion = Quaternion(Degree(degree), Vector3(0, 1, 1));
-		timeQuaternions.push_back(timeQuat2);
-}
-
-//|||||||||||||||||||||||||||||||||||||||||||||||
-
-void Raise(std::vector<TimeQuaternion>& timeQuaternions, int degree, int time, 
-	TimeQuaternion& timeQuat1, TimeQuaternion& timeQuat2, TimeQuaternion& timeQuat3, TimeQuaternion& timeQuat4) {
-
-		lightBump(timeQuaternions, degree, time, timeQuat1, timeQuat2, timeQuat3, timeQuat4);
-		lightBump(timeQuaternions, degree, time+12, timeQuat1, timeQuat2, timeQuat3, timeQuat4);
-		lightBump(timeQuaternions, degree, time+24, timeQuat1, timeQuat2, timeQuat3, timeQuat4);
-}
-
-//|||||||||||||||||||||||||||||||||||||||||||||||
-
 void Map::resetCubes() 
 {
 	for (unsigned int i = 0; i < m_length; i++)
@@ -176,6 +108,34 @@ void Map::setTimeQuaternions()
 	TimeQuaternion timeQuat6;
 	TimeQuaternion timeQuat7;
 
+	timeQuat.m_t = 112;
+	timeQuat.m_quanternion = Quaternion(1, 0, 0, 0);
+	m_timeQuaternions.push_back(timeQuat);
+
+	timeQuat1.m_t = 120;
+	timeQuat1.m_quanternion = Quaternion(Degree(5), Vector3(1, 0, 0));
+	m_timeQuaternions.push_back(timeQuat1);
+	timeQuat2.m_t = 124;
+	timeQuat2.m_quanternion = Quaternion(Degree(-10), Vector3(1, 0, 0));
+	m_timeQuaternions.push_back(timeQuat2);
+	timeQuat3.m_t = 132;
+	timeQuat3.m_quanternion = Quaternion(Degree(10), Vector3(1, 0, 0));
+	m_timeQuaternions.push_back(timeQuat3);
+	timeQuat4.m_t = 136;
+	timeQuat4.m_quanternion = Quaternion(Degree(-10), Vector3(1, 0, 0));
+	m_timeQuaternions.push_back(timeQuat4);
+	timeQuat4.m_t = 144;
+	timeQuat4.m_quanternion = Quaternion(Degree(10), Vector3(1, 0, 0));
+	m_timeQuaternions.push_back(timeQuat4);
+	timeQuat4.m_t = 148;
+	timeQuat4.m_quanternion = Quaternion(Degree(-10), Vector3(1, 0, 0));
+	m_timeQuaternions.push_back(timeQuat4);
+
+	timeQuat.m_t = 156;
+	timeQuat.m_quanternion = Quaternion(1, 0, 0, 0);
+	m_timeQuaternions.push_back(timeQuat);
+
+	/*
 	Raise(m_timeQuaternions, 3, 4, timeQuat1, timeQuat2, timeQuat3, timeQuat4);
 	mediumRaise(m_timeQuaternions, 15, 48, timeQuat1, timeQuat2);
 	Raise(m_timeQuaternions, 3, 59, timeQuat1, timeQuat2, timeQuat3, timeQuat4);
@@ -206,6 +166,7 @@ void Map::setTimeQuaternions()
 	lightBump(m_timeQuaternions, 5, 698, timeQuat1, timeQuat2, timeQuat3, timeQuat4);
 	lightBump(m_timeQuaternions, 5, 712, timeQuat1, timeQuat2, timeQuat3, timeQuat4);
 	lightBump(m_timeQuaternions, 5, 726, timeQuat1, timeQuat2, timeQuat3, timeQuat4);
+	*/
 
 	TimeQuaternion timeQuat0;
 	timeQuat0.m_t = m_length;
@@ -501,4 +462,77 @@ bool Map::isCloseToHole(double t, double u, double closeDistance)
 	return false;
 }
 
+//|||||||||||||||||||||||||||||||||||||||||||||||
+
+
+
+// HELPER FUNCTIONS
+/*
+void lightBump(std::vector<TimeQuaternion>& timeQuaternions, int degree, int time, 
+	TimeQuaternion& timeQuat1, TimeQuaternion& timeQuat2, TimeQuaternion& timeQuat3, TimeQuaternion& timeQuat4) {
+
+		timeQuat1.m_t = time;
+		timeQuat1.m_quanternion = Quaternion(Degree(degree), Vector3(1, 0, 0));
+		timeQuaternions.push_back(timeQuat1);
+		timeQuat2.m_t = time+1;
+		timeQuat2.m_quanternion = Quaternion(Degree(-degree), Vector3(1, 0, 0));
+		timeQuaternions.push_back(timeQuat2);
+		timeQuat3.m_t = time+2;
+		timeQuat3.m_quanternion = Quaternion(Degree(-degree), Vector3(1, 0, 0));
+		timeQuaternions.push_back(timeQuat3);
+		timeQuat4.m_t = time+3;
+		timeQuat4.m_quanternion = Quaternion(Degree(degree), Vector3(1, 0, 0));
+		timeQuaternions.push_back(timeQuat4);
+}
+
+//|||||||||||||||||||||||||||||||||||||||||||||||
+
+void mediumRaise(std::vector<TimeQuaternion>& timeQuaternions, int degree, int time, 
+	TimeQuaternion& timeQuat1, TimeQuaternion& timeQuat2) {
+
+		timeQuat1.m_t = time;
+		timeQuat1.m_quanternion = Quaternion(Degree(degree), Vector3(1, 0, 0));
+		timeQuaternions.push_back(timeQuat1);
+		timeQuat2.m_t = time+5;
+		timeQuat2.m_quanternion = Quaternion(Degree(-degree), Vector3(1, 0, 0));
+		timeQuaternions.push_back(timeQuat2);
+}
+
+//|||||||||||||||||||||||||||||||||||||||||||||||
+
+void Raise(std::vector<TimeQuaternion>& timeQuaternions, int degree, int time, 
+	TimeQuaternion& timeQuat1, TimeQuaternion& timeQuat2, TimeQuaternion& timeQuat3, TimeQuaternion& timeQuat4) {
+
+		lightBump(timeQuaternions, degree, time, timeQuat1, timeQuat2, timeQuat3, timeQuat4);
+		lightBump(timeQuaternions, degree, time+12, timeQuat1, timeQuat2, timeQuat3, timeQuat4);
+		lightBump(timeQuaternions, degree, time+24, timeQuat1, timeQuat2, timeQuat3, timeQuat4);
+}
+
+
+//|||||||||||||||||||||||||||||||||||||||||||||||
+
+void sideRollUp(std::vector<TimeQuaternion>& timeQuaternions, int degree, int time, 
+TimeQuaternion& timeQuat1, TimeQuaternion& timeQuat2) {
+
+timeQuat1.m_t = time;
+timeQuat1.m_quanternion = Quaternion(1, 0, 0, 0);
+timeQuaternions.push_back(timeQuat1);
+timeQuat2.m_t = time+60;
+timeQuat2.m_quanternion = Quaternion(Degree(degree), Vector3(0, -1, 1));
+timeQuaternions.push_back(timeQuat2);
+}
+
+//|||||||||||||||||||||||||||||||||||||||||||||||
+
+void sideRollDown(std::vector<TimeQuaternion>& timeQuaternions, int degree, int time, 
+TimeQuaternion& timeQuat1, TimeQuaternion& timeQuat2) {
+
+timeQuat1.m_t = time;
+timeQuat1.m_quanternion = Quaternion(1, 0, 0, 0);
+timeQuaternions.push_back(timeQuat1);
+timeQuat2.m_t = time+60;
+timeQuat2.m_quanternion = Quaternion(Degree(degree), Vector3(0, 1, 1));
+timeQuaternions.push_back(timeQuat2);
+}
+*/
 //|||||||||||||||||||||||||||||||||||||||||||||||

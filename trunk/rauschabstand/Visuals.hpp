@@ -34,10 +34,14 @@ private:
 	Map*						m_map;
 	int							m_numberOfCubesCreated;
 
+	bool						timeLowered;
+
 	// helper methods for creating visuals
 	void		createVisualBar(const Ogre::Vector3& position, const Ogre::Quaternion& orienation = Quaternion::IDENTITY);
 	MaterialPtr	getMaterial(std::string name, int red, int green, int blue, int alpha);
 	void		parseAudioData(void);
+
+	void		countDownVisuals(void);
 };
 
 //|||||||||||||||||||||||||||||||||||||||||||||||
