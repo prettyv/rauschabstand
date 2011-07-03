@@ -108,8 +108,8 @@ bool GameState::pause()
 void GameState::resume()
 {
     OgreFramework::getSingletonPtr()->m_pLog->logMessage("Resuming GameState...");
-
-	Ogre::CompositorManager::getSingleton().setCompositorEnabled(OgreFramework::getSingletonPtr()->m_pViewport, "Bloom", true);
+    OgreFramework::getSingletonPtr()->m_pViewport->setCamera(m_pCamera);
+    m_bQuit = false;
 
 	//HUD - Visuals
 	m_gameView->resumeGame();
@@ -117,8 +117,7 @@ void GameState::resume()
 
 	m_audioPlayer->play();
 
-    OgreFramework::getSingletonPtr()->m_pViewport->setCamera(m_pCamera);
-    m_bQuit = false;
+    Ogre::CompositorManager::getSingleton().setCompositorEnabled(OgreFramework::getSingletonPtr()->m_pViewport, "Bloom", true);
 }
 
 //|||||||||||||||||||||||||||||||||||||||||||||||
