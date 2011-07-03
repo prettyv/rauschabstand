@@ -184,12 +184,6 @@ void Visuals::countDownVisuals(void) {
 					m_staticCubes[i][j]->setVisible(false);
 				}
 			}
-
-			if (!timeLowered)
-			{
-				m_countTime -= 10000;
-				timeLowered = true;
-			}
 		} else if (m_countTime < 9500 && m_countTime > 9000)
 		{
 			for (int i=0; i<BAR_COUNT; ++i)
@@ -275,6 +269,11 @@ void Visuals::updateVisual(Ogre::Real timeSinceLastFrame) {
 		countDownVisuals();
 	} else {
 	// COUNTDOWN_END
+		if (!timeLowered)
+		{
+			m_countTime -= 10000;
+			timeLowered = true;
+		}
 	
 	// TODO automate interval determination (-> no manual input of 370ms interval window
 	static int timeChanged = 0;	// making sure the visual bars are just updated when needed
