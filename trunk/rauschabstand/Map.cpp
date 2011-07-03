@@ -123,6 +123,44 @@ void Map::setCubesRow(int start, unsigned int length, HolesOrObstacles holeOrObs
 
 //|||||||||||||||||||||||||||||||||||||||||||||||
 
+void Map::setCubes(int start, unsigned int length, int startV, unsigned int width, HolesOrObstacles holeOrObstacle)
+{
+	start = start < 0 ? m_length + start : start;
+	startV = startV < 0 ? m_width + startV : startV;
+
+	for (unsigned int i = start; i < start + length && i < m_length; i++)
+	{
+		std::vector<HolesOrObstacles> row = m_cubes[i];
+		for (unsigned int j = startV; j < startV + width && j < m_width; j++)
+		{
+			row[j] = holeOrObstacle;
+		}
+		m_cubes[i] = row;
+	}
+}
+
+//|||||||||||||||||||||||||||||||||||||||||||||||
+
+void Map::setCubesRadius(int x, int y, unsigned int radius, HolesOrObstacles holeOrObstacle) 
+{
+	//x = x < 0 ? m_length + x : x;
+
+	int start = x - radius - 1 < 0 ? 0 : x - radius - 1;
+	for (unsigned int i = start; i < x + radius + 1 && i < m_length; i++) {
+		std::vector<HolesOrObstacles> row = m_cubes[i];
+		for (unsigned int j = 0; j < m_width; j++)
+		{
+			if (pow((double) i - (double) x, 2) + pow((double) j - (double) y, 2) <= pow((double) radius, 2))
+			{
+				row[j] = holeOrObstacle;
+			}
+		}
+		m_cubes[i] = row;
+	}
+}
+
+//|||||||||||||||||||||||||||||||||||||||||||||||
+
 void Map::setTimeQuaternions() 
 {
 	TimeQuaternion timeQuat;

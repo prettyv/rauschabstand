@@ -8,6 +8,8 @@
 #include <string>
 #include <vector>
 #include <sstream>
+#include <stdio.h>
+#include <stdlib.h>
 
 #include "AdvancedOgreFramework.hpp"
 
@@ -39,6 +41,8 @@ public:
 	//setCubes:
 	void resetCubes();
 	void setCubesRow(int start, unsigned int length, HolesOrObstacles holeOrObstacle);
+	void setCubes(int start, unsigned int length, int startV, unsigned int width, HolesOrObstacles holeOrObstacle);
+	void setCubesRadius(int x, int y, unsigned int radius, HolesOrObstacles holeOrObstacle);
 
 	void setTimeQuaternions();
 	void addUpTimeQuaternions();
