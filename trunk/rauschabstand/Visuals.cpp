@@ -213,6 +213,7 @@ void Visuals::createVisuals() {
 	MaterialPtr orange = getMaterial("orange", 255, 160, 0, 180);
 	MaterialPtr red = getMaterial("red", 210, 0, 0, 180);
 	*/
+	/*
 	MaterialPtr lightblue1 = getMaterial("lightblue1", 209, 237, 255, 160);
 	MaterialPtr lightblue2 = getMaterial("lightblue2", 152, 215, 255, 165);
 	MaterialPtr lightblue3 = getMaterial("lightblue3", 96, 193, 255, 170);
@@ -223,7 +224,7 @@ void Visuals::createVisuals() {
 	MaterialPtr darkblue2 = getMaterial("darkblue2", 0, 28, 167, 195);
 	MaterialPtr darkblue3 = getMaterial("darkblue3", 0, 18, 109, 200);
 	MaterialPtr black = getMaterial("black", 0, 21, 82, 205);
-
+	*/
 	// create visuals
 	int width = m_map->getWidth() / 2.0 * 100;
 	for (int i=0; i<m_map->getLength(); i=i+2)
@@ -287,42 +288,42 @@ void Visuals::createVisualBar(const Ogre::Vector3& position, const Ogre::Quatern
 		// EINGABEGROESSE (BARCOUNT, CUBECOUNT) ABHAENGIG!
 		switch (j) {
 		case 0:
-			cubeEntity->setMaterialName("lightblue1");
+			cubeEntity->setMaterialName("glow_lightblue1");
 			break;
 		case 1:
-			cubeEntity->setMaterialName("lightblue2");
+			cubeEntity->setMaterialName("glow_lightblue2");
 			childCubeNode->translate(0, 20, 0, Ogre::Node::TS_LOCAL);
 			break;
 		case 2:
-			cubeEntity->setMaterialName("lightblue3");
+			cubeEntity->setMaterialName("glow_lightblue3");
 			childCubeNode->translate(0, 40, 0, Ogre::Node::TS_LOCAL);
 			break;
 		case 3:
-			cubeEntity->setMaterialName("blue1");
+			cubeEntity->setMaterialName("glow_blue1");
 			childCubeNode->translate(0, 60, 0, Ogre::Node::TS_LOCAL);
 			break;
 		case 4:
-			cubeEntity->setMaterialName("blue2");
+			cubeEntity->setMaterialName("glow_blue2");
 			childCubeNode->translate(0, 80, 0, Ogre::Node::TS_LOCAL);
 			break;
 		case 5:
-			cubeEntity->setMaterialName("blue3");
+			cubeEntity->setMaterialName("glow_blue3");
 			childCubeNode->translate(0, 100, 0, Ogre::Node::TS_LOCAL);
 			break;
 		case 6:
-			cubeEntity->setMaterialName("darkblue1");
+			cubeEntity->setMaterialName("glow_darkblue1");
 			childCubeNode->translate(0, 120, 0, Ogre::Node::TS_LOCAL);
 			break;
 		case 7:
-			cubeEntity->setMaterialName("darkblue2");
+			cubeEntity->setMaterialName("glow_darkblue2");
 			childCubeNode->translate(0, 140, 0, Ogre::Node::TS_LOCAL);
 			break;
 		case 8:
-			cubeEntity->setMaterialName("darkblue3");
+			cubeEntity->setMaterialName("glow_darkblue3");
 			childCubeNode->translate(0, 160, 0, Ogre::Node::TS_LOCAL);
 			break;
 		case 9:
-			cubeEntity->setMaterialName("black");
+			cubeEntity->setMaterialName("glow_black");
 			childCubeNode->translate(0, 180, 0, Ogre::Node::TS_LOCAL);
 			break;
 		}

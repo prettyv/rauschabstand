@@ -1,0 +1,29 @@
+material glow_blue2
+{
+	technique
+	{
+		pass
+		{
+			emissive 1 1 1 1
+			texture_unit
+			{
+				texture glow_blue2.png
+			}
+		}
+	}
+	technique
+	{
+		scheme glow
+		pass
+		{
+			texture_unit
+			{
+			texture glow_blue2.png
+			}
+			ambient 1 1 1
+			diffuse 1 1 1
+			specular 0 0 0 0
+			emissive 1 1 1
+		}
+	}
+}

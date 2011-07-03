@@ -37,6 +37,7 @@
     <ClInclude Include="GameLogic.hpp" />
     <ClInclude Include="GameState.hpp" />
     <ClInclude Include="GameView.hpp" />
+    <ClInclude Include="GlowMaterialListener.h" />
     <ClInclude Include="Map.hpp" />
     <ClInclude Include="MapGenerator.hpp" />
     <ClInclude Include="MenuState.hpp" />

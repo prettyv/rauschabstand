@@ -19,6 +19,9 @@ Player::Player(std::string name, SceneManager* sceneMgr, Camera* camera, Map* ma
 	m_jumpNode = m_sideNode->createChildSceneNode(m_name + "_jumpNode");
 	m_sideRollNode = m_jumpNode->createChildSceneNode(m_name + "_sideRollNode");
     m_playerEntity = m_pSceneMgr->createEntity(m_name, "razor.mesh");
+	// GLOW SHADER BEGIN
+	//m_playerEntity->setMaterialName("glow_playertex");
+	// GLOW SHADER END
 	Ogre::Light* spotLight = m_pSceneMgr->createLight("spotLight");
 	spotLight->setType(Ogre::Light::LT_SPOTLIGHT);
 	spotLight->setDiffuseColour(Ogre::ColourValue(0.9f, 0.8f, 0.8f));

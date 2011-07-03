@@ -5,6 +5,7 @@
 #include <cstdlib>	// For srand() and rand()
 
 #include "GameState.hpp"
+#include "GlowMaterialListener.h"
 
 //|||||||||||||||||||||||||||||||||||||||||||||||
 
@@ -58,11 +59,25 @@ void GameState::enter()
 
 	createScene();
 
-	Ogre::CompositorManager::getSingleton().addCompositor(OgreFramework::getSingletonPtr()->m_pViewport, "Bloom");
-	Ogre::CompositorManager::getSingleton().setCompositorEnabled(OgreFramework::getSingletonPtr()->m_pViewport, "Bloom", true);
+
+	// SHADERS BEGIN
+	//glow for spaceship/audio-visual/map effects
+	{
+		CompositorManager::getSingleton().addCompositor(OgreFramework::getSingletonPtr()->m_pViewport, "Glow");
+		CompositorManager::getSingleton().setCompositorEnabled(OgreFramework::getSingletonPtr()->m_pViewport, "Glow", true);
+		GlowMaterialListener *gml = new GlowMaterialListener();
+		Ogre::MaterialManager::getSingleton().addListener(gml);
+	}
+
+	//bloom as general post-effect
+	//Ogre::CompositorManager::getSingleton().addCompositor(OgreFramework::getSingletonPtr()->m_pViewport, "Bloom");
+	//Ogre::CompositorManager::getSingleton().setCompositorEnabled(OgreFramework::getSingletonPtr()->m_pViewport, "Bloom", true);
+
+	//radial blur for boost
 	//Ogre::CompositorManager::getSingleton().addCompositor(OgreFramework::getSingletonPtr()->m_pViewport, "Radial Blur");
 	//Ogre::CompositorManager::getSingleton().setCompositorEnabled(OgreFramework::getSingletonPtr()->m_pViewport, "Radial Blur", true);
-	
+	//SHADERS END
+
 	/*m_audioPlayer->play();*/
 
 	/*
@@ -92,7 +107,10 @@ bool GameState::pause()
 {
     OgreFramework::getSingletonPtr()->m_pLog->logMessage("Pausing GameState...");
 
-	Ogre::CompositorManager::getSingleton().setCompositorEnabled(OgreFramework::getSingletonPtr()->m_pViewport, "Bloom", false);
+	// SHADERS BEGIN
+	CompositorManager::getSingleton().setCompositorEnabled(OgreFramework::getSingletonPtr()->m_pViewport, "Bloom", false);
+	CompositorManager::getSingleton().setCompositorEnabled(OgreFramework::getSingletonPtr()->m_pViewport, "Glow", false);
+	// SHADERS END
 
 	//HUD - Visuals
 	m_gameView->pauseGame();
@@ -117,7 +135,10 @@ void GameState::resume()
 
 	m_audioPlayer->play();
 
-    Ogre::CompositorManager::getSingleton().setCompositorEnabled(OgreFramework::getSingletonPtr()->m_pViewport, "Bloom", true);
+	// SHADERS BEGIN
+    CompositorManager::getSingleton().setCompositorEnabled(OgreFramework::getSingletonPtr()->m_pViewport, "Bloom", true);
+	CompositorManager::getSingleton().setCompositorEnabled(OgreFramework::getSingletonPtr()->m_pViewport, "Glow", true);
+	// SHADERS END
 }
 
 //|||||||||||||||||||||||||||||||||||||||||||||||
@@ -126,9 +147,13 @@ void GameState::exit()
 {
     OgreFramework::getSingletonPtr()->m_pLog->logMessage("Leaving GameState...");
 
-	Ogre::CompositorManager::getSingleton().setCompositorEnabled(OgreFramework::getSingletonPtr()->m_pViewport, "Bloom", false);
-	Ogre::CompositorManager::getSingleton().removeCompositor(OgreFramework::getSingletonPtr()->m_pViewport, "Bloom");
-	
+	// SHADERS BEGIN
+	CompositorManager::getSingleton().removeCompositor(OgreFramework::getSingletonPtr()->m_pViewport, "Glow");
+	CompositorManager::getSingleton().setCompositorEnabled(OgreFramework::getSingletonPtr()->m_pViewport, "Glow", false);
+
+	CompositorManager::getSingleton().setCompositorEnabled(OgreFramework::getSingletonPtr()->m_pViewport, "Bloom", false);
+	CompositorManager::getSingleton().removeCompositor(OgreFramework::getSingletonPtr()->m_pViewport, "Bloom");
+	// SHADERS END
 
     m_pSceneMgr->destroyCamera(m_pCamera);
     if(m_pSceneMgr)
