@@ -45,6 +45,7 @@ private:
     void updateHUD(Ogre::Real timeSinceLastFrame);
     void updateHUDForDebug(Ogre::Real timeSinceLastFrame);
     void updateScore();
+    void updateMultiplier();
 
 private:
     bool                        m_showHUD;
@@ -63,10 +64,13 @@ private:
     String                      m_materialNameTrack;
     String                      m_materialNameLogo;
     String                      m_materialNameNumbers;
+    String                      m_materialNameX;
+    String                      m_materialNameMult;
     // For Overlays
     OverlayContainer*           m_panelLogo;
     OverlayContainer*           m_panelBoost;
     OverlayContainer*           m_panelTrack;
+    OverlayContainer*           m_panelX;
 
     OverlayContainer*           m_panelNum1;
     OverlayContainer*           m_panelNum2;
@@ -74,6 +78,9 @@ private:
     OverlayContainer*           m_panelNum4;
     OverlayContainer*           m_panelNum5;
     OverlayContainer*           m_panelNum6;
+
+    OverlayContainer*           m_panelMult1;
+    OverlayContainer*           m_panelMult2;
 
     Ogre::Overlay*              m_overlayBoost;
     
@@ -107,6 +114,7 @@ private:
     int                         m_PixelLogoWidth;
     int                         m_PixelLogoHeight;
 
+        //Numbers
     double                      m_PosNum1Left;
     double                      m_PosNum1Top;
     double                      m_PosNum2Left;
@@ -122,8 +130,24 @@ private:
 
     double                      m_DimNumWidth;
     double                      m_DimNumHeight;
-    int                         m_PixelNumWidth;
+    int                         m_PixelNumWidth;    //auch für Mult
     int                         m_PixelNumHeight;
+
+    double                      m_PosMult1Left;
+    double                      m_PosMult1Top;
+    double                      m_PosMult2Left;
+    double                      m_PosMult2Top;
+
+    double                      m_DimMultWidth;
+    double                      m_DimMultHeight;
+        //Numbers End
+
+    double                      m_PosXLeft;
+    double                      m_PosXTop;
+    double                      m_DimXWidth;
+    double                      m_DimXHeight;
+    int                         m_PixelXWidth;
+    int                         m_PixelXHeight;
 
     //Test
     double                      m_positionLogo;
