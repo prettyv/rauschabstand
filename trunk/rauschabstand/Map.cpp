@@ -206,13 +206,14 @@ void Map::interpolateTimeQuaternions()
 
 //|||||||||||||||||||||||||||||||||||||||||||||||
 
-void Map::generateMesh()
+void Map::generateMesh(std::string materialName)
 {
 	Ogre::ManualObject* plane = new Ogre::ManualObject("plane");
+	//TODO: estimate
 	plane->estimateIndexCount(m_length * m_width * 4);
 	plane->estimateVertexCount(m_length * m_width * 4);
 	plane->clear();
-	plane->begin("Examples/Rockwall");
+	plane->begin(materialName);
 	
 	Ogre::Vector3 pos = Ogre::Vector3(0, 0, 0);
 	Ogre::Quaternion quat;
@@ -237,6 +238,7 @@ void Map::generateMesh()
 			Ogre::Vector3 nextPosMinus50 = nextPos + nextQuat * Ogre::Vector3(left, 0, 0);
 			Ogre::Vector3 nextPosPlus50 = nextPos + nextQuat * Ogre::Vector3(right, 0, 0);
 
+			//TODO: fix normals?
 			plane->position(posMinus50.x, posMinus50.y, posMinus50.z); plane->normal((quat * Vector3(0, 1, 0)).normalisedCopy()); plane->textureCoord(1, 1);
 			plane->position(nextPosMinus50.x, nextPosMinus50.y, nextPosMinus50.z); plane->normal((quat * Vector3(0, 1, 0)).normalisedCopy()); plane->textureCoord(1, 0);
 			plane->position(posPlus50.x, posPlus50.y, posPlus50.z); plane->normal((quat * Vector3(0, 1, 0)).normalisedCopy()); plane->textureCoord(0, 1);
@@ -248,117 +250,65 @@ void Map::generateMesh()
 			Ogre::Vector3 nextPosMinus50Down = nextPosMinus50 + nextQuat * Ogre::Vector3(0, down, 0);
 			Ogre::Vector3 nextPosPlus50Down = nextPosPlus50 + nextQuat * Ogre::Vector3(0, down, 0);
 
+			//TODO: fix normals?
 			plane->position(posMinus50Down.x, posMinus50Down.y, posMinus50Down.z); plane->normal((quat * Vector3(-1, -1, 1)).normalisedCopy()); plane->textureCoord(0, 0);
 			plane->position(nextPosMinus50Down.x, nextPosMinus50Down.y, nextPosMinus50Down.z); plane->normal((quat * Vector3(-1, -1, -1)).normalisedCopy()); plane->textureCoord(0, 1);
 			plane->position(posPlus50Down.x, posPlus50Down.y, posPlus50Down.z); plane->normal((quat * Vector3(1, -1, 1)).normalisedCopy()); plane->textureCoord(1, 0);
 			plane->position(nextPosPlus50Down.x, nextPosPlus50Down.y, nextPosPlus50Down.z); plane->normal((quat * Vector3(1, -1, -1)).normalisedCopy()); plane->textureCoord(1, 1);
-
-			Ogre::Vector3 nextPosUp = nextPos + quat * Ogre::Vector3(0, up, 0);
-			Ogre::Vector3 posMinus50Up = posMinus50 + quat * Ogre::Vector3(0, up, 0);
-			Ogre::Vector3 posPlus50Up = posPlus50 + quat * Ogre::Vector3(0, up, 0);
-			Ogre::Vector3 nextPosMinus50Up = nextPosMinus50 + nextQuat * Ogre::Vector3(0, up, 0);
-			Ogre::Vector3 nextPosPlus50Up = nextPosPlus50 + nextQuat * Ogre::Vector3(0, up, 0);
-
-			plane->position(posMinus50Up.x, posMinus50Up.y, posMinus50Up.z); plane->normal((quat * Vector3(-1, 1, 1)).normalisedCopy()); plane->textureCoord(0, 0);
-			plane->position(nextPosMinus50Up.x, nextPosMinus50Up.y, nextPosMinus50Up.z); plane->normal((quat * Vector3(-1, 1, -1)).normalisedCopy()); plane->textureCoord(0, 1);
-			plane->position(posPlus50Up.x, posPlus50Up.y, posPlus50Up.z); plane->normal((quat * Vector3(1, 1, 1)).normalisedCopy()); plane->textureCoord(1, 0);
-			plane->position(nextPosPlus50Up.x, nextPosPlus50Up.y, nextPosPlus50Up.z); plane->normal((quat * Vector3(1, 1, -1)).normalisedCopy()); plane->textureCoord(1, 1);
 
 			if (m_cubes[planeNum / (double) m_width][planeNum % m_width] != HOLE)
 			{
 				if (m_cubes[planeNum / (double) m_width][planeNum % m_width] == NORMAL)
 				{
 					//top
-					plane->triangle(0 + planeNum * 12, 1 + planeNum * 12, 2 + planeNum * 12);
-					plane->triangle(2 + planeNum * 12, 1 + planeNum * 12, 0 + planeNum * 12);
-					plane->triangle(1 + planeNum * 12, 3 + planeNum * 12, 2 + planeNum * 12);
-					plane->triangle(2 + planeNum * 12, 3 + planeNum * 12, 1 + planeNum * 12);
+					plane->triangle(0 + planeNum * 8, 1 + planeNum * 8, 2 + planeNum * 8);
+					plane->triangle(2 + planeNum * 8, 1 + planeNum * 8, 0 + planeNum * 8);
+					plane->triangle(1 + planeNum * 8, 3 + planeNum * 8, 2 + planeNum * 8);
+					plane->triangle(2 + planeNum * 8, 3 + planeNum * 8, 1 + planeNum * 8);
 				}
 
 				//bottom
- 				plane->triangle(4 + planeNum * 12, 5 + planeNum * 12, 6 + planeNum * 12);
- 				plane->triangle(6 + planeNum * 12, 5 + planeNum * 12, 4 + planeNum * 12);
- 				plane->triangle(5 + planeNum * 12, 7 + planeNum * 12, 6 + planeNum * 12);
- 				plane->triangle(6 + planeNum * 12, 7 + planeNum * 12, 5 + planeNum * 12);
+ 				plane->triangle(4 + planeNum * 8, 5 + planeNum * 8, 6 + planeNum * 8);
+ 				plane->triangle(6 + planeNum * 8, 5 + planeNum * 8, 4 + planeNum * 8);
+ 				plane->triangle(5 + planeNum * 8, 7 + planeNum * 8, 6 + planeNum * 8);
+ 				plane->triangle(6 + planeNum * 8, 7 + planeNum * 8, 5 + planeNum * 8);
 
 				if (planeNum % m_width == 0 || m_cubes[planeNum / (double) m_width][(planeNum - 1) % m_width] == HOLE)
 				{
 					//left
-					plane->triangle(0 + planeNum * 12, 4 + planeNum * 12, 5 + planeNum * 12);
-					plane->triangle(5 + planeNum * 12, 4 + planeNum * 12, 0 + planeNum * 12);
-					plane->triangle(0 + planeNum * 12, 1 + planeNum * 12, 5 + planeNum * 12);
-					plane->triangle(5 + planeNum * 12, 1 + planeNum * 12, 0 + planeNum * 12);
+					plane->triangle(0 + planeNum * 8, 4 + planeNum * 8, 5 + planeNum * 8);
+					plane->triangle(5 + planeNum * 8, 4 + planeNum * 8, 0 + planeNum * 8);
+					plane->triangle(0 + planeNum * 8, 1 + planeNum * 8, 5 + planeNum * 8);
+					plane->triangle(5 + planeNum * 8, 1 + planeNum * 8, 0 + planeNum * 8);
 				}
 				if (planeNum % m_width == m_width - 1 || m_cubes[planeNum / (double) m_width][(planeNum + 1) % m_width] == HOLE)
 				{
 					//right
-					plane->triangle(2 + planeNum * 12, 6 + planeNum * 12, 7 + planeNum * 12);
-					plane->triangle(7 + planeNum * 12, 6 + planeNum * 12, 2 + planeNum * 12);
-					plane->triangle(2 + planeNum * 12, 3 + planeNum * 12, 7 + planeNum * 12);
-					plane->triangle(7 + planeNum * 12, 3 + planeNum * 12, 2 + planeNum * 12);
+					plane->triangle(2 + planeNum * 8, 6 + planeNum * 8, 7 + planeNum * 8);
+					plane->triangle(7 + planeNum * 8, 6 + planeNum * 8, 2 + planeNum * 8);
+					plane->triangle(2 + planeNum * 8, 3 + planeNum * 8, 7 + planeNum * 8);
+					plane->triangle(7 + planeNum * 8, 3 + planeNum * 8, 2 + planeNum * 8);
 				}
 				if (planeNum / (double) m_width >= m_length - 1 || m_cubes[(planeNum + m_width) / (double) m_width][planeNum % m_width] == HOLE)
 				{
 					//back
-					plane->triangle(5 + planeNum * 12, 7 + planeNum * 12, 1 + planeNum * 12);
-					plane->triangle(1 + planeNum * 12, 7 + planeNum * 12, 5 + planeNum * 12);
-					plane->triangle(1 + planeNum * 12, 3 + planeNum * 12, 7 + planeNum * 12);
-					plane->triangle(7 + planeNum * 12, 3 + planeNum * 12, 1 + planeNum * 12);
+					plane->triangle(5 + planeNum * 8, 7 + planeNum * 8, 1 + planeNum * 8);
+					plane->triangle(1 + planeNum * 8, 7 + planeNum * 8, 5 + planeNum * 8);
+					plane->triangle(1 + planeNum * 8, 3 + planeNum * 8, 7 + planeNum * 8);
+					plane->triangle(7 + planeNum * 8, 3 + planeNum * 8, 1 + planeNum * 8);
 				}
 				if (planeNum / (double) m_width <= m_width || m_cubes[(planeNum - m_width) / (double) m_width][planeNum % m_width] == HOLE)
 				{
 					//front
-					plane->triangle(2 + planeNum * 12, 6 + planeNum * 12, 4 + planeNum * 12);
-					plane->triangle(4 + planeNum * 12, 6 + planeNum * 12, 2 + planeNum * 12);
-					plane->triangle(0 + planeNum * 12, 4 + planeNum * 12, 2 + planeNum * 12);
-					plane->triangle(2 + planeNum * 12, 4 + planeNum * 12, 0 + planeNum * 12);
+					plane->triangle(2 + planeNum * 8, 6 + planeNum * 8, 4 + planeNum * 8);
+					plane->triangle(4 + planeNum * 8, 6 + planeNum * 8, 2 + planeNum * 8);
+					plane->triangle(0 + planeNum * 8, 4 + planeNum * 8, 2 + planeNum * 8);
+					plane->triangle(2 + planeNum * 8, 4 + planeNum * 8, 0 + planeNum * 8);
 				}
 
-			}
-			if (m_cubes[planeNum / (double) m_width][planeNum % m_width] == OBSTACLE)
-			{
-				//top
-				plane->triangle(8 + planeNum * 12, 9 + planeNum * 12, 10 + planeNum * 12);
-				plane->triangle(10 + planeNum * 12, 9 + planeNum * 12, 8 + planeNum * 12);
-				plane->triangle(9 + planeNum * 12, 11 + planeNum * 12, 10 + planeNum * 12);
-				plane->triangle(10 + planeNum * 12, 11 + planeNum * 12, 9 + planeNum * 12);
-
-				if (planeNum % m_width == 0 || m_cubes[planeNum / (double) m_width][(planeNum - 1) % m_width] != OBSTACLE)
-				{
-					//left
-					plane->triangle(0 + planeNum * 12, 8 + planeNum * 12, 9 + planeNum * 12);
-					plane->triangle(9 + planeNum * 12, 8 + planeNum * 12, 0 + planeNum * 12);
-					plane->triangle(0 + planeNum * 12, 1 + planeNum * 12, 9 + planeNum * 12);
-					plane->triangle(9 + planeNum * 12, 1 + planeNum * 12, 0 + planeNum * 12);
-				}
-				if (planeNum % m_width == m_width - 1 || m_cubes[planeNum / (double) m_width][(planeNum + 1) % m_width] != OBSTACLE)
-				{
-					//right
-					plane->triangle(2 + planeNum * 12, 10 + planeNum * 12, 11 + planeNum * 12);
-					plane->triangle(11 + planeNum * 12, 10 + planeNum * 12, 2 + planeNum * 12);
-					plane->triangle(2 + planeNum * 12, 3 + planeNum * 12, 11 + planeNum * 12);
-					plane->triangle(11 + planeNum * 12, 3 + planeNum * 12, 2 + planeNum * 12);
-				}
-				if (planeNum / (double) m_width >= m_length - 1 || m_cubes[(planeNum + m_width) / (double) m_width][planeNum % m_width] != OBSTACLE)
-				{
-					//back
-					plane->triangle(9 + planeNum * 12, 11 + planeNum * 12, 1 + planeNum * 12);
-					plane->triangle(1 + planeNum * 12, 11 + planeNum * 12, 9 + planeNum * 12);
-					plane->triangle(1 + planeNum * 12, 3 + planeNum * 12, 11 + planeNum * 12);
-					plane->triangle(11 + planeNum * 12, 3 + planeNum * 12, 1 + planeNum * 12);
-				}
-				if (planeNum / (double) m_width <= m_width || m_cubes[(planeNum - m_width) / (double) m_width][planeNum % m_width] != OBSTACLE)
-				{
-					//front
-					plane->triangle(2 + planeNum * 12, 10 + planeNum * 12, 8 + planeNum * 12);
-					plane->triangle(8 + planeNum * 12, 10 + planeNum * 12, 2 + planeNum * 12);
-					plane->triangle(0 + planeNum * 12, 8 + planeNum * 12, 2 + planeNum * 12);
-					plane->triangle(2 + planeNum * 12, 8 + planeNum * 12, 0 + planeNum * 12);
-				}
 			}
 			planeNum++;
 		}
-
 		pos = pos + quat * Ogre::Vector3(0, 0, -100);
 	}  
 
@@ -369,6 +319,112 @@ void Map::generateMesh()
 
 	MeshPtr ptr = plane->convertToMesh("planeMesh");
 	Entity* planeEntity = m_pSceneMgr->createEntity("planeEntity", "planeMesh");
+}
+
+//|||||||||||||||||||||||||||||||||||||||||||||||
+
+void Map::generateMeshObstacles(std::string materialName) 
+{
+	Ogre::ManualObject* obstacles = new Ogre::ManualObject("obstacles");
+	//TODO: estimate
+	obstacles->estimateIndexCount(m_length * m_width * 4);
+	obstacles->estimateVertexCount(m_length * m_width * 4);
+	obstacles->clear();
+	obstacles->begin(materialName);
+
+	Ogre::Vector3 pos = Ogre::Vector3(0, 0, 0);
+	Ogre::Quaternion quat;
+	Ogre::Quaternion nextQuat;
+	unsigned long planeNum = 0;
+	for (unsigned int i = 0; i < m_length; i++)
+	{
+		quat = m_rotationalSpline.getPoint(i);
+		nextQuat = m_rotationalSpline.getPoint(i + 1);
+
+		for (int x = -100 * (m_width / (double) 2), j = 0; (unsigned) j < m_width; j++, x += 100)
+		{
+			int back = -100;
+			int left = x;
+			int right = x + 100;
+			int down = -20 ;
+			int up = 100;
+
+			Ogre::Vector3 nextPos = pos + quat * Ogre::Vector3(0, 0, back);
+			Ogre::Vector3 posMinus50 = pos + quat * Ogre::Vector3(left, 0, 0);
+			Ogre::Vector3 posPlus50 = pos + quat * Ogre::Vector3(right, 0, 0);
+			Ogre::Vector3 nextPosMinus50 = nextPos + nextQuat * Ogre::Vector3(left, 0, 0);
+			Ogre::Vector3 nextPosPlus50 = nextPos + nextQuat * Ogre::Vector3(right, 0, 0);
+
+			//TODO: fix normals
+			obstacles->position(posMinus50.x, posMinus50.y, posMinus50.z); obstacles->normal((quat * Vector3(0, 1, 0)).normalisedCopy()); obstacles->textureCoord(1, 1);
+			obstacles->position(nextPosMinus50.x, nextPosMinus50.y, nextPosMinus50.z); obstacles->normal((quat * Vector3(0, 1, 0)).normalisedCopy()); obstacles->textureCoord(1, 0);
+			obstacles->position(posPlus50.x, posPlus50.y, posPlus50.z); obstacles->normal((quat * Vector3(0, 1, 0)).normalisedCopy()); obstacles->textureCoord(0, 1);
+			obstacles->position(nextPosPlus50.x, nextPosPlus50.y, nextPosPlus50.z); obstacles->normal((quat * Vector3(0, 1, 0)).normalisedCopy()); obstacles->textureCoord(0, 0);
+
+			Ogre::Vector3 nextPosUp = nextPos + quat * Ogre::Vector3(0, up, 0);
+			Ogre::Vector3 posMinus50Up = posMinus50 + quat * Ogre::Vector3(0, up, 0);
+			Ogre::Vector3 posPlus50Up = posPlus50 + quat * Ogre::Vector3(0, up, 0);
+			Ogre::Vector3 nextPosMinus50Up = nextPosMinus50 + nextQuat * Ogre::Vector3(0, up, 0);
+			Ogre::Vector3 nextPosPlus50Up = nextPosPlus50 + nextQuat * Ogre::Vector3(0, up, 0);
+
+			obstacles->position(posMinus50Up.x, posMinus50Up.y, posMinus50Up.z); obstacles->normal((quat * Vector3(-1, 1, 1)).normalisedCopy()); obstacles->textureCoord(0, 0);
+			obstacles->position(nextPosMinus50Up.x, nextPosMinus50Up.y, nextPosMinus50Up.z); obstacles->normal((quat * Vector3(-1, 1, -1)).normalisedCopy()); obstacles->textureCoord(0, 1);
+			obstacles->position(posPlus50Up.x, posPlus50Up.y, posPlus50Up.z); obstacles->normal((quat * Vector3(1, 1, 1)).normalisedCopy()); obstacles->textureCoord(1, 0);
+			obstacles->position(nextPosPlus50Up.x, nextPosPlus50Up.y, nextPosPlus50Up.z); obstacles->normal((quat * Vector3(1, 1, -1)).normalisedCopy()); obstacles->textureCoord(1, 1);
+
+			if (m_cubes[planeNum / (double) m_width][planeNum % m_width] == OBSTACLE)
+			{
+				//top
+				obstacles->triangle(4 + planeNum * 8, 5 + planeNum * 8, 6 + planeNum * 8);
+				obstacles->triangle(6 + planeNum * 8, 5 + planeNum * 8, 4 + planeNum * 8);
+				obstacles->triangle(5 + planeNum * 8, 7 + planeNum * 8, 6 + planeNum * 8);
+				obstacles->triangle(6 + planeNum * 8, 7 + planeNum * 8, 5 + planeNum * 8);
+
+				if (planeNum % m_width == 0 || m_cubes[planeNum / (double) m_width][(planeNum - 1) % m_width] != OBSTACLE)
+				{
+					//left
+					obstacles->triangle(0 + planeNum * 8, 4 + planeNum * 8, 5 + planeNum * 8);
+					obstacles->triangle(5 + planeNum * 8, 4 + planeNum * 8, 0 + planeNum * 8);
+					obstacles->triangle(0 + planeNum * 8, 1 + planeNum * 8, 5 + planeNum * 8);
+					obstacles->triangle(5 + planeNum * 8, 1 + planeNum * 8, 0 + planeNum * 8);
+				}
+				if (planeNum % m_width == m_width - 1 || m_cubes[planeNum / (double) m_width][(planeNum + 1) % m_width] != OBSTACLE)
+				{
+					//right
+					obstacles->triangle(2 + planeNum * 8, 6 + planeNum * 8, 7 + planeNum * 8);
+					obstacles->triangle(7 + planeNum * 8, 6 + planeNum * 8, 2 + planeNum * 8);
+					obstacles->triangle(2 + planeNum * 8, 3 + planeNum * 8, 7 + planeNum * 8);
+					obstacles->triangle(7 + planeNum * 8, 3 + planeNum * 8, 2 + planeNum * 8);
+				}
+				if (planeNum / (double) m_width >= m_length - 1 || m_cubes[(planeNum + m_width) / (double) m_width][planeNum % m_width] != OBSTACLE)
+				{
+					//back
+					obstacles->triangle(9 + planeNum * 8, 7 + planeNum * 8, 1 + planeNum * 8);
+					obstacles->triangle(1 + planeNum * 8, 7 + planeNum * 8, 5 + planeNum * 8);
+					obstacles->triangle(1 + planeNum * 8, 3 + planeNum * 8, 7 + planeNum * 8);
+					obstacles->triangle(7 + planeNum * 8, 3 + planeNum * 8, 1 + planeNum * 8);
+				}
+				if (planeNum / (double) m_width <= m_width || m_cubes[(planeNum - m_width) / (double) m_width][planeNum % m_width] != OBSTACLE)
+				{
+					//front
+					obstacles->triangle(2 + planeNum * 8, 6 + planeNum * 8, 4 + planeNum * 8);
+					obstacles->triangle(4 + planeNum * 8, 6 + planeNum * 8, 2 + planeNum * 8);
+					obstacles->triangle(0 + planeNum * 8, 4 + planeNum * 8, 2 + planeNum * 8);
+					obstacles->triangle(2 + planeNum * 8, 4 + planeNum * 8, 0 + planeNum * 8);
+				}
+			}
+			planeNum++;
+		}
+		pos = pos + quat * Ogre::Vector3(0, 0, -100);
+	}  
+
+	obstacles->end();
+	obstacles->setCastShadows(false);
+
+	m_mapMainNode->attachObject(obstacles);
+
+	MeshPtr ptr = obstacles->convertToMesh("obstaclesMesh");
+	Entity* obstaclesEntity = m_pSceneMgr->createEntity("obstaclesEntity", "obstaclesMesh");
 }
 
 //|||||||||||||||||||||||||||||||||||||||||||||||

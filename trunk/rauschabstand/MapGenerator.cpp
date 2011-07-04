@@ -26,7 +26,6 @@ void MapGenerator::generateMap()
 	m_map->setCubesRadius(120, 0, 6, HOLE);
 	m_map->setCubesRadius(140, 0, 7, HOLE);
 	m_map->setCubesRadius(160, -4, 7, HOLE);
-	//m_map->setCubesRadius(75, 14, 7, HOLE);
 	//use these last
 	m_map->setCubesRow(0, 10, NORMAL);		//start is normal
 	m_map->setCubesRow(-5, 5, HOLE);		//cuts of end
@@ -41,7 +40,8 @@ void MapGenerator::generateMap()
 	m_map->interpolateTimeQuaternions();
 
 	//TODO: seperate into: Obsticales and Map, outside Border and Map, choose material here.
-	m_map->generateMesh();
+	m_map->generateMesh("Examples/Rockwall");
+	m_map->generateMeshObstacles("Examples/RustySteel");
 }
 
 //|||||||||||||||||||||||||||||||||||||||||||||||

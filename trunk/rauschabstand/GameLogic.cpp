@@ -44,8 +44,8 @@ GameLogic::GameLogic(SceneManager* sceneMgr, Camera* camera, AudioPlayer* audioP
 	}
 
 	m_countDown = static_cast<OverlayContainer*>(overlayManager.createOverlayElement("Panel", "CountDown"));
-	m_countDown->setPosition(0.4, 0.4);
-	m_countDown->setDimensions(0.2, 0.2);
+	m_countDown->setPosition(0.4f, 0.4f);
+	m_countDown->setDimensions(0.2f, 0.2f);
 	m_countDown->setMaterialName("CountDown3");
 	overlayCountDown = overlayManager.create("Overlay_CountDown");
 	overlayCountDown->add2D(m_countDown);
@@ -79,6 +79,12 @@ void GameLogic::reset()
 
 void GameLogic::update(Ogre::Real timeSinceLastFrame)
 {
+	//TODO: fix start when everything is loaded..
+	if (m_gameLogicStates == INIT)
+	{
+		return;
+	}
+
 	Ogre::Real tdif = m_blockMs * timeSinceLastFrame;
 	m_t += tdif;
 	m_score += (unsigned long) (m_multiplier * tdif * 100);

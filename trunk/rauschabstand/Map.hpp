@@ -47,7 +47,8 @@ public:
 	void setTimeQuaternions();
 	void addUpTimeQuaternions();
 	void interpolateTimeQuaternions();
-	void generateMesh();
+	void generateMesh(std::string materialName);
+	void generateMeshObstacles(std::string materialName);
 
 	//getter & setter
 	Ogre::Quaternion getOrientation(double t);
