@@ -46,6 +46,8 @@ GameLogic::GameLogic(SceneManager* sceneMgr, Camera* camera, AudioPlayer* audioP
 	m_countDown = static_cast<OverlayContainer*>(overlayManager.createOverlayElement("Panel", "CountDown"));
 	m_countDown->setPosition(0.4f, 0.4f);
 	m_countDown->setDimensions(0.2f, 0.2f);
+	m_countDown->setMaterialName("CountDown1");
+	m_countDown->setMaterialName("CountDown2");
 	m_countDown->setMaterialName("CountDown3");
 	overlayCountDown = overlayManager.create("Overlay_CountDown");
 	overlayCountDown->add2D(m_countDown);

@@ -108,30 +108,30 @@ void Map::setTimeQuaternions()
 	TimeQuaternion timeQuat6;
 	TimeQuaternion timeQuat7;
 
-	timeQuat.m_t = 112;
+	timeQuat.m_t = 212;
 	timeQuat.m_quanternion = Quaternion(1, 0, 0, 0);
 	m_timeQuaternions.push_back(timeQuat);
 
-	timeQuat1.m_t = 120;
+	timeQuat1.m_t = 220;
 	timeQuat1.m_quanternion = Quaternion(Degree(5), Vector3(1, 0, 0));
 	m_timeQuaternions.push_back(timeQuat1);
-	timeQuat2.m_t = 124;
+	timeQuat2.m_t = 224;
 	timeQuat2.m_quanternion = Quaternion(Degree(-10), Vector3(1, 0, 0));
 	m_timeQuaternions.push_back(timeQuat2);
-	timeQuat3.m_t = 132;
+	timeQuat3.m_t = 232;
 	timeQuat3.m_quanternion = Quaternion(Degree(10), Vector3(1, 0, 0));
 	m_timeQuaternions.push_back(timeQuat3);
-	timeQuat4.m_t = 136;
+	timeQuat4.m_t = 236;
 	timeQuat4.m_quanternion = Quaternion(Degree(-10), Vector3(1, 0, 0));
 	m_timeQuaternions.push_back(timeQuat4);
-	timeQuat4.m_t = 144;
+	timeQuat4.m_t = 244;
 	timeQuat4.m_quanternion = Quaternion(Degree(10), Vector3(1, 0, 0));
 	m_timeQuaternions.push_back(timeQuat4);
-	timeQuat4.m_t = 148;
+	timeQuat4.m_t = 248;
 	timeQuat4.m_quanternion = Quaternion(Degree(-10), Vector3(1, 0, 0));
 	m_timeQuaternions.push_back(timeQuat4);
 
-	timeQuat.m_t = 156;
+	timeQuat.m_t = 256;
 	timeQuat.m_quanternion = Quaternion(1, 0, 0, 0);
 	m_timeQuaternions.push_back(timeQuat);
 
