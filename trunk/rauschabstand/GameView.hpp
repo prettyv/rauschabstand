@@ -47,6 +47,8 @@ private:
     void updateScore();
     void updateMultiplier();
 
+    void setAlphaToAllPanels();
+
 private:
     bool                        m_showHUD;
     
@@ -57,6 +59,7 @@ private:
     Ogre::FrameEvent            m_FrameEvent;
     // For Highscore
     unsigned long               m_score;
+    unsigned long               m_scoreOld;
     unsigned int                m_multiplier;
 
     //Material Names
@@ -66,11 +69,13 @@ private:
     String                      m_materialNameNumbers;
     String                      m_materialNameX;
     String                      m_materialNameMult;
+    String                      m_materialNameHighscore;
     // For Overlays
     OverlayContainer*           m_panelLogo;
     OverlayContainer*           m_panelBoost;
     OverlayContainer*           m_panelTrack;
     OverlayContainer*           m_panelX;
+    OverlayContainer*           m_panelHighscore;
 
     OverlayContainer*           m_panelNum1;
     OverlayContainer*           m_panelNum2;
@@ -149,11 +154,24 @@ private:
     int                         m_PixelXWidth;
     int                         m_PixelXHeight;
 
+    double                      m_PosHighscoreLeft;
+    double                      m_PosHighscoreTop;
+    double                      m_DimHighscoreWidth;
+    double                      m_DimHighscoreHeight;
+    int                         m_PixelHighscoreWidth;
+    int                         m_PixelHighscoreHeight;
+
+    //Fade In
+    double                      m_alpha;
+    bool                        m_fadeIn;
+
     //Test
     double                      m_positionLogo;
     double                      m_scale;
     bool                        m_scaleInvert;  //nur zum Testen
     Ogre::Real                  m_timeTest;
+
+    Ogre::Real                  m_timeHighscoreTest;
 };
 
 //|||||||||||||||||||||||||||||||||||||||||||||||

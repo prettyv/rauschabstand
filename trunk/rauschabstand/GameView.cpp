@@ -12,6 +12,7 @@ GameView::GameView() {
     m_highscorePanel    = 0;
     m_gameLogic         = 0;
     m_score             = 0;
+    m_scoreOld          = 0;
     m_multiplier        = 0;
 
     m_sceneManager      = 0;
@@ -27,6 +28,7 @@ GameView::GameView() {
     m_materialNameNumbers   = "Numbers";
     m_materialNameX         = "X";
     m_materialNameMult      = "Multiplikator";
+    m_materialNameHighscore = "Highscore";
 
     //Visuals
     m_timeTest          = 0;
@@ -39,6 +41,7 @@ GameView::GameView() {
     m_panelBoost        = 0;
     m_panelTrack        = 0;
     m_panelX            = 0;
+    m_panelHighscore    = 0;
 
     m_panelNum1         = 0;
     m_panelNum2         = 0;
@@ -113,10 +116,23 @@ GameView::GameView() {
     m_PixelXWidth       = 375;
     m_PixelXHeight      = 375;
         //x End-----------
+        //Highscore-------
+    m_PosHighscoreLeft  = 0.2;
+    m_PosHighscoreTop   = 0.1;
+    m_DimHighscoreWidth = 0.8;
+    m_DimHighscoreHeight    = 0;
+    m_PixelHighscoreWidth   = 1500;
+    m_PixelHighscoreHeight  = 1500;
+        //Highscore End---
+
+    //Fade In
+     m_alpha            = 0;
+     m_fadeIn           = true;
 
     //Test
     m_boostCharge       = 0;
     m_levelProgress     = 0;
+    m_timeHighscoreTest = 0;
 }
 
 GameView::~GameView() {
@@ -159,7 +175,6 @@ void GameView::engage(GameLogic* gameLogic, Ogre::SceneManager* sceneManager, Og
     m_panelTrack->setMaterialName(m_materialNameTrack + "08");
     m_panelTrack->setMaterialName(m_materialNameTrack + "09");
     m_panelTrack->setMaterialName(m_materialNameTrack + "10");
-
 }
 
 void GameView::disengage() {
@@ -261,8 +276,8 @@ void GameView::createHUD() {
 
     // Create an overlay, and add the panel
     overlayNum = overlayManager.create("Overlay_Num1");
-    overlayLogo->add2D(m_panelNum1);
-    overlayLogo->show();
+    overlayNum->add2D(m_panelNum1);
+    overlayNum->show();
 
     m_panelNum2 = static_cast<OverlayContainer*>(overlayManager.createOverlayElement("Panel", "PanelNum2"));
     m_panelNum2->setPosition(m_PosNum2Left, m_PosNum2Top);
@@ -271,8 +286,8 @@ void GameView::createHUD() {
 
     // Create an overlay, and add the panel
     overlayNum = overlayManager.create("Overlay_Num2");
-    overlayLogo->add2D(m_panelNum2);
-    overlayLogo->show();
+    overlayNum->add2D(m_panelNum2);
+    overlayNum->show();
 
     m_panelNum3 = static_cast<OverlayContainer*>(overlayManager.createOverlayElement("Panel", "PanelNum3"));
     m_panelNum3->setPosition(m_PosNum3Left, m_PosNum3Top);
@@ -281,8 +296,8 @@ void GameView::createHUD() {
 
     // Create an overlay, and add the panel
     overlayNum = overlayManager.create("Overlay_Num3");
-    overlayLogo->add2D(m_panelNum3);
-    overlayLogo->show();
+    overlayNum->add2D(m_panelNum3);
+    overlayNum->show();
 
     m_panelNum4 = static_cast<OverlayContainer*>(overlayManager.createOverlayElement("Panel", "PanelNum4"));
     m_panelNum4->setPosition(m_PosNum4Left, m_PosNum4Top);
@@ -291,8 +306,8 @@ void GameView::createHUD() {
 
     // Create an overlay, and add the panel
     overlayNum = overlayManager.create("Overlay_Num4");
-    overlayLogo->add2D(m_panelNum4);
-    overlayLogo->show();
+    overlayNum->add2D(m_panelNum4);
+    overlayNum->show();
 
     m_panelNum5 = static_cast<OverlayContainer*>(overlayManager.createOverlayElement("Panel", "PanelNum5"));
     m_panelNum5->setPosition(m_PosNum5Left, m_PosNum5Top);
@@ -301,8 +316,8 @@ void GameView::createHUD() {
 
     // Create an overlay, and add the panel
     overlayNum = overlayManager.create("Overlay_Num5");
-    overlayLogo->add2D(m_panelNum5);
-    overlayLogo->show();
+    overlayNum->add2D(m_panelNum5);
+    overlayNum->show();
 
     m_panelNum6 = static_cast<OverlayContainer*>(overlayManager.createOverlayElement("Panel", "PanelNum6"));
     m_panelNum6->setPosition(m_PosNum6Left, m_PosNum6Top);
@@ -311,8 +326,8 @@ void GameView::createHUD() {
 
     // Create an overlay, and add the panel
     overlayNum = overlayManager.create("Overlay_Num6");
-    overlayLogo->add2D(m_panelNum6);
-    overlayLogo->show();
+    overlayNum->add2D(m_panelNum6);
+    overlayNum->show();
     //Number for Points End
 
     //Multiplikator----
@@ -323,8 +338,8 @@ void GameView::createHUD() {
 
     // Create an overlay, and add the panel
     overlayNum = overlayManager.create("Overlay_Mult1");
-    overlayLogo->add2D(m_panelMult1);
-    overlayLogo->show();
+    overlayNum->add2D(m_panelMult1);
+    overlayNum->show();
 
     m_panelMult2 = static_cast<OverlayContainer*>(overlayManager.createOverlayElement("Panel", "PanelMult2"));
     m_panelMult2->setPosition(m_PosMult2Left, m_PosMult2Top);
@@ -333,8 +348,8 @@ void GameView::createHUD() {
 
     // Create an overlay, and add the panel
     overlayNum = overlayManager.create("Overlay_Mult2");
-    overlayLogo->add2D(m_panelMult2);
-    overlayLogo->show();
+    overlayNum->add2D(m_panelMult2);
+    overlayNum->show();
     //Multiplikator End
 
     //X
@@ -349,7 +364,21 @@ void GameView::createHUD() {
     Overlay* overlayX = overlayManager.create("Overlay_X");
     overlayX->add2D(m_panelX);
     overlayX->show();
-    //Logo End
+    //X End
+
+    //Highscore Background
+    //--------------------
+    // Create a panel
+    m_panelHighscore = static_cast<OverlayContainer*>(overlayManager.createOverlayElement("Panel", "Panel_HighscoreBackground"));
+    m_panelHighscore->setPosition(m_PosHighscoreLeft, m_PosHighscoreTop);
+    m_panelHighscore->setDimensions(m_DimHighscoreWidth, m_DimHighscoreHeight);
+    m_panelHighscore->setMaterialName(m_materialNameHighscore);
+
+    // Create an overlay, and add the panel
+    Overlay* overlayHighscore = overlayManager.create("Overlay_HighscoreBackground");
+    overlayHighscore->add2D(m_panelHighscore);
+    //overlayHighscore->show();
+    //Highscore Background End
 
 }
 
@@ -426,6 +455,16 @@ void GameView::calculateDimensions() {
         //Zuerzeit nicht vorgesehen
     }
     //Multiplikaotr End-------
+
+    //Highscore-----------
+    double ratioHighscore = ((double) m_PixelHighscoreWidth) / m_PixelHighscoreHeight;
+    m_DimHighscoreHeight = 1 / ratioHighscore * m_DimHighscoreWidth;
+    if(ratio > 1) {
+        m_DimHighscoreWidth = 1/ ratio * m_DimHighscoreWidth;
+    } else if (ratio < 1) {
+        //Zuerzeit nicht vorgesehen
+    }
+    //Multiplikaotr End-------
 }
 
 void GameView::createAllMaterials() {
@@ -484,7 +523,12 @@ void GameView::createAllMaterials() {
     material->getTechnique(0)->getPass(0)->setDepthCheckEnabled(false);
     material->getTechnique(0)->getPass(0)->setDepthWriteEnabled(false);
     material->getTechnique(0)->getPass(0)->setLightingEnabled(false);
+    material->getTechnique(0)->getPass(0)->setSceneBlending(Ogre::SBT_TRANSPARENT_ALPHA);
     //material->setFog(true,Ogre::FogMode::FOG_EXP,Ogre::ColourValue::Blue,0.4,0,1);  //Test
+    //Funktioniert
+    //material->getTechnique(0)->getPass(0)->getTextureUnitState(0)->setAlphaOperation(Ogre::LayerBlendOperationEx::LBX_MODULATE,Ogre::LayerBlendSource::LBS_MANUAL,Ogre::LayerBlendSource::LBS_TEXTURE,0.5);
+    
+    //material->setFog(true,FogMode::FOG_LINEAR,Ogre::ColourValue::ColourValue(1.0f, 1.0f,1.0f, 0.5f),0.4,0,1);
     // ---------------------
 
     // Create Numbers material
@@ -520,10 +564,24 @@ void GameView::createAllMaterials() {
     material->getTechnique(0)->getPass(0)->setLightingEnabled(false);
     material->getTechnique(0)->getPass(0)->setSceneBlending(Ogre::SBT_TRANSPARENT_ALPHA);
     //------------------
+
+    // Create Highscore Background material
+    //------------------
+    material = materialManager.create(m_materialNameHighscore, "General");
+    material->getTechnique(0)->getPass(0)->createTextureUnitState("rauschabstand Visuals/Highscore_Background.png");
+    material->getTechnique(0)->getPass(0)->setDepthCheckEnabled(false);
+    material->getTechnique(0)->getPass(0)->setDepthWriteEnabled(false);
+    material->getTechnique(0)->getPass(0)->setLightingEnabled(false);
+    material->getTechnique(0)->getPass(0)->setSceneBlending(Ogre::SBT_TRANSPARENT_ALPHA);
+    //------------------
 }
 
 void GameView::update(Ogre::Real timeSinceLastFrame) {
-    
+    m_timeHighscoreTest += timeSinceLastFrame;
+    if(m_timeHighscoreTest > 20000) {
+        m_highscorePanel->show();
+    }
+
     if (m_showHUD) {
         updateHUD(timeSinceLastFrame);
     }
@@ -565,7 +623,19 @@ void GameView::updateHUDForDebug(Ogre::Real timeSinceLastFrame) {
 }
 
 void GameView::updateScore() {
-    m_score  = m_gameLogic->getScore();
+    m_scoreOld  = m_score;
+    m_score     = m_gameLogic->getScore();
+
+    //Check if Score was reset
+    if(m_scoreOld > m_score) {
+        m_panelNum1->setMaterialName(m_materialNameNumbers + Ogre::StringConverter::toString(0));
+        m_panelNum2->setMaterialName(m_materialNameNumbers + Ogre::StringConverter::toString(0));
+        m_panelNum3->setMaterialName(m_materialNameNumbers + Ogre::StringConverter::toString(0));
+        m_panelNum4->setMaterialName(m_materialNameNumbers + Ogre::StringConverter::toString(0));
+        m_panelNum5->setMaterialName(m_materialNameNumbers + Ogre::StringConverter::toString(0));
+        m_panelNum6->setMaterialName(m_materialNameNumbers + Ogre::StringConverter::toString(0));
+    }
+
     String score = Ogre::StringConverter::toString(m_score);
 
     for(unsigned int i = 0; i < score.size(); i++) {
@@ -944,7 +1014,7 @@ void GameView::updateHUD(Ogre::Real timeSinceLastFrame) {
     //Geht auch!!
     //m_materialBoost->getTechnique(0)->getPass(0)->getTextureUnitState(0)->setTextureScale(m_scale,m_scale);
     m_overlayBoost->setScale(m_scale,m_scale);
-    
+
     switch(m_boostCharge) {
     case 0:
         m_panelBoost->setMaterialName(m_materialNameBoostBar + "00");
@@ -1018,6 +1088,18 @@ void GameView::updateHUD(Ogre::Real timeSinceLastFrame) {
     }
 
 
+    //Fade In
+    if(m_alpha < 1 && m_fadeIn) {
+        m_alpha += 0.01;
+        setAlphaToAllPanels();
+    }
+    else {
+        m_alpha = 1.0;
+        m_fadeIn = false;
+        setAlphaToAllPanels();
+    }
+    //Fade in End
+
     /*
     //Test für die Positionierung des Panels
     //Geht!!!
@@ -1026,12 +1108,32 @@ void GameView::updateHUD(Ogre::Real timeSinceLastFrame) {
     */
 }
 
+void GameView::setAlphaToAllPanels() {
+    m_panelTrack->getMaterial()->getTechnique(0)->getPass(0)->getTextureUnitState(0)->setAlphaOperation(Ogre::LayerBlendOperationEx::LBX_MODULATE,Ogre::LayerBlendSource::LBS_MANUAL,Ogre::LayerBlendSource::LBS_TEXTURE,m_alpha);
+    m_panelX->getMaterial()->getTechnique(0)->getPass(0)->getTextureUnitState(0)->setAlphaOperation(Ogre::LayerBlendOperationEx::LBX_MODULATE,Ogre::LayerBlendSource::LBS_MANUAL,Ogre::LayerBlendSource::LBS_TEXTURE,m_alpha);
+    m_panelNum1->getMaterial()->getTechnique(0)->getPass(0)->getTextureUnitState(0)->setAlphaOperation(Ogre::LayerBlendOperationEx::LBX_MODULATE,Ogre::LayerBlendSource::LBS_MANUAL,Ogre::LayerBlendSource::LBS_TEXTURE,m_alpha);
+    m_panelNum2->getMaterial()->getTechnique(0)->getPass(0)->getTextureUnitState(0)->setAlphaOperation(Ogre::LayerBlendOperationEx::LBX_MODULATE,Ogre::LayerBlendSource::LBS_MANUAL,Ogre::LayerBlendSource::LBS_TEXTURE,m_alpha);
+    m_panelNum3->getMaterial()->getTechnique(0)->getPass(0)->getTextureUnitState(0)->setAlphaOperation(Ogre::LayerBlendOperationEx::LBX_MODULATE,Ogre::LayerBlendSource::LBS_MANUAL,Ogre::LayerBlendSource::LBS_TEXTURE,m_alpha);
+    m_panelNum4->getMaterial()->getTechnique(0)->getPass(0)->getTextureUnitState(0)->setAlphaOperation(Ogre::LayerBlendOperationEx::LBX_MODULATE,Ogre::LayerBlendSource::LBS_MANUAL,Ogre::LayerBlendSource::LBS_TEXTURE,m_alpha);
+    m_panelNum5->getMaterial()->getTechnique(0)->getPass(0)->getTextureUnitState(0)->setAlphaOperation(Ogre::LayerBlendOperationEx::LBX_MODULATE,Ogre::LayerBlendSource::LBS_MANUAL,Ogre::LayerBlendSource::LBS_TEXTURE,m_alpha);
+    m_panelNum6->getMaterial()->getTechnique(0)->getPass(0)->getTextureUnitState(0)->setAlphaOperation(Ogre::LayerBlendOperationEx::LBX_MODULATE,Ogre::LayerBlendSource::LBS_MANUAL,Ogre::LayerBlendSource::LBS_TEXTURE,m_alpha);
+    m_panelBoost->getMaterial()->getTechnique(0)->getPass(0)->getTextureUnitState(0)->setAlphaOperation(Ogre::LayerBlendOperationEx::LBX_MODULATE,Ogre::LayerBlendSource::LBS_MANUAL,Ogre::LayerBlendSource::LBS_TEXTURE,m_alpha);
+    m_panelLogo->getMaterial()->getTechnique(0)->getPass(0)->getTextureUnitState(0)->setAlphaOperation(Ogre::LayerBlendOperationEx::LBX_MODULATE,Ogre::LayerBlendSource::LBS_MANUAL,Ogre::LayerBlendSource::LBS_TEXTURE,m_alpha);
+    m_panelMult1->getMaterial()->getTechnique(0)->getPass(0)->getTextureUnitState(0)->setAlphaOperation(Ogre::LayerBlendOperationEx::LBX_MODULATE,Ogre::LayerBlendSource::LBS_MANUAL,Ogre::LayerBlendSource::LBS_TEXTURE,m_alpha);
+    m_panelMult2->getMaterial()->getTechnique(0)->getPass(0)->getTextureUnitState(0)->setAlphaOperation(Ogre::LayerBlendOperationEx::LBX_MODULATE,Ogre::LayerBlendSource::LBS_MANUAL,Ogre::LayerBlendSource::LBS_TEXTURE,m_alpha);
+}
+
 void GameView::resumeGame() {
     createHUDForDebug();        //Wird nämlich im Pause-State zerstört
     if (m_showHUD) {
         showAllHUDElements();
         OgreFramework::getSingletonPtr()->m_pTrayMgr->hideAll();
         OgreFramework::getSingletonPtr()->m_pTrayMgr->showCursor();
+
+        //Fade In
+        m_fadeIn = true;
+        m_alpha  = 0;
+        setAlphaToAllPanels();
     }
 }
 
@@ -1082,6 +1184,11 @@ void GameView::keyPressed() {
             showAllHUDElements();
             OgreFramework::getSingletonPtr()->m_pTrayMgr->hideAll();
             OgreFramework::getSingletonPtr()->m_pTrayMgr->showCursor();
+
+            //Fade in
+            m_fadeIn = true;
+            m_alpha  = 0;
+            setAlphaToAllPanels();
 
         } else {
             OgreFramework::getSingletonPtr()->m_pTrayMgr->showAll();
