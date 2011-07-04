@@ -102,7 +102,7 @@ void Visuals::parseAudioData() {
 	std::stringstream sstr;
 
 	std::string line;
-	std::ifstream myfile ("spectralAnalysis_16384_samples.txt");
+	std::ifstream myfile ("spectralAnalysis_4096_samples.txt");
 
 	// EINGABEGROESSE (BARCOUNT, CUBECOUNT) ABHAENGIG!
 	if (myfile.is_open())
@@ -179,7 +179,7 @@ void Visuals::countDownVisuals(void) {
 		{
 			for (int i=0; i<BAR_COUNT; ++i)
 			{
-				for (int j=CUBE_COUNT-1; j>0; --j)
+				for (int j=CUBE_COUNT-1; j>1; --j)
 				{
 					m_staticCubes[i][j]->setVisible(false);
 				}
@@ -277,23 +277,34 @@ void Visuals::updateVisual(Ogre::Real timeSinceLastFrame) {
 	
 	// TODO automate interval determination (-> no manual input of 370ms interval window
 	static int timeChanged = 0;	// making sure the visual bars are just updated when needed
-	int currentTime = (int)(m_countTime / 370.0);	// 12 bands, 16384 samples buffer ~= 0,37s window -> / 370ms
-
-	if (timeChanged != currentTime)
+	int currentTime = (int)(m_countTime / 92.5);	// 12 bands, 16384 samples buffer ~= 0,37s window -> / 370ms || 4096 samples = 92.5ms
+	
+	if (currentTime < 904)	// 4096 samples -> 903 audioData
 	{
-		for (int bar=0; bar<BAR_COUNT; ++bar)
+		if (timeChanged != currentTime)	
 		{
-			for (int spectrum=0; spectrum<=m_audioData[bar][currentTime]; ++spectrum)
+			for (int bar=0; bar<BAR_COUNT; ++bar)
 			{
-				m_staticCubes[bar][spectrum]->setVisible(true);
+				for (int spectrum=0; spectrum<=m_audioData[bar][currentTime]; ++spectrum)
+				{
+					m_staticCubes[bar][spectrum]->setVisible(true);
+				}
+				for (int spectrum=CUBE_COUNT-1; spectrum>m_audioData[bar][currentTime]; --spectrum)
+				{
+					m_staticCubes[bar][spectrum]->setVisible(false);
+				}
 			}
-			for (int spectrum=CUBE_COUNT-1; spectrum>m_audioData[bar][currentTime]; --spectrum)
+
+			timeChanged = currentTime;
+		}
+	} else {	// when song has ended just show one cube
+		for (int i=0; i<BAR_COUNT; ++i)
+		{
+			for (int j=CUBE_COUNT-1; j>1; --j)
 			{
-				m_staticCubes[bar][spectrum]->setVisible(false);
+				m_staticCubes[i][j]->setVisible(false);
 			}
 		}
-
-		timeChanged = currentTime;
 	}
 
 
