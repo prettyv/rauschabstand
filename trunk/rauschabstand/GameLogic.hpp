@@ -32,6 +32,7 @@ public:
 	void reset();
 	void update(Ogre::Real timeSinceLastFrame);
 	void updatePlayer(Ogre::Real timeSinceLastFrame);
+	void playerDies();
 
 	//input
 	void update(Ogre::Real elapsedTime, OIS::Keyboard *input);

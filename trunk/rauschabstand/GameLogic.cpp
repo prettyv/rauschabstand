@@ -94,9 +94,7 @@ void GameLogic::update(Ogre::Real timeSinceLastFrame)
 
 	if (m_player->getJumpHeight() < DEADHEIGHT)
 	{
-		m_t = 0;
-		m_u = 0;
-		m_player->resetToStart();
+		playerDies();
 	}
 
 	if (m_map->isCloseToHole(m_t, m_u, 50))
@@ -158,6 +156,19 @@ void GameLogic::update(Ogre::Real elapsedTime, OIS::Keyboard* input) {
 void GameLogic::keyReleased(Real timeSinceLastFrame, const OIS::KeyEvent & keyEventRef)
 {
 	m_player->keyReleased(timeSinceLastFrame, keyEventRef);
+}
+
+void GameLogic::playerDies() 
+{
+	m_t = 0;
+	m_u = 0;
+	m_score = 0;
+	m_multiplier = 1;
+	m_player->resetToStart();
+	m_audioPlayer->stop();
+	m_audioPlayer->play();
+
+	//TODO: reset visuals
 }
 
 //|||||||||||||||||||||||||||||||||||||||||||||||
