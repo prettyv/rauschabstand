@@ -60,6 +60,8 @@ public:
 	int getLength() { return m_length; }
 	int getWidth() { return m_width; }
 
+	std::vector<Vector3> getObstaclePositions() { return m_obstaclePositions; }
+
 private:
 	unsigned int								m_length;
 	unsigned int								m_width;
@@ -68,6 +70,7 @@ private:
 	std::vector<TimeQuaternion>					m_timeQuaternions;
 	RotationalSpline							m_rotationalSpline;
 	SimpleSpline								m_pointsSpline;
+	std::vector<Vector3>						m_obstaclePositions;
 	
     SceneManager*								m_pSceneMgr;
 	

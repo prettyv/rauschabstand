@@ -209,20 +209,19 @@ void Map::interpolateTimeQuaternions()
 void Map::generateMesh(std::string materialName)
 {
 	Ogre::ManualObject* plane = new Ogre::ManualObject("plane");
-	//TODO: estimate
-	plane->estimateIndexCount(m_length * m_width * 4);
-	plane->estimateVertexCount(m_length * m_width * 4);
+	plane->estimateIndexCount(m_length * m_width * 8);
+	plane->estimateVertexCount(m_length * m_width * 8);
 	plane->clear();
 	plane->begin(materialName);
 	
 	Ogre::Vector3 pos = Ogre::Vector3(0, 0, 0);
 	Ogre::Quaternion quat;
-	Ogre::Quaternion nextQuat;
+	Ogre::Quaternion quatNext;
 	unsigned long planeNum = 0;
 	for (unsigned int i = 0; i < m_length; i++)
 	{
 		quat = m_rotationalSpline.getPoint(i);
-		nextQuat = m_rotationalSpline.getPoint(i + 1);
+		quatNext = m_rotationalSpline.getPoint(i + 1);
 
 		for (int x = -100 * (m_width / (double) 2), j = 0; (unsigned) j < m_width; j++, x += 100)
 		{
@@ -230,31 +229,30 @@ void Map::generateMesh(std::string materialName)
 			int left = x;
 			int right = x + 100;
 			int down = -20 ;
-			int up = 100;
 
-			Ogre::Vector3 nextPos = pos + quat * Ogre::Vector3(0, 0, back);
-			Ogre::Vector3 posMinus50 = pos + quat * Ogre::Vector3(left, 0, 0);
-			Ogre::Vector3 posPlus50 = pos + quat * Ogre::Vector3(right, 0, 0);
-			Ogre::Vector3 nextPosMinus50 = nextPos + nextQuat * Ogre::Vector3(left, 0, 0);
-			Ogre::Vector3 nextPosPlus50 = nextPos + nextQuat * Ogre::Vector3(right, 0, 0);
-
-			//TODO: fix normals?
-			plane->position(posMinus50.x, posMinus50.y, posMinus50.z); plane->normal((quat * Vector3(0, 1, 0)).normalisedCopy()); plane->textureCoord(1, 1);
-			plane->position(nextPosMinus50.x, nextPosMinus50.y, nextPosMinus50.z); plane->normal((quat * Vector3(0, 1, 0)).normalisedCopy()); plane->textureCoord(1, 0);
-			plane->position(posPlus50.x, posPlus50.y, posPlus50.z); plane->normal((quat * Vector3(0, 1, 0)).normalisedCopy()); plane->textureCoord(0, 1);
-			plane->position(nextPosPlus50.x, nextPosPlus50.y, nextPosPlus50.z); plane->normal((quat * Vector3(0, 1, 0)).normalisedCopy()); plane->textureCoord(0, 0);
-
-			Ogre::Vector3 nextPosDown = nextPos + quat * Ogre::Vector3(0, down, 0);
-			Ogre::Vector3 posMinus50Down = posMinus50 + quat * Ogre::Vector3(0, down, 0);
-			Ogre::Vector3 posPlus50Down = posPlus50 + quat * Ogre::Vector3(0, down, 0);
-			Ogre::Vector3 nextPosMinus50Down = nextPosMinus50 + nextQuat * Ogre::Vector3(0, down, 0);
-			Ogre::Vector3 nextPosPlus50Down = nextPosPlus50 + nextQuat * Ogre::Vector3(0, down, 0);
+			Ogre::Vector3 nextPos =				pos + quat * Ogre::Vector3(0, 0, back);
+			Ogre::Vector3 posMinus50 =			pos + quat * Ogre::Vector3(left, 0, 0);
+			Ogre::Vector3 posPlus50 =			pos + quat * Ogre::Vector3(right, 0, 0);
+			Ogre::Vector3 nextPosMinus50 =		nextPos + quatNext * Ogre::Vector3(left, 0, 0);
+			Ogre::Vector3 nextPosPlus50 =		nextPos + quatNext * Ogre::Vector3(right, 0, 0);
 
 			//TODO: fix normals?
-			plane->position(posMinus50Down.x, posMinus50Down.y, posMinus50Down.z); plane->normal((quat * Vector3(-1, -1, 1)).normalisedCopy()); plane->textureCoord(0, 0);
-			plane->position(nextPosMinus50Down.x, nextPosMinus50Down.y, nextPosMinus50Down.z); plane->normal((quat * Vector3(-1, -1, -1)).normalisedCopy()); plane->textureCoord(0, 1);
-			plane->position(posPlus50Down.x, posPlus50Down.y, posPlus50Down.z); plane->normal((quat * Vector3(1, -1, 1)).normalisedCopy()); plane->textureCoord(1, 0);
-			plane->position(nextPosPlus50Down.x, nextPosPlus50Down.y, nextPosPlus50Down.z); plane->normal((quat * Vector3(1, -1, -1)).normalisedCopy()); plane->textureCoord(1, 1);
+			plane->position(posMinus50);		plane->normal((quat * Vector3(0, 1, 0)).normalisedCopy()); plane->textureCoord(1, 1);
+			plane->position(nextPosMinus50);	plane->normal((quat * Vector3(0, 1, 0)).normalisedCopy()); plane->textureCoord(1, 0);
+			plane->position(posPlus50);			plane->normal((quat * Vector3(0, 1, 0)).normalisedCopy()); plane->textureCoord(0, 1);
+			plane->position(nextPosPlus50);		plane->normal((quat * Vector3(0, 1, 0)).normalisedCopy()); plane->textureCoord(0, 0);
+
+			Ogre::Vector3 nextPosDown =			nextPos + quat * Ogre::Vector3(0, down, 0);
+			Ogre::Vector3 posMinus50Down =		posMinus50 + quat * Ogre::Vector3(0, down, 0);
+			Ogre::Vector3 posPlus50Down =		posPlus50 + quat * Ogre::Vector3(0, down, 0);
+			Ogre::Vector3 nextPosMinus50Down =	nextPosMinus50 + quatNext * Ogre::Vector3(0, down, 0);
+			Ogre::Vector3 nextPosPlus50Down =	nextPosPlus50 + quatNext * Ogre::Vector3(0, down, 0);
+
+			//TODO: fix normals?
+			plane->position(posMinus50Down);	plane->normal((quat * Vector3(-1, -1, 1)).normalisedCopy()); plane->textureCoord(0, 0);
+			plane->position(nextPosMinus50Down);plane->normal((quat * Vector3(-1, -1, -1)).normalisedCopy()); plane->textureCoord(0, 1);
+			plane->position(posPlus50Down);		plane->normal((quat * Vector3(1, -1, 1)).normalisedCopy()); plane->textureCoord(1, 0);
+			plane->position(nextPosPlus50Down);	plane->normal((quat * Vector3(1, -1, -1)).normalisedCopy()); plane->textureCoord(1, 1);
 
 			if (m_cubes[planeNum / (double) m_width][planeNum % m_width] != HOLE)
 			{
@@ -326,54 +324,60 @@ void Map::generateMesh(std::string materialName)
 void Map::generateMeshObstacles(std::string materialName) 
 {
 	Ogre::ManualObject* obstacles = new Ogre::ManualObject("obstacles");
-	//TODO: estimate
-	obstacles->estimateIndexCount(m_length * m_width * 4);
-	obstacles->estimateVertexCount(m_length * m_width * 4);
+	obstacles->estimateIndexCount(m_length * m_width * 8);
+	obstacles->estimateVertexCount(m_length * m_width * 8);
 	obstacles->clear();
 	obstacles->begin(materialName);
 
 	Ogre::Vector3 pos = Ogre::Vector3(0, 0, 0);
 	Ogre::Quaternion quat;
-	Ogre::Quaternion nextQuat;
+	Ogre::Quaternion quatNext;
 	unsigned long planeNum = 0;
+
+	m_obstaclePositions.clear();
+
 	for (unsigned int i = 0; i < m_length; i++)
 	{
 		quat = m_rotationalSpline.getPoint(i);
-		nextQuat = m_rotationalSpline.getPoint(i + 1);
+		quatNext = m_rotationalSpline.getPoint(i + 1);
 
 		for (int x = -100 * (m_width / (double) 2), j = 0; (unsigned) j < m_width; j++, x += 100)
 		{
 			int back = -100;
 			int left = x;
 			int right = x + 100;
-			int down = -20 ;
 			int up = 100;
 
-			Ogre::Vector3 nextPos = pos + quat * Ogre::Vector3(0, 0, back);
-			Ogre::Vector3 posMinus50 = pos + quat * Ogre::Vector3(left, 0, 0);
-			Ogre::Vector3 posPlus50 = pos + quat * Ogre::Vector3(right, 0, 0);
-			Ogre::Vector3 nextPosMinus50 = nextPos + nextQuat * Ogre::Vector3(left, 0, 0);
-			Ogre::Vector3 nextPosPlus50 = nextPos + nextQuat * Ogre::Vector3(right, 0, 0);
+			Ogre::Vector3 nextPos =				pos + quat * Ogre::Vector3(0, 0, back);
+			Ogre::Vector3 posMinus50 =			pos + quat * Ogre::Vector3(left, 0, 0);
+			Ogre::Vector3 posPlus50 =			pos + quat * Ogre::Vector3(right, 0, 0);
+			Ogre::Vector3 nextPosMinus50 =		nextPos + quatNext * Ogre::Vector3(left, 0, 0);
+			Ogre::Vector3 nextPosPlus50 =		nextPos + quatNext * Ogre::Vector3(right, 0, 0);
 
 			//TODO: fix normals
-			obstacles->position(posMinus50.x, posMinus50.y, posMinus50.z); obstacles->normal((quat * Vector3(0, 1, 0)).normalisedCopy()); obstacles->textureCoord(1, 1);
-			obstacles->position(nextPosMinus50.x, nextPosMinus50.y, nextPosMinus50.z); obstacles->normal((quat * Vector3(0, 1, 0)).normalisedCopy()); obstacles->textureCoord(1, 0);
-			obstacles->position(posPlus50.x, posPlus50.y, posPlus50.z); obstacles->normal((quat * Vector3(0, 1, 0)).normalisedCopy()); obstacles->textureCoord(0, 1);
-			obstacles->position(nextPosPlus50.x, nextPosPlus50.y, nextPosPlus50.z); obstacles->normal((quat * Vector3(0, 1, 0)).normalisedCopy()); obstacles->textureCoord(0, 0);
+			obstacles->position(posMinus50);	obstacles->normal((quat * Vector3(0, 1, 0)).normalisedCopy()); obstacles->textureCoord(1, 1);
+			obstacles->position(nextPosMinus50);obstacles->normal((quat * Vector3(0, 1, 0)).normalisedCopy()); obstacles->textureCoord(1, 0);
+			obstacles->position(posPlus50);		obstacles->normal((quat * Vector3(0, 1, 0)).normalisedCopy()); obstacles->textureCoord(0, 1);
+			obstacles->position(nextPosPlus50);	obstacles->normal((quat * Vector3(0, 1, 0)).normalisedCopy()); obstacles->textureCoord(0, 0);
 
-			Ogre::Vector3 nextPosUp = nextPos + quat * Ogre::Vector3(0, up, 0);
-			Ogre::Vector3 posMinus50Up = posMinus50 + quat * Ogre::Vector3(0, up, 0);
-			Ogre::Vector3 posPlus50Up = posPlus50 + quat * Ogre::Vector3(0, up, 0);
-			Ogre::Vector3 nextPosMinus50Up = nextPosMinus50 + nextQuat * Ogre::Vector3(0, up, 0);
-			Ogre::Vector3 nextPosPlus50Up = nextPosPlus50 + nextQuat * Ogre::Vector3(0, up, 0);
+			Ogre::Vector3 nextPosUp =			nextPos + quat * Ogre::Vector3(0, up, 0);
+			Ogre::Vector3 posMinus50Up =		posMinus50 + quat * Ogre::Vector3(0, up, 0);
+			Ogre::Vector3 posPlus50Up =			posPlus50 + quat * Ogre::Vector3(0, up, 0);
+			Ogre::Vector3 nextPosMinus50Up =	nextPosMinus50 + quatNext * Ogre::Vector3(0, up, 0);
+			Ogre::Vector3 nextPosPlus50Up =		nextPosPlus50 + quatNext * Ogre::Vector3(0, up, 0);
 
-			obstacles->position(posMinus50Up.x, posMinus50Up.y, posMinus50Up.z); obstacles->normal((quat * Vector3(-1, 1, 1)).normalisedCopy()); obstacles->textureCoord(0, 0);
-			obstacles->position(nextPosMinus50Up.x, nextPosMinus50Up.y, nextPosMinus50Up.z); obstacles->normal((quat * Vector3(-1, 1, -1)).normalisedCopy()); obstacles->textureCoord(0, 1);
-			obstacles->position(posPlus50Up.x, posPlus50Up.y, posPlus50Up.z); obstacles->normal((quat * Vector3(1, 1, 1)).normalisedCopy()); obstacles->textureCoord(1, 0);
-			obstacles->position(nextPosPlus50Up.x, nextPosPlus50Up.y, nextPosPlus50Up.z); obstacles->normal((quat * Vector3(1, 1, -1)).normalisedCopy()); obstacles->textureCoord(1, 1);
+			//TODO: fix normals
+			obstacles->position(posMinus50Up);	obstacles->normal((quat * Vector3(-1, 1, 1)).normalisedCopy()); obstacles->textureCoord(0, 0);
+			obstacles->position(nextPosMinus50Up);obstacles->normal((quat * Vector3(-1, 1, -1)).normalisedCopy()); obstacles->textureCoord(0, 1);
+			obstacles->position(posPlus50Up);	obstacles->normal((quat * Vector3(1, 1, 1)).normalisedCopy()); obstacles->textureCoord(1, 0);
+			obstacles->position(nextPosPlus50Up);obstacles->normal((quat * Vector3(1, 1, -1)).normalisedCopy()); obstacles->textureCoord(1, 1);
 
 			if (m_cubes[planeNum / (double) m_width][planeNum % m_width] == OBSTACLE)
 			{
+
+				//TODO: check if this hack works..
+				m_obstaclePositions.push_back(posMinus50);
+
 				//top
 				obstacles->triangle(4 + planeNum * 8, 5 + planeNum * 8, 6 + planeNum * 8);
 				obstacles->triangle(6 + planeNum * 8, 5 + planeNum * 8, 4 + planeNum * 8);
@@ -419,7 +423,7 @@ void Map::generateMeshObstacles(std::string materialName)
 	}  
 
 	obstacles->end();
-	obstacles->setCastShadows(false);
+	obstacles->setCastShadows(true);
 
 	m_mapMainNode->attachObject(obstacles);
 
@@ -519,8 +523,6 @@ bool Map::isCloseToHole(double t, double u, double closeDistance)
 }
 
 //|||||||||||||||||||||||||||||||||||||||||||||||
-
-
 
 // HELPER FUNCTIONS
 /*

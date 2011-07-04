@@ -133,48 +133,6 @@ void GameLogic::update(Ogre::Real timeSinceLastFrame)
 			m_audioPlayer->play();
 		}
 	}
-
-	/*
-	//TODO countdown
-	if (m_gameLogicStates == COUNTDOWN) {
-		m_countdownTime += timeSinceLastFrame;
-		if (m_countdownTime > 10000)
-		{
-			m_gameLogicStates = RUNNING;
-			m_audioPlayer->play();
-		}
-		m_player->update(timeSinceLastFrame, m_t, m_u);
-	} else if (m_gameLogicStates == RUNNING) {
-		
-		Ogre::Real tdif = m_blockMs * timeSinceLastFrame;
-		m_t += tdif;
-		m_score += (unsigned long) (m_multiplier * tdif * 100);
-		m_t = m_t >= m_map->getLength() ? m_map->getLength() : m_t;
-
-		if (m_player->getJumpHeight() < DEADHEIGHT)
-		{
-			m_t = 0;
-			m_u = 0;
-			m_player->resetToStart();
-		}
-
-		if (m_map->isCloseToHole(m_t, m_u, 50))
-		{
-			m_timeCloseToHole += timeSinceLastFrame;
-			if (m_timeCloseToHole > 80)
-			{
-				m_multiplier++;
-				m_timeCloseToHole = 0;
-			}
-		}
-		else
-		{
-			m_timeCloseToHole = 0;
-		}
-
-		m_player->update(timeSinceLastFrame, m_t, m_u);
-	}
-	*/
 }
 
 void GameLogic::update(Ogre::Real elapsedTime, OIS::Keyboard* input) {
