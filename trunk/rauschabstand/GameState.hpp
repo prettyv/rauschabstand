@@ -72,6 +72,8 @@ private:
 	AudioPlayer*				m_audioPlayer;
 
     GameView*                   m_gameView;
+
+	bool						stopAtBeginning;
 };
 
 //|||||||||||||||||||||||||||||||||||||||||||||||

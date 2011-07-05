@@ -27,6 +27,8 @@ GameState::GameState()
 
     //Visuals
     m_gameView = new GameView();
+
+	stopAtBeginning = true;
 }
 
 //|||||||||||||||||||||||||||||||||||||||||||||||
@@ -271,6 +273,10 @@ bool GameState::keyPressed(const OIS::KeyEvent &keyEventRef)
         pushAppState(findByName("PauseState"));
         return true;
     }
+	if (OgreFramework::getSingletonPtr()->m_pKeyboard->isKeyDown(OIS::KC_P))
+	{
+		stopAtBeginning = false;
+	}
     
     //Update für die GameView
     m_gameView->keyPressed();
@@ -399,7 +405,7 @@ void GameState::update(Ogre::Real timeSinceLastFrame)
     m_FrameEvent.timeSinceLastFrame = timeSinceLastFrame;
     OgreFramework::getSingletonPtr()->m_pTrayMgr->frameRenderingQueued(m_FrameEvent);
 
-	m_gameLogic->update(timeSinceLastFrame);
+	m_gameLogic->update(stopAtBeginning ? Ogre::Real(0.0) : timeSinceLastFrame);
 
     if(m_bQuit == true)
     {
@@ -411,14 +417,9 @@ void GameState::update(Ogre::Real timeSinceLastFrame)
 
 
 	// AUDIO-VISUALS begin
-	static int countdown = 0;
-	countdown += timeSinceLastFrame;
-
-	m_visuals->updateVisual(timeSinceLastFrame);
-	
+	m_visuals->updateVisual(stopAtBeginning ? Ogre::Real(0.0) : timeSinceLastFrame);
 	// AUDIO-VISUALS end
 
-	
 	/*
 	if (m_audioPlayer->getPitch() <= 2.0f) {
 		//std::cout << m_audioPlayer->getPitch() << std::endl;
@@ -426,7 +427,7 @@ void GameState::update(Ogre::Real timeSinceLastFrame)
 	}
 	*/
 
-    m_gameView->update(timeSinceLastFrame);
+    m_gameView->update(stopAtBeginning ? Ogre::Real(0.0) : timeSinceLastFrame);
 }
 
 //|||||||||||||||||||||||||||||||||||||||||||||||
