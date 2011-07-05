@@ -65,7 +65,7 @@ GameLogic::~GameLogic()
 void GameLogic::init()
 {
 	m_mapGenerator->generateMap();
-
+	m_audioPlayer->addObstacles(m_map->getObstaclePositions());
 	start();
 }
 
@@ -88,6 +88,7 @@ void GameLogic::update(Ogre::Real timeSinceLastFrame)
 	}
 
 	Ogre::Real tdif = m_blockMs * timeSinceLastFrame;
+	Ogre::Real shipPosPrev = m_t;
 	m_t += tdif;
 	m_score += (unsigned long) (m_multiplier * tdif * 10);
 	m_t = m_t >= m_map->getLength() ? m_map->getLength() : m_t;
@@ -113,7 +114,7 @@ void GameLogic::update(Ogre::Real timeSinceLastFrame)
 
 	m_player->update(timeSinceLastFrame, m_t, m_u);
 
-
+	m_audioPlayer->updateObstacles(m_map->getPosition(shipPosPrev, m_u) - m_map->getPosition(m_t, m_u));
 
 	if (m_gameLogicStates == COUNTDOWN) {
 		m_score = 0;
@@ -131,11 +132,14 @@ void GameLogic::update(Ogre::Real timeSinceLastFrame)
 
 			m_gameLogicStates = RUNNING;
 			m_audioPlayer->play();
+			m_audioPlayer->playObstacles();
 		}
 	}
 }
 
 void GameLogic::update(Ogre::Real elapsedTime, OIS::Keyboard* input) {
+	Ogre::Real shipPosPrev = m_u;
+	
 	if (input->isKeyDown(OIS::KC_A))
 	{
 		m_u += m_blockMsSide * elapsedTime;
@@ -156,6 +160,7 @@ void GameLogic::update(Ogre::Real elapsedTime, OIS::Keyboard* input) {
 		playerDies();
 	}
 	m_player->update(elapsedTime, input);
+	m_audioPlayer->updateObstacles(m_map->getPosition(m_t, shipPosPrev) - m_map->getPosition(m_t, m_u));
 }
 
 void GameLogic::keyReleased(Real timeSinceLastFrame, const OIS::KeyEvent & keyEventRef)

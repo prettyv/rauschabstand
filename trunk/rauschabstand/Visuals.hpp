@@ -30,9 +30,9 @@ private:
 
 	SceneManager*				m_pSceneMgr;
 
-	std::vector<std::vector<Ogre::SceneNode*>>		m_barNodes;		// for creating the visuals
-	std::vector<std::vector<Ogre::StaticGeometry*>>	m_staticCubes;	// after all bars are created, the cubes are instanced and stored in m_staticCubes - only the staticCubes are updated
-	std::vector<std::vector<double>>				m_audioData;	// audio data is parsed from txt file into m_audioData and read on every update
+	std::vector<std::vector<Ogre::SceneNode*> >		m_barNodes;		// for creating the visuals
+	std::vector<std::vector<Ogre::StaticGeometry*> >	m_staticCubes;	// after all bars are created, the cubes are instanced and stored in m_staticCubes - only the staticCubes are updated
+	std::vector<std::vector<double> >				m_audioData;	// audio data is parsed from txt file into m_audioData and read on every update
 
 	
 	Map*						m_map;

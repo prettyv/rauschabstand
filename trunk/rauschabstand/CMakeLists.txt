@@ -15,6 +15,7 @@ set(AUDIO_LIB_FILES
 )
 
 set(AUDIO_BIN_FILES
+	#AudioAnalyzer.cpp
 	AudioPlayer.cpp
 	#TestMonitor.cpp
 	#SpectrumXMLWriter.cpp
@@ -33,6 +34,7 @@ set(OGRE_BIN_FILES
 	GameState.cpp
 	GameView.cpp
 	Map.cpp
+	MapGenerator.cpp
 	MenuState.cpp
 	PauseState.cpp
 	Player.cpp
@@ -45,6 +47,7 @@ if (WIN32)
 	)
 
 	set(AUDIO_BIN_FILES ${AUDIO_BIN_FILES}
+		#AudioAnalyzer.hpp
 		AudioPlayer.hpp
 		#TestMonitor.hpp
 		#TestDataSource.hpp
@@ -64,6 +67,7 @@ if (WIN32)
 		GameState.hpp
 		GameView.hpp
 		Map.hpp
+		MapGenerator.hpp
 		MenuState.hpp
 		PauseState.hpp
 		Player.hpp
