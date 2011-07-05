@@ -74,6 +74,7 @@ private:
     GameView*                   m_gameView;
 
 	bool						stopAtBeginning;
+	bool						m_audioRunningBeforePause;
 };
 
 //|||||||||||||||||||||||||||||||||||||||||||||||

@@ -29,6 +29,7 @@ GameState::GameState()
     m_gameView = new GameView();
 
 	stopAtBeginning = true;
+	m_audioRunningBeforePause = false;
 }
 
 //|||||||||||||||||||||||||||||||||||||||||||||||
@@ -194,6 +195,10 @@ bool GameState::pause()
 	m_gameView->pauseGame();
 	//HUD - Visuals End
 
+	if (m_audioPlayer->isPlaying()) 
+	{
+		m_audioRunningBeforePause = true;
+	}
 	m_audioPlayer->pause();
 
     return true;
@@ -211,7 +216,11 @@ void GameState::resume()
 	m_gameView->resumeGame();
 	//HUD - Visuals End
 
-	m_audioPlayer->play();
+	if (m_audioRunningBeforePause) 
+	{
+		m_audioPlayer->play();
+		m_audioRunningBeforePause = false;
+	}
 
 	// SHADERS BEGIN
     CompositorManager::getSingleton().setCompositorEnabled(OgreFramework::getSingletonPtr()->m_pViewport, "Bloom", true);

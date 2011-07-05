@@ -64,6 +64,7 @@ Player::Player(std::string name, SceneManager* sceneMgr, Camera* camera, Map* ma
 	m_jumping = false;
 
 	m_rollBack = false;
+	m_boostSpeed = 1;
 }
 
 //|||||||||||||||||||||||||||||||||||||||||||||||
@@ -94,7 +95,7 @@ void Player::update (Real timeSinceLastFrame, Real t, Real u)
 	// TODO: remove mass??
 	if (!m_map->isHoleInMap(t, u) && !m_throughHole)
 	{
-		m_speed += mapAntiGravity;
+		m_speed += mapAntiGravity * m_boostSpeed;
 	}
 	m_speed += gravity;
 

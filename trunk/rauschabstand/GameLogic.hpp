@@ -81,6 +81,9 @@ private:
 	Real				m_boostLevel;
 	Real				m_boostSpeed;
 
+	static const int	BOOSTUSEFACTOR = 2000;
+	static const int	BOOSTLOADFACTOR = 8000;
+
 	// COUNTDOWN BEGIN
 	OverlayManager& overlayManager;
 	OverlayContainer* m_countDown;

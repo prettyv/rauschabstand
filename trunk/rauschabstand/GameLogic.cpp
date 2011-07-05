@@ -99,7 +99,7 @@ void GameLogic::update(Ogre::Real timeSinceLastFrame)
 
 	if (m_map->isCloseToHole(m_t, m_u, 50))
 	{
-		m_timeCloseToHole += timeSinceLastFrame;
+		m_timeCloseToHole += timeSinceLastFrame * m_boostSpeed;
 		if (m_timeCloseToHole > 80)
 		{
 			m_multiplier++;
@@ -138,7 +138,7 @@ void GameLogic::update(Ogre::Real timeSinceLastFrame)
 	//TODO: test
 	if (m_boostActive) 
 	{
-		m_boostLevel -= timeSinceLastFrame / Real(1000);
+		m_boostLevel -= timeSinceLastFrame / BOOSTUSEFACTOR;
 		if (m_boostLevel <= 0) 
 		{
 			boostOff();
@@ -148,7 +148,7 @@ void GameLogic::update(Ogre::Real timeSinceLastFrame)
 	{
 		if (m_boostLevel < 1) 
 		{
-			m_boostLevel += timeSinceLastFrame / Real(10000);
+			m_boostLevel += timeSinceLastFrame / BOOSTLOADFACTOR;
 		}
 		else 
 		{
@@ -223,33 +223,31 @@ void GameLogic::playerDies()
 void GameLogic::boostOn() 
 {
 	m_boostActive = true;
-	//TODO: turn on blur
-	//TODO: speed up visuals
-	//speed up sound
-	m_audioPlayer->increasePitch(1.0f);
+	//turn on blur
+	Ogre::CompositorManager::getSingleton().setCompositorEnabled(OgreFramework::getSingletonPtr()->m_pViewport, "Motion Blur", true);
 	//speed up level
 	m_boostSpeed = 2;
-
+	//speed up visuals
 	m_visuals->setBoostSpeed(m_boostSpeed);
-
-	Ogre::CompositorManager::getSingleton().setCompositorEnabled(OgreFramework::getSingletonPtr()->m_pViewport, "Motion Blur", true);
-	//Ogre::CompositorManager::getSingleton().setCompositorEnabled(OgreFramework::getSingletonPtr()->m_pViewport, "Radial Blur", true);
+	//speed up sound
+	m_audioPlayer->increasePitch(1.0f);
+	//speed up gravity
+	m_player->setBoostSpeed(m_boostSpeed * 2);
 }
 
 void GameLogic::boostOff() 
 {
 	m_boostActive = false;
-	//TODO: turn off blur
-	//TODO: speed down visuals
-	//speed down sound
-	m_audioPlayer->decreasePitch(1.0f);
+	//turn off blur
+	Ogre::CompositorManager::getSingleton().setCompositorEnabled(OgreFramework::getSingletonPtr()->m_pViewport, "Motion Blur", false);
 	//speed down level
 	m_boostSpeed = 1;
-
+	//speed down visuals
 	m_visuals->setBoostSpeed(m_boostSpeed);
-
-	Ogre::CompositorManager::getSingleton().setCompositorEnabled(OgreFramework::getSingletonPtr()->m_pViewport, "Motion Blur", false);
-	//Ogre::CompositorManager::getSingleton().setCompositorEnabled(OgreFramework::getSingletonPtr()->m_pViewport, "Radial Blur", false);
+	//speed down sound
+	m_audioPlayer->decreasePitch(1.0f);
+	//speed up gravity
+	m_player->setBoostSpeed(m_boostSpeed * 2);
 }
 
 //|||||||||||||||||||||||||||||||||||||||||||||||

@@ -24,6 +24,7 @@ public:
 	void resetToStart();
 
 	Real getJumpHeight() { return m_jumpNode->getPosition().y; }
+	void setBoostSpeed(Real boostSpeed) { m_boostSpeed = boostSpeed; }
 
 private:
 	
@@ -62,6 +63,7 @@ private:
 	// for side-roll movement while steering
 	float							m_rollFactor;			// rolling intensity
 	bool							m_rollBack;				// signalizes that the player stopped steering and the model should roll-back
+	Real							m_boostSpeed;
 };
 
 //|||||||||||||||||||||||||||||||||||||||||||||||
