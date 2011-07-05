@@ -19,6 +19,10 @@ public:
 
 	void	createVisuals();
 	void	updateVisual(Ogre::Real timeSinceLastFrame);
+	void	reset(void);
+
+	bool						timeLowered;
+	Ogre::Real					m_countTime;	// passed seconds since first update
 
 private:
 	static const int CUBE_COUNT = 10;
@@ -30,11 +34,11 @@ private:
 	std::vector<std::vector<Ogre::StaticGeometry*>>	m_staticCubes;	// after all bars are created, the cubes are instanced and stored in m_staticCubes - only the staticCubes are updated
 	std::vector<std::vector<double>>				m_audioData;	// audio data is parsed from txt file into m_audioData and read on every update
 
-	Ogre::Real					m_countTime;	// passed seconds since first update
+	
 	Map*						m_map;
 	int							m_numberOfCubesCreated;
 
-	bool						timeLowered;
+	
 
 	// helper methods for creating visuals
 	void		createVisualBar(const Ogre::Vector3& position, const Ogre::Quaternion& orienation = Quaternion::IDENTITY);

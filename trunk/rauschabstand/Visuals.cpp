@@ -188,7 +188,7 @@ void Visuals::countDownVisuals(void) {
 		{
 			for (int i=0; i<BAR_COUNT; ++i)
 			{
-				for (int j=CUBE_COUNT-1; j>1; --j)
+				for (int j=CUBE_COUNT-1; j>2; --j)
 				{
 					m_staticCubes[i][j]->setVisible(false);
 				}
@@ -197,7 +197,7 @@ void Visuals::countDownVisuals(void) {
 		{
 			for (int i=0; i<BAR_COUNT; ++i)
 			{
-				for (int j=CUBE_COUNT-1; j>2; --j)
+				for (int j=CUBE_COUNT-1; j>3; --j)
 				{
 					m_staticCubes[i][j]->setVisible(false);
 				}
@@ -206,7 +206,7 @@ void Visuals::countDownVisuals(void) {
 		{
 			for (int i=0; i<BAR_COUNT; ++i)
 			{
-				for (int j=CUBE_COUNT-1; j>3; --j)
+				for (int j=CUBE_COUNT-1; j>4; --j)
 				{
 					m_staticCubes[i][j]->setVisible(false);
 				}
@@ -215,7 +215,7 @@ void Visuals::countDownVisuals(void) {
 		{
 			for (int i=0; i<BAR_COUNT; ++i)
 			{
-				for (int j=CUBE_COUNT-1; j>4; --j)
+				for (int j=CUBE_COUNT-1; j>5; --j)
 				{
 					m_staticCubes[i][j]->setVisible(false);
 				}
@@ -224,7 +224,7 @@ void Visuals::countDownVisuals(void) {
 		{
 			for (int i=0; i<BAR_COUNT; ++i)
 			{
-				for (int j=CUBE_COUNT-1; j>5; --j)
+				for (int j=CUBE_COUNT-1; j>6; --j)
 				{
 					m_staticCubes[i][j]->setVisible(false);
 				}
@@ -233,7 +233,7 @@ void Visuals::countDownVisuals(void) {
 		{
 			for (int i=0; i<BAR_COUNT; ++i)
 			{
-				for (int j=CUBE_COUNT-1; j>6; --j)
+				for (int j=CUBE_COUNT-1; j>7; --j)
 				{
 					m_staticCubes[i][j]->setVisible(false);
 				}
@@ -242,7 +242,7 @@ void Visuals::countDownVisuals(void) {
 		{
 			for (int i=0; i<BAR_COUNT; ++i)
 			{
-				for (int j=CUBE_COUNT-1; j>7; --j)
+				for (int j=CUBE_COUNT-1; j>8; --j)
 				{
 					m_staticCubes[i][j]->setVisible(false);
 				}
@@ -251,7 +251,7 @@ void Visuals::countDownVisuals(void) {
 		{
 			for (int i=0; i<BAR_COUNT; ++i)
 			{
-				for (int j=CUBE_COUNT-1; j>8; --j)
+				for (int j=CUBE_COUNT-1; j>9; --j)
 				{
 					m_staticCubes[i][j]->setVisible(false);
 				}
@@ -361,9 +361,6 @@ void Visuals::createVisuals() {
 			// building staticGeometry
 			m_staticCubes[i][j]->build();
 
-			if (j != 0) {
-				//m_staticCubes[i][j]->setVisible(false);
-			}
 		}
 	}
 
@@ -447,6 +444,25 @@ void Visuals::createVisualBar(const Ogre::Vector3& position, const Ogre::Quatern
 	}
 
 	++m_numberOfCubesCreated;
+}
+
+//|||||||||||||||||||||||||||||||||||||||||||||||
+
+void Visuals::reset() {
+	m_countTime = Ogre::Real(0.0);
+	timeLowered = false;
+
+	for (int i=0; i<BAR_COUNT; ++i)
+	{
+		for (int j=0; j<=CUBE_COUNT-1; ++j)
+		{
+			m_staticCubes[i][j]->setVisible(true);
+		}
+		for (int j=CUBE_COUNT-1; j>CUBE_COUNT-3; --j)
+		{
+			m_staticCubes[i][j]->setVisible(false);
+		}
+	}
 }
 
 //|||||||||||||||||||||||||||||||||||||||||||||||

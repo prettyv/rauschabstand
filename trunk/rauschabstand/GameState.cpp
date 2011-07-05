@@ -59,6 +59,7 @@ void GameState::enter()
 
 	createScene();
 
+	m_gameLogic->setVisuals(m_visuals);
 
 	// SHADERS BEGIN
 	//glow for spaceship/audio-visual/map effects

@@ -9,6 +9,7 @@
 #include "MapGenerator.hpp"
 #include "Map.hpp"
 #include "AudioPlayer.hpp"
+#include "Visuals.hpp"
 
 using namespace Ogre;
 
@@ -43,6 +44,9 @@ public:
 	unsigned long getScore() { return m_score; }
 	unsigned long getMultiplier() { return m_multiplier; }
 	Real getProgress() { return m_t / m_map->getLength(); }
+
+	//setter
+	void setVisuals(Visuals* visuals) { m_visuals = visuals; }
 private:
 	GameLogicStates		m_gameLogicStates;
 
@@ -53,6 +57,8 @@ private:
 	Map*				m_map;
 	Player*				m_player;
 	AudioPlayer*		m_audioPlayer;
+
+	Visuals*			m_visuals;
 
 	Real				m_t;
 	Real				m_u;

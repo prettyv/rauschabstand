@@ -173,7 +173,7 @@ void GameLogic::playerDies()
 	m_audioPlayer->stop();
 	m_audioPlayer->play();
 
-	//TODO: reset visuals
+	m_visuals->reset();
 }
 
 //|||||||||||||||||||||||||||||||||||||||||||||||
