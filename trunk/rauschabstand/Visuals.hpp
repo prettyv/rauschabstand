@@ -21,6 +21,8 @@ public:
 	void	updateVisual(Ogre::Real timeSinceLastFrame);
 	void	reset(void);
 
+	void	setBoostSpeed(Ogre::Real boostSpeed);
+
 	bool						timeLowered;
 	Ogre::Real					m_countTime;	// passed seconds since first update
 
@@ -37,6 +39,7 @@ private:
 	
 	Map*						m_map;
 	int							m_numberOfCubesCreated;
+	Ogre::Real					m_boostSpeed;
 
 	
 

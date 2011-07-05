@@ -11,7 +11,7 @@ using namespace Ogre;
 
 //|||||||||||||||||||||||||||||||||||||||||||||||
 
-Visuals::Visuals(SceneManager* pSceneMgr, Map* map) : m_numberOfCubesCreated(0), m_countTime(0.0), m_pSceneMgr(pSceneMgr), m_map(map), timeLowered(false)
+Visuals::Visuals(SceneManager* pSceneMgr, Map* map) : m_numberOfCubesCreated(0), m_countTime(0.0), m_pSceneMgr(pSceneMgr), m_map(map), timeLowered(false), m_boostSpeed(1)
 {
 	// filling up audioData with double vectors
 	for (int i=0; i<BAR_COUNT; ++i)
@@ -262,7 +262,7 @@ void Visuals::countDownVisuals(void) {
 //|||||||||||||||||||||||||||||||||||||||||||||||
 
 void Visuals::updateVisual(Ogre::Real timeSinceLastFrame) {
-	m_countTime += timeSinceLastFrame;
+	m_countTime += timeSinceLastFrame * m_boostSpeed;
 
 	// COUNTDOWN_BEGIN
 	if (!timeLowered && m_countTime < 10000) {
@@ -463,6 +463,12 @@ void Visuals::reset() {
 			m_staticCubes[i][j]->setVisible(false);
 		}
 	}
+}
+
+//|||||||||||||||||||||||||||||||||||||||||||||||
+
+void Visuals::setBoostSpeed(Ogre::Real boostSpeed) {
+	m_boostSpeed = boostSpeed;
 }
 
 //|||||||||||||||||||||||||||||||||||||||||||||||

@@ -230,6 +230,8 @@ void GameLogic::boostOn()
 	//speed up level
 	m_boostSpeed = 2;
 
+	m_visuals->setBoostSpeed(m_boostSpeed);
+
 	Ogre::CompositorManager::getSingleton().setCompositorEnabled(OgreFramework::getSingletonPtr()->m_pViewport, "Motion Blur", true);
 	//Ogre::CompositorManager::getSingleton().setCompositorEnabled(OgreFramework::getSingletonPtr()->m_pViewport, "Radial Blur", true);
 }
@@ -243,6 +245,8 @@ void GameLogic::boostOff()
 	m_audioPlayer->decreasePitch(1.0f);
 	//speed down level
 	m_boostSpeed = 1;
+
+	m_visuals->setBoostSpeed(m_boostSpeed);
 
 	Ogre::CompositorManager::getSingleton().setCompositorEnabled(OgreFramework::getSingletonPtr()->m_pViewport, "Motion Blur", false);
 	//Ogre::CompositorManager::getSingleton().setCompositorEnabled(OgreFramework::getSingletonPtr()->m_pViewport, "Radial Blur", false);
