@@ -71,12 +71,87 @@ void GameState::enter()
 	}
 
 	//bloom as general post-effect
-	//Ogre::CompositorManager::getSingleton().addCompositor(OgreFramework::getSingletonPtr()->m_pViewport, "Bloom");
-	//Ogre::CompositorManager::getSingleton().setCompositorEnabled(OgreFramework::getSingletonPtr()->m_pViewport, "Bloom", true);
+	Ogre::CompositorManager::getSingleton().addCompositor(OgreFramework::getSingletonPtr()->m_pViewport, "Bloom");
+	Ogre::CompositorManager::getSingleton().setCompositorEnabled(OgreFramework::getSingletonPtr()->m_pViewport, "Bloom", true);
 
 	//radial blur for boost
-	Ogre::CompositorManager::getSingleton().addCompositor(OgreFramework::getSingletonPtr()->m_pViewport, "Radial Blur");
-	Ogre::CompositorManager::getSingleton().setCompositorEnabled(OgreFramework::getSingletonPtr()->m_pViewport, "Radial Blur", false);
+	//Ogre::CompositorManager::getSingleton().addCompositor(OgreFramework::getSingletonPtr()->m_pViewport, "Radial Blur");
+	//Ogre::CompositorManager::getSingleton().setCompositorEnabled(OgreFramework::getSingletonPtr()->m_pViewport, "Radial Blur", false);
+
+	//motion blur for boost
+	Ogre::CompositorPtr comp3 = Ogre::CompositorManager::getSingleton().create(
+		"Motion Blur", Ogre::ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME
+		);
+	{
+		Ogre::CompositionTechnique *t = comp3->createTechnique();
+		{
+			Ogre::CompositionTechnique::TextureDefinition *def = t->createTextureDefinition("scene");
+			def->width = 0;
+			def->height = 0;
+			def->formatList.push_back(Ogre::PF_R8G8B8);
+		}
+		{
+			Ogre::CompositionTechnique::TextureDefinition *def = t->createTextureDefinition("sum");
+			def->width = 0;
+			def->height = 0;
+			def->formatList.push_back(Ogre::PF_R8G8B8);
+		}
+		{
+			Ogre::CompositionTechnique::TextureDefinition *def = t->createTextureDefinition("temp");
+			def->width = 0;
+			def->height = 0;
+			def->formatList.push_back(Ogre::PF_R8G8B8);
+		}
+		/// Render scene
+		{
+			Ogre::CompositionTargetPass *tp = t->createTargetPass();
+			tp->setInputMode(Ogre::CompositionTargetPass::IM_PREVIOUS);
+			tp->setOutputName("scene");
+		}
+		/// Initialisation pass for sum texture
+		{
+			Ogre::CompositionTargetPass *tp = t->createTargetPass();
+			tp->setInputMode(Ogre::CompositionTargetPass::IM_PREVIOUS);
+			tp->setOutputName("sum");
+			tp->setOnlyInitial(true);
+		}
+		/// Do the motion blur
+		{
+			Ogre::CompositionTargetPass *tp = t->createTargetPass();
+			tp->setInputMode(Ogre::CompositionTargetPass::IM_NONE);
+			tp->setOutputName("temp");
+			{ Ogre::CompositionPass *pass = tp->createPass();
+			pass->setType(Ogre::CompositionPass::PT_RENDERQUAD);
+			pass->setMaterialName("Ogre/Compositor/Combine");
+			pass->setInput(0, "scene");
+			pass->setInput(1, "sum");
+			}
+		}
+		/// Copy back sum texture
+		{
+			Ogre::CompositionTargetPass *tp = t->createTargetPass();
+			tp->setInputMode(Ogre::CompositionTargetPass::IM_NONE);
+			tp->setOutputName("sum");
+			{ Ogre::CompositionPass *pass = tp->createPass();
+			pass->setType(Ogre::CompositionPass::PT_RENDERQUAD);
+			pass->setMaterialName("Ogre/Compositor/Copyback");
+			pass->setInput(0, "temp");
+			}
+		}
+		/// Display result
+		{
+			Ogre::CompositionTargetPass *tp = t->getOutputTargetPass();
+			tp->setInputMode(Ogre::CompositionTargetPass::IM_NONE);
+			{ Ogre::CompositionPass *pass = tp->createPass();
+			pass->setType(Ogre::CompositionPass::PT_RENDERQUAD);
+			pass->setMaterialName("Ogre/Compositor/MotionBlur");
+			pass->setInput(0, "sum");
+			}
+		}
+	}
+
+	Ogre::CompositorManager::getSingleton().addCompositor(OgreFramework::getSingletonPtr()->m_pViewport, "Motion Blur");
+	Ogre::CompositorManager::getSingleton().setCompositorEnabled(OgreFramework::getSingletonPtr()->m_pViewport, "Motion Blur", false);
 	//SHADERS END
 
 	/*m_audioPlayer->play();*/

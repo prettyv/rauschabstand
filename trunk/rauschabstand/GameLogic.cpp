@@ -230,7 +230,8 @@ void GameLogic::boostOn()
 	//speed up level
 	m_boostSpeed = 2;
 
-	Ogre::CompositorManager::getSingleton().setCompositorEnabled(OgreFramework::getSingletonPtr()->m_pViewport, "Radial Blur", true);
+	Ogre::CompositorManager::getSingleton().setCompositorEnabled(OgreFramework::getSingletonPtr()->m_pViewport, "Motion Blur", true);
+	//Ogre::CompositorManager::getSingleton().setCompositorEnabled(OgreFramework::getSingletonPtr()->m_pViewport, "Radial Blur", true);
 }
 
 void GameLogic::boostOff() 
@@ -243,7 +244,8 @@ void GameLogic::boostOff()
 	//speed down level
 	m_boostSpeed = 1;
 
-	Ogre::CompositorManager::getSingleton().setCompositorEnabled(OgreFramework::getSingletonPtr()->m_pViewport, "Radial Blur", false);
+	Ogre::CompositorManager::getSingleton().setCompositorEnabled(OgreFramework::getSingletonPtr()->m_pViewport, "Motion Blur", false);
+	//Ogre::CompositorManager::getSingleton().setCompositorEnabled(OgreFramework::getSingletonPtr()->m_pViewport, "Radial Blur", false);
 }
 
 //|||||||||||||||||||||||||||||||||||||||||||||||
