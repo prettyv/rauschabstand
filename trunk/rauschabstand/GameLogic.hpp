@@ -42,7 +42,7 @@ public:
 	Map* getMap() { return m_map; }
 	unsigned long getScore() { return m_score; }
 	unsigned long getMultiplier() { return m_multiplier; }
-	Real getProgress() { return m_map->getLength() / m_t; }
+	Real getProgress() { return m_t / m_map->getLength(); }
 private:
 	GameLogicStates		m_gameLogicStates;
 
