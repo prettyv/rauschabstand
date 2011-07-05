@@ -25,7 +25,6 @@ GameState::GameState()
 	m_gameLogic			= 0;
 	m_audioPlayer		= 0;
 
-    //Visuals
     m_gameView = new GameView();
 
 	stopAtBeginning = true;
@@ -176,8 +175,7 @@ void GameState::enter()
 	}
 	*/
 
-    //Visuals
-    m_gameView->engage(m_gameLogic, m_pSceneMgr, m_pCamera, m_FrameEvent);
+	m_gameView->engage(m_gameLogic, m_pSceneMgr, m_pCamera, m_FrameEvent);
 }
 
 //|||||||||||||||||||||||||||||||||||||||||||||||
@@ -251,6 +249,8 @@ void GameState::exit()
 
     //Visuals
     m_gameView->disengage();
+
+	delete m_gameLogic;
 }
 
 //|||||||||||||||||||||||||||||||||||||||||||||||

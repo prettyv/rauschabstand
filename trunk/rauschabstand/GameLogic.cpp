@@ -4,7 +4,7 @@
 
 //|||||||||||||||||||||||||||||||||||||||||||||||
 
-GameLogic::GameLogic(SceneManager* sceneMgr, Camera* camera, AudioPlayer* audioPlayer) : overlayManager(Ogre::OverlayManager::getSingleton())
+GameLogic::GameLogic(SceneManager* sceneMgr, Camera* camera, AudioPlayer* audioPlayer) : m_overlayManager(Ogre::OverlayManager::getSingleton())
 {
 	m_gameLogicStates = INIT;
 
@@ -37,7 +37,7 @@ GameLogic::GameLogic(SceneManager* sceneMgr, Camera* camera, AudioPlayer* audioP
 	// COUNTDOWN BEGIN
 	//overlayManager = Ogre::OverlayManager::getSingleton();
 	m_countDown = 0;
-	overlayCountDown = 0;
+	m_overlayCountDown = 0;
 
 	// create material
 	MaterialManager& materialManager = Ogre::MaterialManager::getSingleton();
@@ -50,20 +50,28 @@ GameLogic::GameLogic(SceneManager* sceneMgr, Camera* camera, AudioPlayer* audioP
 		material->getTechnique(0)->getPass(0)->setSceneBlending(Ogre::SBT_TRANSPARENT_ALPHA);
 	}
 
-	m_countDown = static_cast<OverlayContainer*>(overlayManager.createOverlayElement("Panel", "CountDown"));
+	m_countDown = static_cast<OverlayContainer*>(m_overlayManager.createOverlayElement("Panel", "CountDown"));
 	m_countDown->setPosition(0.4f, 0.4f);
 	m_countDown->setDimensions(0.2f, 0.2f);
 	m_countDown->setMaterialName("CountDown1");
 	m_countDown->setMaterialName("CountDown2");
 	m_countDown->setMaterialName("CountDown3");
-	overlayCountDown = overlayManager.create("Overlay_CountDown");
-	overlayCountDown->add2D(m_countDown);
-	overlayCountDown->hide();
+	m_overlayCountDown = m_overlayManager.create("Overlay_CountDown");
+	m_overlayCountDown->add2D(m_countDown);
+	m_overlayCountDown->hide();
 	// COUNTDOWN END
 }
 
 GameLogic::~GameLogic()
 {
+	if (m_countDown) 
+	{
+		m_overlayManager.destroyOverlayElement(m_countDown, false);
+	}
+	if (m_overlayCountDown) 
+	{
+		m_overlayManager.destroy(m_overlayCountDown->getName());
+	}
 	delete m_map;
 	delete m_player;
 	delete m_mapGenerator;
@@ -124,7 +132,7 @@ void GameLogic::update(Ogre::Real timeSinceLastFrame)
 		m_countdownTime += timeSinceLastFrame;
 
 		if (m_countdownTime >= 7000 && m_countdownTime < 8000) {
-			overlayCountDown->show();
+			m_overlayCountDown->show();
 			if (!m_countdown3_played) {
 				m_audioPlayer->playSound("countdown_low.ogg");
 				m_countdown3_played = true;
@@ -142,7 +150,7 @@ void GameLogic::update(Ogre::Real timeSinceLastFrame)
 				m_countdown1_played = true;
 			}
 		} else if (m_countdownTime > 10000) {
-			overlayCountDown->hide();
+			m_overlayCountDown->hide();
 
 			m_gameLogicStates = RUNNING;
 			m_audioPlayer->play();
@@ -231,6 +239,9 @@ void GameLogic::playerDies()
 	m_gameLogicStates = COUNTDOWN;
 	m_countdownTime = 0;
 	m_visuals->reset();
+	m_countdown1_played = false;
+	m_countdown2_played = false;
+	m_countdown3_played = false;
 }
 
 void GameLogic::boostOn() 

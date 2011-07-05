@@ -84,14 +84,12 @@ private:
 	static const int	BOOSTUSEFACTOR = 2000;
 	static const int	BOOSTLOADFACTOR = 8000;
 
-	// COUNTDOWN BEGIN
-	OverlayManager& overlayManager;
-	OverlayContainer* m_countDown;
-	Overlay* overlayCountDown;
-	bool m_countdown3_played;
-	bool m_countdown2_played;
-	bool m_countdown1_played;
-	// COUNTDOWN END
+	OverlayManager&		m_overlayManager;
+	OverlayContainer*	m_countDown;
+	Overlay*			m_overlayCountDown;
+	bool				m_countdown3_played;
+	bool				m_countdown2_played;
+	bool				m_countdown1_played;
 };
 
 //|||||||||||||||||||||||||||||||||||||||||||||||
