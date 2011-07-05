@@ -1106,18 +1106,18 @@ void GameView::updateHUD(Ogre::Real timeSinceLastFrame) {
 }
 
 void GameView::setAlphaToAllPanels() {
-    m_panelTrack->getMaterial()->getTechnique(0)->getPass(0)->getTextureUnitState(0)->setAlphaOperation(Ogre::LayerBlendOperationEx::LBX_MODULATE,Ogre::LayerBlendSource::LBS_MANUAL,Ogre::LayerBlendSource::LBS_TEXTURE,m_alpha);
-    m_panelX->getMaterial()->getTechnique(0)->getPass(0)->getTextureUnitState(0)->setAlphaOperation(Ogre::LayerBlendOperationEx::LBX_MODULATE,Ogre::LayerBlendSource::LBS_MANUAL,Ogre::LayerBlendSource::LBS_TEXTURE,m_alpha);
-    m_panelNum1->getMaterial()->getTechnique(0)->getPass(0)->getTextureUnitState(0)->setAlphaOperation(Ogre::LayerBlendOperationEx::LBX_MODULATE,Ogre::LayerBlendSource::LBS_MANUAL,Ogre::LayerBlendSource::LBS_TEXTURE,m_alpha);
-    m_panelNum2->getMaterial()->getTechnique(0)->getPass(0)->getTextureUnitState(0)->setAlphaOperation(Ogre::LayerBlendOperationEx::LBX_MODULATE,Ogre::LayerBlendSource::LBS_MANUAL,Ogre::LayerBlendSource::LBS_TEXTURE,m_alpha);
-    m_panelNum3->getMaterial()->getTechnique(0)->getPass(0)->getTextureUnitState(0)->setAlphaOperation(Ogre::LayerBlendOperationEx::LBX_MODULATE,Ogre::LayerBlendSource::LBS_MANUAL,Ogre::LayerBlendSource::LBS_TEXTURE,m_alpha);
-    m_panelNum4->getMaterial()->getTechnique(0)->getPass(0)->getTextureUnitState(0)->setAlphaOperation(Ogre::LayerBlendOperationEx::LBX_MODULATE,Ogre::LayerBlendSource::LBS_MANUAL,Ogre::LayerBlendSource::LBS_TEXTURE,m_alpha);
-    m_panelNum5->getMaterial()->getTechnique(0)->getPass(0)->getTextureUnitState(0)->setAlphaOperation(Ogre::LayerBlendOperationEx::LBX_MODULATE,Ogre::LayerBlendSource::LBS_MANUAL,Ogre::LayerBlendSource::LBS_TEXTURE,m_alpha);
-    m_panelNum6->getMaterial()->getTechnique(0)->getPass(0)->getTextureUnitState(0)->setAlphaOperation(Ogre::LayerBlendOperationEx::LBX_MODULATE,Ogre::LayerBlendSource::LBS_MANUAL,Ogre::LayerBlendSource::LBS_TEXTURE,m_alpha);
-    m_panelBoost->getMaterial()->getTechnique(0)->getPass(0)->getTextureUnitState(0)->setAlphaOperation(Ogre::LayerBlendOperationEx::LBX_MODULATE,Ogre::LayerBlendSource::LBS_MANUAL,Ogre::LayerBlendSource::LBS_TEXTURE,m_alpha);
-    m_panelLogo->getMaterial()->getTechnique(0)->getPass(0)->getTextureUnitState(0)->setAlphaOperation(Ogre::LayerBlendOperationEx::LBX_MODULATE,Ogre::LayerBlendSource::LBS_MANUAL,Ogre::LayerBlendSource::LBS_TEXTURE,m_alpha);
-    m_panelMult1->getMaterial()->getTechnique(0)->getPass(0)->getTextureUnitState(0)->setAlphaOperation(Ogre::LayerBlendOperationEx::LBX_MODULATE,Ogre::LayerBlendSource::LBS_MANUAL,Ogre::LayerBlendSource::LBS_TEXTURE,m_alpha);
-    m_panelMult2->getMaterial()->getTechnique(0)->getPass(0)->getTextureUnitState(0)->setAlphaOperation(Ogre::LayerBlendOperationEx::LBX_MODULATE,Ogre::LayerBlendSource::LBS_MANUAL,Ogre::LayerBlendSource::LBS_TEXTURE,m_alpha);
+    m_panelTrack->getMaterial()->getTechnique(0)->getPass(0)->getTextureUnitState(0)->setAlphaOperation(Ogre::LBX_MODULATE, Ogre::LBS_MANUAL, Ogre::LBS_TEXTURE, m_alpha);
+    m_panelX->getMaterial()->getTechnique(0)->getPass(0)->getTextureUnitState(0)->setAlphaOperation(Ogre::LBX_MODULATE, Ogre::LBS_MANUAL, Ogre::LBS_TEXTURE, m_alpha);
+    m_panelNum1->getMaterial()->getTechnique(0)->getPass(0)->getTextureUnitState(0)->setAlphaOperation(Ogre::LBX_MODULATE, Ogre::LBS_MANUAL, Ogre::LBS_TEXTURE, m_alpha);
+    m_panelNum2->getMaterial()->getTechnique(0)->getPass(0)->getTextureUnitState(0)->setAlphaOperation(Ogre::LBX_MODULATE, Ogre::LBS_MANUAL, Ogre::LBS_TEXTURE, m_alpha);
+    m_panelNum3->getMaterial()->getTechnique(0)->getPass(0)->getTextureUnitState(0)->setAlphaOperation(Ogre::LBX_MODULATE, Ogre::LBS_MANUAL, Ogre::LBS_TEXTURE, m_alpha);
+    m_panelNum4->getMaterial()->getTechnique(0)->getPass(0)->getTextureUnitState(0)->setAlphaOperation(Ogre::LBX_MODULATE, Ogre::LBS_MANUAL, Ogre::LBS_TEXTURE, m_alpha);
+    m_panelNum5->getMaterial()->getTechnique(0)->getPass(0)->getTextureUnitState(0)->setAlphaOperation(Ogre::LBX_MODULATE, Ogre::LBS_MANUAL, Ogre::LBS_TEXTURE, m_alpha);
+    m_panelNum6->getMaterial()->getTechnique(0)->getPass(0)->getTextureUnitState(0)->setAlphaOperation(Ogre::LBX_MODULATE, Ogre::LBS_MANUAL, Ogre::LBS_TEXTURE, m_alpha);
+    m_panelBoost->getMaterial()->getTechnique(0)->getPass(0)->getTextureUnitState(0)->setAlphaOperation(Ogre::LBX_MODULATE, Ogre::LBS_MANUAL, Ogre::LBS_TEXTURE, m_alpha);
+    m_panelLogo->getMaterial()->getTechnique(0)->getPass(0)->getTextureUnitState(0)->setAlphaOperation(Ogre::LBX_MODULATE, Ogre::LBS_MANUAL, Ogre::LBS_TEXTURE, m_alpha);
+    m_panelMult1->getMaterial()->getTechnique(0)->getPass(0)->getTextureUnitState(0)->setAlphaOperation(Ogre::LBX_MODULATE, Ogre::LBS_MANUAL, Ogre::LBS_TEXTURE, m_alpha);
+    m_panelMult2->getMaterial()->getTechnique(0)->getPass(0)->getTextureUnitState(0)->setAlphaOperation(Ogre::LBX_MODULATE, Ogre::LBS_MANUAL, Ogre::LBS_TEXTURE, m_alpha);
 }
 
 void GameView::resumeGame() {
