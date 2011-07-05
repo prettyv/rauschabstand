@@ -307,8 +307,9 @@ void GameState::getInput()
     if ( OgreFramework::getSingletonPtr()->m_pKeyboard->isKeyDown(OIS::KC_W)
         || OgreFramework::getSingletonPtr()->m_pKeyboard->isKeyDown(OIS::KC_S)
         || OgreFramework::getSingletonPtr()->m_pKeyboard->isKeyDown(OIS::KC_A)
-        || OgreFramework::getSingletonPtr()->m_pKeyboard->isKeyDown(OIS::KC_D)
-		|| OgreFramework::getSingletonPtr()->m_pKeyboard->isKeyDown(OIS::KC_SPACE))
+		|| OgreFramework::getSingletonPtr()->m_pKeyboard->isKeyDown(OIS::KC_D)
+		|| OgreFramework::getSingletonPtr()->m_pKeyboard->isKeyDown(OIS::KC_SPACE)
+		|| OgreFramework::getSingletonPtr()->m_pKeyboard->isKeyDown(OIS::KC_K))
 	{
 		m_gameLogic->update(m_FrameEvent.timeSinceLastFrame, OgreFramework::getSingletonPtr()->m_pKeyboard);
 	}

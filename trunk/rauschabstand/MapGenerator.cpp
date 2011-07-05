@@ -26,6 +26,24 @@ void MapGenerator::generateMap()
 	m_map->setCubesRadius(420, 0, 6, HOLE);
 	m_map->setCubesRadius(440, 0, 7, HOLE);
 	m_map->setCubesRadius(460, -4, 7, HOLE);
+
+	//obstacles for debugging sound
+	m_map->setCubes(350, 1, -1, 1, OBSTACLE);
+	m_map->setCubes(400, 1, -1, 1, OBSTACLE);
+	m_map->setCubes(450, 1, -1, 1, OBSTACLE);
+	m_map->setCubes(500, 1, -1, 1, OBSTACLE);
+	m_map->setCubes(550, 1, -1, 1, OBSTACLE);
+	m_map->setCubes(600, 1, -1, 1, OBSTACLE);
+	m_map->setCubes(650, 1, -1, 1, OBSTACLE);
+	m_map->setCubes(700, 1, -1, 1, OBSTACLE);
+	m_map->setCubes(750, 1, -1, 1, OBSTACLE);
+	m_map->setCubes(800, 1, -1, 1, OBSTACLE);
+	m_map->setCubes(850, 1, -1, 1, OBSTACLE);
+	m_map->setCubes(900, 1, -1, 1, OBSTACLE);
+	m_map->setCubes(950, 1, -1, 1, OBSTACLE);
+	m_map->setCubes(1000, 1, -1, 1, OBSTACLE);
+	m_map->setCubes(1050, 1, -1, 1, OBSTACLE);
+
 	//use these last
 	m_map->setCubesRow(500, 10, NORMAL);		//start is normal
 	m_map->setCubesRow(495, 5, HOLE);		//cuts of end

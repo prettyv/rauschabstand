@@ -89,7 +89,7 @@ void GameLogic::update(Ogre::Real timeSinceLastFrame)
 
 	Ogre::Real tdif = m_blockMs * timeSinceLastFrame;
 	m_t += tdif;
-	m_score += (unsigned long) (m_multiplier * tdif * 100);
+	m_score += (unsigned long) (m_multiplier * tdif * 10);
 	m_t = m_t >= m_map->getLength() ? m_map->getLength() : m_t;
 
 	if (m_player->getJumpHeight() < DEADHEIGHT)
@@ -149,6 +149,11 @@ void GameLogic::update(Ogre::Real elapsedTime, OIS::Keyboard* input) {
 	if (input->isKeyDown(OIS::KC_SPACE))
 	{
 		m_player->jump(elapsedTime, m_t, m_u);
+	}
+	// kill player for debug
+	if (input->isKeyDown(OIS::KC_K))
+	{
+		playerDies();
 	}
 	m_player->update(elapsedTime, input);
 }
