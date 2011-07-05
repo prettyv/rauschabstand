@@ -1003,14 +1003,12 @@ void GameView::updateHUD(Ogre::Real timeSinceLastFrame) {
         m_timeTest = 0;
         m_scaleInvert = !m_scaleInvert;
 
-        //Test
-        m_boostCharge++;
-        if(m_boostCharge > 10) { m_boostCharge = 0;}
 
         m_levelProgress++;
         if(m_levelProgress > 10) { m_levelProgress = 0;}
     }
-    
+	m_boostCharge = (int) (m_gameLogic->getBoostLevel() * 10);
+
     //Geht auch!!
     //m_materialBoost->getTechnique(0)->getPass(0)->getTextureUnitState(0)->setTextureScale(m_scale,m_scale);
     m_overlayBoost->setScale(m_scale,m_scale);

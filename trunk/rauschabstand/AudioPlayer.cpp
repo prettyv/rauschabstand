@@ -1,7 +1,6 @@
 #include "AudioPlayer.hpp"
 
 #include <cAudio/plugins/mp3Decoder/cMP3Plugin.h>
-#include <OGRE/OgreVector3.h>
 
 #include <iostream>
 

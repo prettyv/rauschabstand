@@ -30,10 +30,11 @@ public:
 
 	void init();
 	void start();
-	void reset();
 	void update(Ogre::Real timeSinceLastFrame);
 	void updatePlayer(Ogre::Real timeSinceLastFrame);
 	void playerDies();
+	void boostOn();
+	void boostOff();
 
 	//input
 	void update(Ogre::Real elapsedTime, OIS::Keyboard *input);
@@ -44,7 +45,7 @@ public:
 	unsigned long getScore() { return m_score; }
 	unsigned long getMultiplier() { return m_multiplier; }
 	Real getProgress() { return m_t / m_map->getLength(); }
-
+	Real getBoostLevel() { return m_boostLevel; }
 	//setter
 	void setVisuals(Visuals* visuals) { m_visuals = visuals; }
 private:
@@ -75,6 +76,10 @@ private:
 
 	Real				m_blockMs;
 	Real				m_blockMsSide;
+
+	bool				m_boostActive;
+	Real				m_boostLevel;
+	Real				m_boostSpeed;
 
 	// COUNTDOWN BEGIN
 	OverlayManager& overlayManager;

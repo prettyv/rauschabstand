@@ -29,7 +29,7 @@
 
 #include "cAudio/include/cAudio.h"
 #include <vector>
-#include <OGRE/OgreVector3.h>
+#include <OgreVector3.h>
 
 class AudioPlayer {
 

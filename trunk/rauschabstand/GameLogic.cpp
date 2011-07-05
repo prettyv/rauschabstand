@@ -15,7 +15,8 @@ GameLogic::GameLogic(SceneManager* sceneMgr, Camera* camera, AudioPlayer* audioP
 	m_blockMs = Real(0.0175);
 	m_blockMsSide = Real(0.9);
 
-	m_mapGenerator = new MapGenerator("map01", m_sceneMgr, 84 * m_blockMs * 1000, 10);
+	m_mapGenerator = new MapGenerator("map01", m_sceneMgr, (84 + 10) * m_blockMs * 1000, 10);
+	//map length: songlength: 84sec, countdown: 10sec
 	m_map = m_mapGenerator->getMap();
 	m_player = new Player("Player", m_sceneMgr, m_camera, m_map);
 
@@ -25,6 +26,9 @@ GameLogic::GameLogic(SceneManager* sceneMgr, Camera* camera, AudioPlayer* audioP
 	m_multiplier = 1;
 	m_timeCloseToHole = 0;
 	m_countdownTime = 0;
+	m_boostActive = false;
+	m_boostLevel = 0;
+	m_boostSpeed = 1;
 
 
 	// COUNTDOWN BEGIN
@@ -74,11 +78,6 @@ void GameLogic::start()
 	m_gameLogicStates = COUNTDOWN;
 }
 
-void GameLogic::reset()
-{
-	//TODO
-}
-
 void GameLogic::update(Ogre::Real timeSinceLastFrame)
 {
 	//TODO: fix start when everything is loaded..
@@ -87,10 +86,10 @@ void GameLogic::update(Ogre::Real timeSinceLastFrame)
 		return;
 	}
 
-	Ogre::Real tdif = m_blockMs * timeSinceLastFrame;
+	Ogre::Real tdif = m_blockMs * timeSinceLastFrame * m_boostSpeed;
 	Ogre::Real shipPosPrev = m_t;
 	m_t += tdif;
-	m_score += (unsigned long) (m_multiplier * tdif * 10);
+	m_score += (unsigned long) (m_multiplier * m_boostSpeed * tdif * 10);	//boost == score bonus...
 	m_t = m_t >= m_map->getLength() ? m_map->getLength() : m_t;
 
 	if (m_player->getJumpHeight() < DEADHEIGHT)
@@ -135,6 +134,27 @@ void GameLogic::update(Ogre::Real timeSinceLastFrame)
 			m_audioPlayer->playObstacles();
 		}
 	}
+
+	//TODO: test
+	if (m_boostActive) 
+	{
+		m_boostLevel -= timeSinceLastFrame / Real(1000);
+		if (m_boostLevel <= 0) 
+		{
+			boostOff();
+		}
+	}
+	else 
+	{
+		if (m_boostLevel < 1) 
+		{
+			m_boostLevel += timeSinceLastFrame / Real(10000);
+		}
+		else 
+		{
+			m_boostLevel = 1;
+		}
+	}
 }
 
 void GameLogic::update(Ogre::Real elapsedTime, OIS::Keyboard* input) {
@@ -159,13 +179,27 @@ void GameLogic::update(Ogre::Real elapsedTime, OIS::Keyboard* input) {
 	{
 		playerDies();
 	}
+	if (input->isKeyDown(OIS::KC_LSHIFT))
+	{
+		if (!m_boostActive /*&& m_boostLevel > Real(0.1)*/ && m_gameLogicStates == RUNNING) 
+		{
+			boostOn();
+		}
+	}
 	m_player->update(elapsedTime, input);
-	m_audioPlayer->updateObstacles(m_map->getPosition(m_t, shipPosPrev) - m_map->getPosition(m_t, m_u));
 }
 
-void GameLogic::keyReleased(Real timeSinceLastFrame, const OIS::KeyEvent & keyEventRef)
+void GameLogic::keyReleased(Real timeSinceLastFrame, const OIS::KeyEvent& keyEventRef)
 {
 	m_player->keyReleased(timeSinceLastFrame, keyEventRef);
+
+	if (keyEventRef.key == OIS::KC_LSHIFT) 
+	{
+		if (m_boostActive) 
+		{
+			boostOff();
+		}
+	}
 }
 
 void GameLogic::playerDies() 
@@ -176,9 +210,36 @@ void GameLogic::playerDies()
 	m_multiplier = 1;
 	m_player->resetToStart();
 	m_audioPlayer->stop();
-	m_audioPlayer->play();
-
+	m_audioPlayer->reset(m_map->getObstaclePositions());
+	m_boostActive = false;
+	m_boostLevel = 0;
+	m_boostSpeed = 1;
+	m_countDown->setMaterialName("CountDown3");
+	m_gameLogicStates = COUNTDOWN;
+	m_countdownTime = 0;
 	m_visuals->reset();
+}
+
+void GameLogic::boostOn() 
+{
+	m_boostActive = true;
+	//TODO: turn on blur
+	//TODO: speed up visuals
+	//speed up sound
+	m_audioPlayer->increasePitch(1.0f);
+	//speed up level
+	m_boostSpeed = 2;
+}
+
+void GameLogic::boostOff() 
+{
+	m_boostActive = false;
+	//TODO: turn off blur
+	//TODO: speed down visuals
+	//speed down sound
+	m_audioPlayer->decreasePitch(1.0f);
+	//speed down level
+	m_boostSpeed = 1;
 }
 
 //|||||||||||||||||||||||||||||||||||||||||||||||
