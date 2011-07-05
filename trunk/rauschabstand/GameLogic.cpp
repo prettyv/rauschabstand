@@ -26,6 +26,9 @@ GameLogic::GameLogic(SceneManager* sceneMgr, Camera* camera, AudioPlayer* audioP
 	m_multiplier = 1;
 	m_timeCloseToHole = 0;
 	m_countdownTime = 0;
+	m_countdown1_played = false;
+	m_countdown2_played = false;
+	m_countdown3_played = false;
 	m_boostActive = false;
 	m_boostLevel = 0;
 	m_boostSpeed = 1;
@@ -122,16 +125,27 @@ void GameLogic::update(Ogre::Real timeSinceLastFrame)
 
 		if (m_countdownTime >= 7000 && m_countdownTime < 8000) {
 			overlayCountDown->show();
+			if (!m_countdown3_played) {
+				m_audioPlayer->playSound("countdown_low.ogg");
+				m_countdown3_played = true;
+			}
 		} else if (m_countdownTime >= 8000 && m_countdownTime < 9000) {
 			m_countDown->setMaterialName("CountDown2");
+			if (!m_countdown2_played) {
+				m_audioPlayer->playSound("countdown_low.ogg");
+				m_countdown2_played = true;
+			}
 		} else if (m_countdownTime >= 9000 && m_countdownTime < 10000) {
 			m_countDown->setMaterialName("CountDown1");
+			if (!m_countdown1_played) {
+				m_audioPlayer->playSound("countdown_high.ogg");
+				m_countdown1_played = true;
+			}
 		} else if (m_countdownTime > 10000) {
 			overlayCountDown->hide();
 
 			m_gameLogicStates = RUNNING;
 			m_audioPlayer->play();
-			m_audioPlayer->playObstacles();
 		}
 	}
 
@@ -209,7 +223,6 @@ void GameLogic::playerDies()
 	m_score = 0;
 	m_multiplier = 1;
 	m_player->resetToStart();
-	m_audioPlayer->stop();
 	m_audioPlayer->reset(m_map->getObstaclePositions());
 	m_boostActive = false;
 	m_boostLevel = 0;

@@ -61,35 +61,34 @@ void AudioPlayer::addObstacles(std::vector<Ogre::Vector3> positions) {
 void AudioPlayer::play()
 {
 	trackMusic->play();
-}
-
-// void AudioPlayer::playSound(const std::string& audio) {
-// 	cAudio::IAudioSource sndSrc = audioMgr->)
-// }
-
-void AudioPlayer::playObstacles() {
 	for (unsigned int i = 0; i < obstacles.size(); i++) {
 		obstacles[i]->play3d(obstacles[i]->getPosition(), 1.0, true);
 	}
 }
 
+void AudioPlayer::playSound(const std::string& audio) {
+	audioMgr->create("temp", audio.c_str(), false)->play2d();
+}
+
 void AudioPlayer::pause()
 {
 	trackMusic->pause();
+	for (unsigned int i = 0; i < obstacles.size(); i++) {
+		obstacles[i]->pause();
+	}
 }
 
 void AudioPlayer::stop()
 {
 	trackMusic->stop();
+	for (unsigned int i = 0; i < obstacles.size(); i++) {
+		obstacles[i]->stop();
+	}
 }
 
 bool AudioPlayer::isPlaying()
 {
 	return trackMusic->isPlaying();
-}
-
-void AudioPlayer::addFile(const std::string& file) {	
-	audioMgr->create("sfx", file.c_str(), true);
 }
 
 int AudioPlayer::getLength()
@@ -114,18 +113,13 @@ void AudioPlayer::updateObstacles(Ogre::Vector3 shipVec) {
 	for (unsigned int i = 0; i < obstacles.size(); i++) {
 		obstacles[i]->move(obstacles[i]->getPosition() - ogreVecTocVec(shipVec));
 	}
-	std::cout << std::endl;
-	std::cout << obstacles[0]->getPosition().x << std::endl;
-	std::cout << obstacles[0]->getPosition().y << std::endl;
-	std::cout << obstacles[0]->getPosition().z << std::endl;
-	std::cout << std::endl;
 }
 
 void AudioPlayer::reset(std::vector<Ogre::Vector3> positions) {
+	stop();
 	trackMusic->setPitch(1.0f);
 	cAudio::cVector3 position;
 	for (unsigned int i = 0; i < obstacles.size(); i++) {
-		obstacles[i]->stop();
 		obstacles[i]->setPitch(1.0f);
 		position = ogreVecTocVec(positions[i]);
 		position.x =  0;

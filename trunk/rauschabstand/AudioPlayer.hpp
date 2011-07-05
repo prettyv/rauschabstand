@@ -40,13 +40,12 @@ class AudioPlayer {
 		
 		void addObstacles(std::vector<Ogre::Vector3> positions);
 
+		void playSound(const std::string& audio);
 		void play();
-		void playObstacles();
 		void pause();
 		void stop();
 		
 		bool isPlaying();
-		void addFile(const std::string& file);
 		int getLength();
 		
 		float getPitch();

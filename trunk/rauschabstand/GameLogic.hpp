@@ -88,6 +88,9 @@ private:
 	OverlayManager& overlayManager;
 	OverlayContainer* m_countDown;
 	Overlay* overlayCountDown;
+	bool m_countdown3_played;
+	bool m_countdown2_played;
+	bool m_countdown1_played;
 	// COUNTDOWN END
 };
 
