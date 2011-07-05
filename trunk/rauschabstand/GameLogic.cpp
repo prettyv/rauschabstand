@@ -181,7 +181,7 @@ void GameLogic::update(Ogre::Real elapsedTime, OIS::Keyboard* input) {
 	}
 	if (input->isKeyDown(OIS::KC_LSHIFT))
 	{
-		if (!m_boostActive /*&& m_boostLevel > Real(0.1)*/ && m_gameLogicStates == RUNNING) 
+		if (!m_boostActive && m_boostLevel > Real(0.1) && m_gameLogicStates == RUNNING) 
 		{
 			boostOn();
 		}
