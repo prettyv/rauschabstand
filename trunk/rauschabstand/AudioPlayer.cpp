@@ -41,10 +41,11 @@ AudioPlayer::~AudioPlayer()
 void AudioPlayer::addObstacles(std::vector<Ogre::Vector3> positions) {
 	IAudioSource* obstacle;
 	std::ostringstream ss;
+	cAudio::cVector3 position;
 	for (unsigned int i = 0; i < positions.size(); i++) {
 		ss << "obstacle" << i;
 		obstacle =  audioMgr->create(ss.str().c_str(), "obstacleHum.wav", false);
-		cAudio::cVector3 position = ogreVecTocVec(positions[i]);
+		position = ogreVecTocVec(positions[i]);
 		position.x =  0;
 		position.y =  0;
 		position.z = -position.z;
@@ -61,6 +62,10 @@ void AudioPlayer::play()
 {
 	trackMusic->play();
 }
+
+// void AudioPlayer::playSound(const std::string& audio) {
+// 	cAudio::IAudioSource sndSrc = audioMgr->)
+// }
 
 void AudioPlayer::playObstacles() {
 	for (unsigned int i = 0; i < obstacles.size(); i++) {
@@ -118,12 +123,11 @@ void AudioPlayer::updateObstacles(Ogre::Vector3 shipVec) {
 
 void AudioPlayer::reset(std::vector<Ogre::Vector3> positions) {
 	trackMusic->setPitch(1.0f);
-	playerPos->x = 0.0f;
-	playerPos->y = 0.0f;
-	playerPos->z = 0.0f;
+	cAudio::cVector3 position;
 	for (unsigned int i = 0; i < obstacles.size(); i++) {
+		obstacles[i]->stop();
 		obstacles[i]->setPitch(1.0f);
-		cAudio::cVector3 position = ogreVecTocVec(positions[i]);
+		position = ogreVecTocVec(positions[i]);
 		position.x =  0;
 		position.y =  0;
 		position.z = -position.z;
