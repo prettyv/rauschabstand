@@ -8,12 +8,18 @@
 //|||||||||||||||||||||||||||||||||||||||||||||||
 GameView::GameView() {
     m_showHUD           = true;    //false = Debug Hud
+    m_scaleMultiplier   = false;
+
+    //Times + animation
+    m_timeScaleMultiplier   = 0;
+    m_animationScaleMultiplier = 1;
 
     m_highscorePanel    = 0;
     m_gameLogic         = 0;
     m_score             = 0;
     m_scoreOld          = 0;
-    m_multiplier        = 0;
+    m_multiplier        = 1;
+    m_multiplierOld     = 1;    //Startet bei Eins
 
     m_sceneManager      = 0;
 
@@ -36,6 +42,7 @@ GameView::GameView() {
     m_scaleInvert       = false;
 
     m_overlayBoost      = 0;
+    m_overlayMultiplier = 0;
     
     m_panelLogo         = 0;
     m_panelBoost        = 0;
@@ -219,6 +226,9 @@ void GameView::createHUD() {
 
     createAllMaterials();
     calculateDimensions();
+
+    m_overlayMultiplier = overlayManager.create("Overlay_Multiplier");
+
     //Boost-Balken
     //------------
     // Create a panel
@@ -337,9 +347,8 @@ void GameView::createHUD() {
     m_panelMult1->setMaterialName(m_materialNameMult + Ogre::StringConverter::toString(0));   //Es steht am Anfang überall 0
 
     // Create an overlay, and add the panel
-    overlayNum = overlayManager.create("Overlay_Mult1");
-    overlayNum->add2D(m_panelMult1);
-    overlayNum->show();
+    m_overlayMultiplier->add2D(m_panelMult1);
+    m_overlayMultiplier->show();
 
     m_panelMult2 = static_cast<OverlayContainer*>(overlayManager.createOverlayElement("Panel", "PanelMult2"));
     m_panelMult2->setPosition(m_PosMult2Left, m_PosMult2Top);
@@ -347,9 +356,8 @@ void GameView::createHUD() {
     m_panelMult2->setMaterialName(m_materialNameMult + Ogre::StringConverter::toString(0));   //Es steht am Anfang überall 0
 
     // Create an overlay, and add the panel
-    overlayNum = overlayManager.create("Overlay_Mult2");
-    overlayNum->add2D(m_panelMult2);
-    overlayNum->show();
+    m_overlayMultiplier->add2D(m_panelMult2);
+    m_overlayMultiplier->show();
     //Multiplikator End
 
     //X
@@ -361,9 +369,8 @@ void GameView::createHUD() {
     m_panelX->setMaterialName(m_materialNameX);
 
     // Create an overlay, and add the panel
-    Overlay* overlayX = overlayManager.create("Overlay_X");
-    overlayX->add2D(m_panelX);
-    overlayX->show();
+    m_overlayMultiplier->add2D(m_panelX);
+    m_overlayMultiplier->show();
     //X End
 
     //Highscore Background
@@ -867,8 +874,43 @@ void GameView::updateScore() {
     }
 }
 
-void GameView::updateMultiplier() {
-    m_multiplier = m_gameLogic->getMultiplier();
+void GameView::updateMultiplier(Ogre::Real timeSinceLastFrame) {
+    m_multiplierOld = m_multiplier;
+    m_multiplier    = m_gameLogic->getMultiplier();
+
+    if(m_multiplierOld < m_multiplier) {
+        m_scaleMultiplier = true;
+    }
+
+    //Animation
+    if(m_scaleMultiplier) {
+        m_timeScaleMultiplier += timeSinceLastFrame;
+        if(m_timeScaleMultiplier < 200) {
+            m_animationScaleMultiplier += 0.1;
+            m_panelMult1->getMaterial()->getTechnique(0)->getPass(0)->getTextureUnitState(0)->setTextureScale(m_animationScaleMultiplier,m_animationScaleMultiplier);
+            m_panelMult2->getMaterial()->getTechnique(0)->getPass(0)->getTextureUnitState(0)->setTextureScale(m_animationScaleMultiplier,m_animationScaleMultiplier);
+            m_panelX->getMaterial()->getTechnique(0)->getPass(0)->getTextureUnitState(0)->setTextureScale(m_animationScaleMultiplier,m_animationScaleMultiplier);
+
+        }
+        else {
+            m_animationScaleMultiplier -= 0.1;
+            m_panelMult1->getMaterial()->getTechnique(0)->getPass(0)->getTextureUnitState(0)->setTextureScale(m_animationScaleMultiplier,m_animationScaleMultiplier);
+            m_panelMult2->getMaterial()->getTechnique(0)->getPass(0)->getTextureUnitState(0)->setTextureScale(m_animationScaleMultiplier,m_animationScaleMultiplier);
+            m_panelX->getMaterial()->getTechnique(0)->getPass(0)->getTextureUnitState(0)->setTextureScale(m_animationScaleMultiplier,m_animationScaleMultiplier);
+ 
+            if(m_timeScaleMultiplier > 200) {
+                m_timeScaleMultiplier = 0;
+                m_scaleMultiplier = false;
+                //Rücksetzen der Panels
+                m_animationScaleMultiplier = 1;
+                m_panelMult1->getMaterial()->getTechnique(0)->getPass(0)->getTextureUnitState(0)->setTextureScale(m_animationScaleMultiplier,m_animationScaleMultiplier);
+                m_panelMult2->getMaterial()->getTechnique(0)->getPass(0)->getTextureUnitState(0)->setTextureScale(m_animationScaleMultiplier,m_animationScaleMultiplier);
+                m_panelX->getMaterial()->getTechnique(0)->getPass(0)->getTextureUnitState(0)->setTextureScale(m_animationScaleMultiplier,m_animationScaleMultiplier);
+
+            }
+        }
+    }
+
     String multiplier = Ogre::StringConverter::toString(m_multiplier);
 
     if(multiplier.size() < 2) {
@@ -990,7 +1032,7 @@ void GameView::updateMultiplier() {
 void GameView::updateHUD(Ogre::Real timeSinceLastFrame) {
     
     updateScore();
-    updateMultiplier();
+    updateMultiplier(timeSinceLastFrame);
 
     m_timeTest += timeSinceLastFrame;
     if(m_scaleInvert) {
@@ -1118,6 +1160,7 @@ void GameView::setAlphaToAllPanels() {
     m_panelLogo->getMaterial()->getTechnique(0)->getPass(0)->getTextureUnitState(0)->setAlphaOperation(Ogre::LBX_MODULATE, Ogre::LBS_MANUAL, Ogre::LBS_TEXTURE, m_alpha);
     m_panelMult1->getMaterial()->getTechnique(0)->getPass(0)->getTextureUnitState(0)->setAlphaOperation(Ogre::LBX_MODULATE, Ogre::LBS_MANUAL, Ogre::LBS_TEXTURE, m_alpha);
     m_panelMult2->getMaterial()->getTechnique(0)->getPass(0)->getTextureUnitState(0)->setAlphaOperation(Ogre::LBX_MODULATE, Ogre::LBS_MANUAL, Ogre::LBS_TEXTURE, m_alpha);
+
 }
 
 void GameView::resumeGame() {

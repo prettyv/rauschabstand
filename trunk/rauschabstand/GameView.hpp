@@ -45,12 +45,14 @@ private:
     void updateHUD(Ogre::Real timeSinceLastFrame);
     void updateHUDForDebug(Ogre::Real timeSinceLastFrame);
     void updateScore();
-    void updateMultiplier();
+    void updateMultiplier(Ogre::Real timeSinceLastFrame);
 
     void setAlphaToAllPanels();
 
 private:
+    //Status
     bool                        m_showHUD;
+    bool                        m_scaleMultiplier;
     
     OgreBites::ParamsPanel*		m_pDetailsPanel;
     
@@ -61,6 +63,7 @@ private:
     unsigned long               m_score;
     unsigned long               m_scoreOld;
     unsigned int                m_multiplier;
+    unsigned int                m_multiplierOld;
 
     //Material Names
     String                      m_materialNameBoostBar;
@@ -87,7 +90,9 @@ private:
     OverlayContainer*           m_panelMult1;
     OverlayContainer*           m_panelMult2;
 
+    //Overlays
     Ogre::Overlay*              m_overlayBoost;
+    Ogre::Overlay*              m_overlayMultiplier;
     
     Ogre::SceneManager*         m_sceneManager;
     GameLogic*					m_gameLogic;
@@ -165,6 +170,12 @@ private:
     double                      m_alpha;
     bool                        m_fadeIn;
 
+    //Times
+    Ogre::Real                  m_timeScaleMultiplier;
+
+    //Animation
+    double                      m_animationScaleMultiplier;
+    
     //Test
     double                      m_positionLogo;
     double                      m_scale;
