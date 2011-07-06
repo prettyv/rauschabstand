@@ -88,6 +88,7 @@ void GameLogic::init()
 void GameLogic::start()
 {
 	m_gameLogicStates = COUNTDOWN;
+	m_audioPlayer->playShip();
 }
 
 void GameLogic::update(Ogre::Real timeSinceLastFrame)
@@ -244,7 +245,7 @@ void GameLogic::playerDies()
 	m_boostLevel = 0;
 	m_boostSpeed = 1;
 	m_countDown->setMaterialName("CountDown3");
-	m_gameLogicStates = COUNTDOWN;
+	start();
 	m_countdownTime = 0;
 	m_visuals->reset();
 	m_countdown1_played = false;
