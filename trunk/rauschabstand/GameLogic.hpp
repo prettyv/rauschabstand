@@ -46,6 +46,8 @@ public:
 	unsigned long getMultiplier() { return m_multiplier; }
 	Real getProgress() { return m_t / m_map->getLength(); }
 	Real getBoostLevel() { return m_boostLevel; }
+	Real getBlockMs() { return m_blockMs; }
+
 	//setter
 	void setVisuals(Visuals* visuals) { m_visuals = visuals; }
 private:

@@ -174,6 +174,18 @@ void Map::setTimeQuaternions()
 	m_timeQuaternions.push_back(timeQuat0);
 }
 
+void Map::setTimeQuaternion(unsigned int t, Quaternion quat) 
+{
+	//TODO: check if t is better than last t.
+
+	t = t > m_length ? m_length : t;
+
+	TimeQuaternion timeQuat;
+	timeQuat.m_t = t;
+	timeQuat.m_quanternion = quat;
+	m_timeQuaternions.push_back(timeQuat);
+}
+
 void Map::addUpTimeQuaternions() 
 {
 	for (unsigned int i = 0; i < m_timeQuaternions.size() - 1; i++)
@@ -208,7 +220,8 @@ void Map::interpolateTimeQuaternions()
 
 void Map::generateMesh(std::string materialName)
 {
-	Ogre::ManualObject* plane = new Ogre::ManualObject("plane");
+	std::stringstream manObjName = std::stringstream("plane");
+	Ogre::ManualObject* plane = new Ogre::ManualObject(manObjName.str());
 	plane->estimateIndexCount(m_length * m_width * 8);
 	plane->estimateVertexCount(m_length * m_width * 8);
 	plane->clear();
@@ -312,11 +325,13 @@ void Map::generateMesh(std::string materialName)
 
 	plane->end();
 	plane->setCastShadows(false);
-
 	m_mapMainNode->attachObject(plane);
-
-	MeshPtr ptr = plane->convertToMesh("planeMesh");
-	Entity* planeEntity = m_pSceneMgr->createEntity("planeEntity", "planeMesh");
+	std::stringstream meshName = std::stringstream("plane");
+	manObjName << "_mesh";
+	MeshPtr ptr = plane->convertToMesh(meshName.str());
+	std::stringstream entityName = std::stringstream("plane");
+	entityName << "_entity";
+	Entity* planeEntity = m_pSceneMgr->createEntity(entityName.str(), meshName.str());
 }
 
 //|||||||||||||||||||||||||||||||||||||||||||||||

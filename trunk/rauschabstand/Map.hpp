@@ -45,6 +45,7 @@ public:
 	void setCubesRadius(int x, int y, unsigned int radius, HolesOrObstacles holeOrObstacle);
 
 	void setTimeQuaternions();
+	void setTimeQuaternion(unsigned int t, Quaternion quat);
 	void addUpTimeQuaternions();
 	void interpolateTimeQuaternions();
 	void generateMesh(std::string materialName);
