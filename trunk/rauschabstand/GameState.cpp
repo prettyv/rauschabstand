@@ -219,6 +219,8 @@ void GameState::resume()
 		m_audioPlayer->play();
 		m_audioRunningBeforePause = false;
 	}
+	
+	m_audioPlayer->resumeShip();
 
 	// SHADERS BEGIN
     CompositorManager::getSingleton().setCompositorEnabled(OgreFramework::getSingletonPtr()->m_pViewport, "Bloom", true);

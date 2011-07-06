@@ -3,6 +3,7 @@
 #include <cAudio/plugins/mp3Decoder/cMP3Plugin.h>
 
 #include <iostream>
+#include <sstream>
 
 int error(const std::string& msg)
 {
@@ -28,7 +29,8 @@ AudioPlayer::AudioPlayer(const std::string& audio)
 	playerPos = new cAudio::cVector3(0.0f, 0.0f, 0.0f);
 	audioMgr->getListener()->setPosition(*playerPos);
 	trackMusic = audioMgr->create("bgmusic", audio.c_str(), true);
-	trackMusic->setVolume(0.2f);
+	//trackMusic->setVolume(0.2f);
+	shipHum = audioMgr->create("shipHum", "shipHum.wav", false);
 }
 
 AudioPlayer::~AudioPlayer()
@@ -66,6 +68,16 @@ void AudioPlayer::play()
 	}
 }
 
+void AudioPlayer::playShip() {
+	shipHum->play2d(true);
+}
+
+void AudioPlayer::resumeShip() {
+	if (!shipHum->isPlaying()) {
+		playShip();
+	}
+}
+
 void AudioPlayer::playSound(const std::string& audio) {
 	audioMgr->create("temp", audio.c_str(), false)->play2d();
 }
@@ -73,6 +85,7 @@ void AudioPlayer::playSound(const std::string& audio) {
 void AudioPlayer::pause()
 {
 	trackMusic->pause();
+	shipHum->pause();
 	for (unsigned int i = 0; i < obstacles.size(); i++) {
 		obstacles[i]->pause();
 	}
@@ -81,6 +94,7 @@ void AudioPlayer::pause()
 void AudioPlayer::stop()
 {
 	trackMusic->stop();
+	shipHum->stop();
 	for (unsigned int i = 0; i < obstacles.size(); i++) {
 		obstacles[i]->stop();
 	}
@@ -102,10 +116,12 @@ float AudioPlayer::getPitch() {
 
 void AudioPlayer::increasePitch(float diff) {
 	trackMusic->setPitch(trackMusic->getPitch() + diff);
+	shipHum->setPitch(shipHum->getPitch() + diff);
 }
 
 void AudioPlayer::decreasePitch(float diff) {
 	trackMusic->setPitch(trackMusic->getPitch() - diff);
+	shipHum->setPitch(shipHum->getPitch() - diff);
 }
 
 void AudioPlayer::updateObstacles(Ogre::Vector3 shipVec) {
@@ -118,6 +134,7 @@ void AudioPlayer::updateObstacles(Ogre::Vector3 shipVec) {
 void AudioPlayer::reset(std::vector<Ogre::Vector3> positions) {
 	stop();
 	trackMusic->setPitch(1.0f);
+	shipHum->setPitch(1.0f);
 	cAudio::cVector3 position;
 	for (unsigned int i = 0; i < obstacles.size(); i++) {
 		obstacles[i]->setPitch(1.0f);

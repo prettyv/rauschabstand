@@ -116,11 +116,16 @@ void GameLogic::update(Ogre::Real timeSinceLastFrame)
 		{
 			m_multiplier++;
 			m_timeCloseToHole = 0;
+			m_audioPlayer->playSound("multUp.wav");
 		}
 	}
 	else
 	{
 		m_timeCloseToHole = 0;
+	}
+	
+	if (m_map->isObstacleInMap(m_t, m_u)) {
+		m_audioPlayer->playSound("multDown.wav");
 	}
 
 	m_player->update(timeSinceLastFrame, m_t, m_u);
@@ -156,6 +161,8 @@ void GameLogic::update(Ogre::Real timeSinceLastFrame)
 			m_gameLogicStates = RUNNING;
 			m_audioPlayer->play();
 		}
+		
+		m_audioPlayer->playShip();
 	}
 
 	//TODO: test

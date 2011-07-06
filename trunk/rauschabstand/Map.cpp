@@ -221,8 +221,7 @@ void Map::interpolateTimeQuaternions()
 
 void Map::generateMesh(std::string materialName)
 {
-	std::stringstream manObjName = std::stringstream("plane");
-	Ogre::ManualObject* plane = new Ogre::ManualObject(manObjName.str());
+	Ogre::ManualObject* plane = new Ogre::ManualObject("plane");
 	plane->estimateIndexCount(m_length * m_width * 8);
 	plane->estimateVertexCount(m_length * m_width * 8);
 	plane->clear();
@@ -327,12 +326,8 @@ void Map::generateMesh(std::string materialName)
 	plane->end();
 	plane->setCastShadows(false);
 	m_mapMainNode->attachObject(plane);
-	std::stringstream meshName = std::stringstream("plane");
-	manObjName << "_mesh";
-	MeshPtr ptr = plane->convertToMesh(meshName.str());
-	std::stringstream entityName = std::stringstream("plane");
-	entityName << "_entity";
-	Entity* planeEntity = m_pSceneMgr->createEntity(entityName.str(), meshName.str());
+	MeshPtr ptr = plane->convertToMesh("planeMesh");
+	Entity* planeEntity = m_pSceneMgr->createEntity("planeEntity", "planeMesh");
 }
 
 //|||||||||||||||||||||||||||||||||||||||||||||||

@@ -41,8 +41,10 @@ class AudioPlayer {
 		void addObstacles(std::vector<Ogre::Vector3> positions);
 
 		void playSound(const std::string& audio);
+		void playShip();
 		void play();
 		void pause();
+		void resumeShip();
 		void stop();
 		
 		bool isPlaying();
@@ -59,6 +61,7 @@ class AudioPlayer {
 
 		cAudio::IAudioManager* audioMgr;
 		cAudio::IAudioSource* trackMusic;
+		cAudio::IAudioSource* shipHum;
 		cAudio::cVector3* playerPos;
 		std::vector<cAudio::IAudioSource*> obstacles;
 };
