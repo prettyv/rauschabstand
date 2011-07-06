@@ -25,6 +25,7 @@ Map::Map(std::string name, SceneManager* sceneMgr,
 
 void Map::resetCubes() 
 {
+	m_cubes.clear();
 	for (unsigned int i = 0; i < m_length; i++)
 	{
 		std::vector<HolesOrObstacles> row;
@@ -440,6 +441,12 @@ void Map::generateMeshObstacles(std::string materialName)
 	obstacles->end();
 	obstacles->setCastShadows(true);
 
+	//TODO: fix graphics bug when no obstacles
+	/*if (m_obstaclePositions.size() <= 0) 
+	{
+		return;
+	}*/
+
 	m_mapMainNode->attachObject(obstacles);
 
 	MeshPtr ptr = obstacles->convertToMesh("obstaclesMesh");
@@ -495,10 +502,32 @@ bool Map::isHoleInMap(double t, double u)
 	return m_cubes.at(t).at(j) == HOLE;
 }
 
+bool Map::isObstacleInMap(double t, double u)
+{
+	t = t < 0 ? 0 : t;
+	t = t >= m_length ? m_length - 1 : t;
+
+	//TODO: wtf, fix this mess!
+	int j = u + (m_width / (double) 2) * 100;
+	j /= (double) 100;
+	j = m_width - j;
+	j -= 1;
+	j = j < 0 ? 0 : j;
+	j = (unsigned int) j > m_width ? m_width : j;
+
+	return m_cubes.at(t).at(j) == OBSTACLE;
+}
+
 //|||||||||||||||||||||||||||||||||||||||||||||||
 
-bool Map::isCloseToHole(double t, double u, double closeDistance)
+bool Map::isCloseToHoleObstacle(double t, double u, double closeDistance, 
+	HolesOrObstacles holeOrObstacle)
 {
+	if (isObstacleInMap(t, u)) 
+	{
+		return false;
+	}
+
 	t = t < 0 ? 0 : t;
 	t = t >= m_length ? m_length - 1 : t;
 	std::vector<HolesOrObstacles> row = m_cubes[t];
@@ -516,17 +545,12 @@ bool Map::isCloseToHole(double t, double u, double closeDistance)
 	u = u < 0 ? 0 : u;
 	u = u > m_width * 100 ? m_width * 100 : u;
 
-	if (row[j] == HOLE)
-	{
-		return false;
-	}
-
 	int minDistance = 10000;
 	for (unsigned int i = 0; i < row.size(); i++)
 	{
-		if (row[i] == HOLE)
+		if (row[i] == holeOrObstacle)
 		{
-			int distance = abs(u - i * 100);
+			int distance = abs(u - (i * 100 + 50));
 			if (distance < closeDistance)
 			{
 				return true;

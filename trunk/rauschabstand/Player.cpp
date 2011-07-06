@@ -97,7 +97,11 @@ void Player::update (Real timeSinceLastFrame, Real t, Real u)
 	{
 		m_speed += mapAntiGravity * m_boostSpeed;
 	}
-	m_speed += gravity;
+	if (m_map->isHoleInMap(t, u)) 
+	{
+		m_speed += gravity * m_boostSpeed;
+	}
+	m_speed += gravity * m_boostSpeed;
 
 	// simulate friction
 	m_speed *= Real(0.98);

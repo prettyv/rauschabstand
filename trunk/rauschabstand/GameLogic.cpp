@@ -109,10 +109,10 @@ void GameLogic::update(Ogre::Real timeSinceLastFrame)
 		playerDies();
 	}
 
-	if (m_map->isCloseToHole(m_t, m_u, 50))
+	if (m_map->isCloseToHoleObstacle(m_t, m_u, 100, OBSTACLE))
 	{
 		m_timeCloseToHole += timeSinceLastFrame * m_boostSpeed;
-		if (m_timeCloseToHole > 80)
+		if (m_timeCloseToHole > 30)
 		{
 			m_multiplier++;
 			m_timeCloseToHole = 0;

@@ -52,7 +52,7 @@ void AudioPlayer::addObstacles(std::vector<Ogre::Vector3> positions) {
 		obstacle->setPosition(position);
 		//obstacle->setMaxDistance(500.0f);
 		obstacle->setRolloffFactor(15.0f);
-		obstacle->setVolume(7.0f);
+		obstacle->setVolume(20.0f);
 		obstacles.push_back(obstacle);
 		ss.str("");
 	}

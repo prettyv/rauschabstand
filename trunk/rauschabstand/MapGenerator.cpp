@@ -17,36 +17,27 @@ void MapGenerator::generateMap()
 	//setCubes
 	//TODO code more functions to modify Cubes
 	m_map->resetCubes();
-	m_map->setCubes(260, 10, 0, 5, OBSTACLE);
-	m_map->setCubes(260, 10, -5, 5, HOLE);
-	m_map->setCubes(265, 5, 3, 4, NORMAL);
-	m_map->setCubesRadius(375, 0, 3, HOLE);
-	m_map->setCubesRadius(385, 0, 4, HOLE);
-	m_map->setCubesRadius(400, 0, 5, HOLE);
-	m_map->setCubesRadius(420, 0, 6, HOLE);
-	m_map->setCubesRadius(440, 0, 7, HOLE);
-	m_map->setCubesRadius(460, -4, 7, HOLE);
+	//parseAudioForHoles();
+	
+	m_map->setCubes(300, 1, 5, 1, OBSTACLE);
+	m_map->setCubes(350, 1, 5, 1, OBSTACLE);
+	m_map->setCubes(400, 1, 5, 1, OBSTACLE);
+	m_map->setCubes(450, 1, 5, 1, OBSTACLE);
+	m_map->setCubes(500, 1, 5, 1, OBSTACLE);
+	m_map->setCubes(550, 1, 5, 1, OBSTACLE);
+	m_map->setCubes(600, 1, 5, 1, OBSTACLE);
+	m_map->setCubes(650, 1, 5, 1, OBSTACLE);
 
-	//obstacles for debugging sound
-	m_map->setCubes(350, 1, -1, 1, OBSTACLE);
-	m_map->setCubes(400, 1, -1, 1, OBSTACLE);
-	m_map->setCubes(450, 1, -1, 1, OBSTACLE);
-	m_map->setCubes(500, 1, -1, 1, OBSTACLE);
-	m_map->setCubes(550, 1, -1, 1, OBSTACLE);
-	m_map->setCubes(600, 1, -1, 1, OBSTACLE);
-	m_map->setCubes(650, 1, -1, 1, OBSTACLE);
-	m_map->setCubes(700, 1, -1, 1, OBSTACLE);
-	m_map->setCubes(750, 1, -1, 1, OBSTACLE);
-	m_map->setCubes(800, 1, -1, 1, OBSTACLE);
-	m_map->setCubes(850, 1, -1, 1, OBSTACLE);
-	m_map->setCubes(900, 1, -1, 1, OBSTACLE);
-	m_map->setCubes(950, 1, -1, 1, OBSTACLE);
-	m_map->setCubes(1000, 1, -1, 1, OBSTACLE);
-	m_map->setCubes(1050, 1, -1, 1, OBSTACLE);
+	m_map->setCubesRadius(300, 10, 3, HOLE);
+	m_map->setCubesRadius(400, 10, 3, HOLE);
+	m_map->setCubesRadius(500, 10, 3, HOLE);
+	m_map->setCubesRadius(600, 10, 3, HOLE);
+	m_map->setCubesRadius(700, 10, 3, HOLE);
+	m_map->setCubesRadius(800, 10, 3, HOLE);
 
 	//use these last
-	m_map->setCubesRow(500, 10, NORMAL);		//start is normal
-	m_map->setCubesRow(495, 5, HOLE);		//cuts of end
+	m_map->setCubesRow(0, 10, NORMAL);		//start is normal
+	m_map->setCubesRow(-5, 5, HOLE);		//cuts of end
 
 
 	//setTimeQuaternions
@@ -101,7 +92,7 @@ void MapGenerator::parseAudioForOrientation() {
 				}
 
 				// 12 bands, 16384 samples buffer ~= 0,37s window -> / 370ms || 4096 samples = 92.5ms
-				unsigned int t = Real(92.5) * m_blockMs * samples;
+				unsigned int t = Real(92.5) * m_blockMs * samples + 10000 * m_blockMs;
 
 				if (t - lastT > 10 && countLinenumbers % 12 < 4) 
 				{
@@ -133,3 +124,83 @@ void MapGenerator::parseAudioForOrientation() {
 }
 
 //|||||||||||||||||||||||||||||||||||||||||||||||
+
+void MapGenerator::parseAudioForHoles() {
+	unsigned int countLinenumbers = 0;
+	unsigned int samples = 0;
+	double audioData = 0.0;
+	std::stringstream sstr;
+	unsigned int lastT = 0;
+
+	std::string line;
+	std::ifstream myfile ("spectralAnalysis_4096_samples.txt");
+
+	// EINGABEGROESSE (BARCOUNT, CUBECOUNT) ABHAENGIG!
+	if (myfile.is_open())
+	{
+		while (myfile.good())
+		{
+			getline (myfile,line);
+
+			if (line.size()>0)
+			{
+				sstr.str(line);
+				std::string tmpstr = sstr.str();
+
+				sstr >> audioData;
+
+
+				// TODO automate range determination
+				// get the data in range 0-7
+				if (audioData != 0)
+				{
+					audioData -= 1;
+					audioData *= 100000;
+				}
+
+				// 12 bands, 16384 samples buffer ~= 0,37s window -> / 370ms || 4096 samples = 92.5ms
+				unsigned int t = Real(92.5) * m_blockMs * samples + 10000 * m_blockMs;
+
+				if (t - lastT > 5 && countLinenumbers % 12 > 4) 
+				{
+					if (audioData > 500) 
+					{
+						int radius = 0;
+						if (audioData < 800) 
+						{
+							radius = 1;
+						}
+						else if (audioData < 1200)
+						{
+							radius = 2;
+						}
+						else 
+						{
+							radius = 3;
+						}
+						//int y = ((countLinenumbers % 12) - 5) * 2;
+						int y = (int) audioData % 10;
+						m_map->setCubesRadius(t, y, radius, HOLE);
+
+						lastT = t;
+					}
+				}
+
+				sstr.clear();
+				line.clear();
+				tmpstr.clear();
+				audioData = 0.0;
+			}
+
+			++countLinenumbers;
+			if (countLinenumbers % 12 == 0) 
+			{
+				++samples;
+			}
+		}
+		myfile.close();
+	}
+}
+
+//|||||||||||||||||||||||||||||||||||||||||||||||
+

@@ -55,8 +55,10 @@ public:
 	Ogre::Quaternion getOrientation(double t);
 	Ogre::Vector3 getPosition(double t, double u);
 
-	bool isCloseToHole(double t, double u, double closeDistance);
+	bool isCloseToHoleObstacle(double t, double u, double closeDistance, 
+		HolesOrObstacles holeOrObstacle);
 	bool isHoleInMap(double t, double u);
+	bool isObstacleInMap(double t, double u);
 
 	int getLength() { return m_length; }
 	int getWidth() { return m_width; }
