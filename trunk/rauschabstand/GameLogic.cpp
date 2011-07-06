@@ -26,6 +26,7 @@ GameLogic::GameLogic(SceneManager* sceneMgr, Camera* camera, AudioPlayer* audioP
 	m_score = 0;
 	m_multiplier = 1;
 	m_timeCloseToHole = 0;
+	m_timeInObstacle = 0;
 	m_countdownTime = 0;
 	m_countdown1_played = false;
 	m_countdown2_played = false;
@@ -126,7 +127,17 @@ void GameLogic::update(Ogre::Real timeSinceLastFrame)
 	}
 	
 	if (m_map->isObstacleInMap(m_t, m_u)) {
-		m_audioPlayer->playSound("multDown.wav");
+		m_timeInObstacle += timeSinceLastFrame * m_boostSpeed;
+		if (m_timeInObstacle > 30) 
+		{
+			m_multiplier = m_multiplier == 1 ? 1 : m_multiplier - 1;
+			m_timeInObstacle = 0;
+			m_audioPlayer->playSound("multDown.wav");
+		}
+	}
+	else 
+	{
+		m_timeInObstacle = 0;
 	}
 
 	m_player->update(timeSinceLastFrame, m_t, m_u);
@@ -239,6 +250,8 @@ void GameLogic::playerDies()
 	m_u = 0;
 	m_score = 0;
 	m_multiplier = 1;
+	m_timeCloseToHole = 0;
+	m_timeInObstacle = 0;
 	m_player->resetToStart();
 	m_audioPlayer->reset(m_map->getObstaclePositions());
 	m_boostActive = false;

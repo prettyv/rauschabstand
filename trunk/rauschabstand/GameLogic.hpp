@@ -70,6 +70,7 @@ private:
 	unsigned long		m_multiplier;
 
 	unsigned int		m_timeCloseToHole;
+	unsigned int		m_timeInObstacle;
 	long				m_countdownTime;
 
 	static const int	DEADHEIGHT = -300;		// height when player is dead

@@ -269,14 +269,14 @@ void Map::generateMesh(std::string materialName)
 
 			if (m_cubes[planeNum / (double) m_width][planeNum % m_width] != HOLE)
 			{
-				if (m_cubes[planeNum / (double) m_width][planeNum % m_width] == NORMAL)
-				{
+				//if (m_cubes[planeNum / (double) m_width][planeNum % m_width] == NORMAL)
+				//{
 					//top
 					plane->triangle(0 + planeNum * 8, 1 + planeNum * 8, 2 + planeNum * 8);
 					plane->triangle(2 + planeNum * 8, 1 + planeNum * 8, 0 + planeNum * 8);
 					plane->triangle(1 + planeNum * 8, 3 + planeNum * 8, 2 + planeNum * 8);
 					plane->triangle(2 + planeNum * 8, 3 + planeNum * 8, 1 + planeNum * 8);
-				}
+				//}
 
 				//bottom
  				plane->triangle(4 + planeNum * 8, 5 + planeNum * 8, 6 + planeNum * 8);
@@ -414,7 +414,7 @@ void Map::generateMeshObstacles(std::string materialName)
 				if (planeNum / (double) m_width >= m_length - 1 || m_cubes[(planeNum + m_width) / (double) m_width][planeNum % m_width] != OBSTACLE)
 				{
 					//back
-					obstacles->triangle(9 + planeNum * 8, 7 + planeNum * 8, 1 + planeNum * 8);
+					obstacles->triangle(5 + planeNum * 8, 7 + planeNum * 8, 1 + planeNum * 8);
 					obstacles->triangle(1 + planeNum * 8, 7 + planeNum * 8, 5 + planeNum * 8);
 					obstacles->triangle(1 + planeNum * 8, 3 + planeNum * 8, 7 + planeNum * 8);
 					obstacles->triangle(7 + planeNum * 8, 3 + planeNum * 8, 1 + planeNum * 8);
