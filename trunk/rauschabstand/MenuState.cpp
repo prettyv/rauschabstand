@@ -20,6 +20,9 @@ void MenuState::enter()
 {
     OgreFramework::getSingletonPtr()->m_pLog->logMessage("Entering MenuState...");
 
+    changeAppState(findByName("GameState"));
+    
+    /*
     m_pSceneMgr = OgreFramework::getSingletonPtr()->m_pRoot->createSceneManager(ST_GENERIC, "MenuSceneMgr");
     m_pSceneMgr->setAmbientLight(Ogre::ColourValue(0.0f, 0.0f, 0.0f));
 
@@ -42,6 +45,7 @@ void MenuState::enter()
     OgreFramework::getSingletonPtr()->m_pTrayMgr->createLabel(OgreBites::TL_TOP, "MenuLbl", "Menu mode", 250);
 
     createScene();
+    */
 }
 
 //|||||||||||||||||||||||||||||||||||||||||||||||
@@ -56,6 +60,7 @@ void MenuState::exit()
 {
     OgreFramework::getSingletonPtr()->m_pLog->logMessage("Leaving MenuState...");
 
+    /*
     m_pSceneMgr->destroyCamera(m_pCamera);
     if(m_pSceneMgr)
         OgreFramework::getSingletonPtr()->m_pRoot->destroySceneManager(m_pSceneMgr);
@@ -63,6 +68,7 @@ void MenuState::exit()
     OgreFramework::getSingletonPtr()->m_pTrayMgr->clearAllTrays();
     OgreFramework::getSingletonPtr()->m_pTrayMgr->destroyAllWidgets();
     OgreFramework::getSingletonPtr()->m_pTrayMgr->setListener(0);
+    */
 }
 
 //|||||||||||||||||||||||||||||||||||||||||||||||
