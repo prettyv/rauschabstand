@@ -173,8 +173,6 @@ void GameLogic::update(Ogre::Real timeSinceLastFrame)
 			m_gameLogicStates = RUNNING;
 			m_audioPlayer->play();
 		}
-		
-		m_audioPlayer->playShip();
 	}
 
 	//TODO: test
