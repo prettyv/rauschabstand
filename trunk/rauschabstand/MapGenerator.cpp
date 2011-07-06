@@ -53,7 +53,7 @@ void MapGenerator::generateMap()
 
 	//TODO: seperate into: Obsticales and Map, outside Border and Map, choose material here.
 	m_map->generateMesh("Examples/Rockwall");
-	m_map->generateMeshObstacles("Examples/RustySteel");
+	m_map->generateMeshObstacles("obstacleMaterial");
 }
 
 //|||||||||||||||||||||||||||||||||||||||||||||||

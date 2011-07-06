@@ -12,11 +12,11 @@ GameLogic::GameLogic(SceneManager* sceneMgr, Camera* camera, AudioPlayer* audioP
 	m_camera = camera;
 	m_audioPlayer = audioPlayer;
 
-	m_blockMs = Real(0.0175);
+	m_blockMs = Real(0.018);
 	m_blockMsSide = Real(0.9);
 
-	m_mapGenerator = new MapGenerator("map01", m_sceneMgr, (84 + 10) * m_blockMs * 1000, 10);
-	//map length: songlength: 84sec, countdown: 10sec
+	m_mapGenerator = new MapGenerator("map01", m_sceneMgr, (84 + 10 + 20) * m_blockMs * 1000, 10);
+	//map length: songlength: 84sec, countdown: 10sec, highscore 20sec
 	m_mapGenerator->setBlockMs(m_blockMs);
 	m_map = m_mapGenerator->getMap();
 	m_player = new Player("Player", m_sceneMgr, m_camera, m_map);

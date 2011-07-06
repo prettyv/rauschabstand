@@ -319,6 +319,7 @@ void Visuals::createVisuals() {
 	// create materials
 	// TODO automate material creation (should work with CUBE_COUNT somehow)
 	// EINGABEGROESSE (BARCOUNT, CUBECOUNT) ABHAENGIG!
+	MaterialPtr obstacleMaterial = getMaterial("obstacleMaterial", 0, 210, 25, 60);
 	/*
 	MaterialPtr green = getMaterial("green", 0, 210, 25, 180);
 	MaterialPtr darkGreen = getMaterial("darkGreen", 20, 110, 30, 180);
