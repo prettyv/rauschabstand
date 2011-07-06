@@ -12,6 +12,84 @@ MapGenerator::MapGenerator(std::string mapname, SceneManager* sceneMgr,
 
 //|||||||||||||||||||||||||||||||||||||||||||||||
 
+void trippleBump(Map* map, unsigned int t) {
+	map->setTimeQuaternion(t-10, Quaternion(1, 0, 0, 0));
+	map->setTimeQuaternion(t, Quaternion(Degree(3), Vector3(1, 0, 0)));
+	map->setTimeQuaternion(t+7, Quaternion(Degree(-6), Vector3(1, 0, 0)));
+	map->setTimeQuaternion(t+16, Quaternion(Degree(6), Vector3(1, 0, 0)));
+	map->setTimeQuaternion(t+23, Quaternion(Degree(-6), Vector3(1, 0, 0)));
+	map->setTimeQuaternion(t+32, Quaternion(Degree(6), Vector3(1, 0, 0)));
+	map->setTimeQuaternion(t+39, Quaternion(Degree(-6), Vector3(1, 0, 0)));
+	map->setTimeQuaternion(t+49, Quaternion(1, 0, 0, 0));
+
+	map->setCubes(t, 1, 3, 7, OBSTACLE);
+	map->setCubes(t+16, 1, 0, 7, OBSTACLE);
+	map->setCubes(t+32, 1, 3, 7, OBSTACLE);
+}
+
+//|||||||||||||||||||||||||||||||||||||||||||||||
+
+void raise(Map* map, unsigned int t) {
+	map->setTimeQuaternion(t-5, Quaternion(1, 0, 0, 0));
+	map->setTimeQuaternion(t, Quaternion(Degree(20), Vector3(1, 0, 0)));
+	map->setTimeQuaternion(t+5, Quaternion(Degree(-10), Vector3(1, 0, 0)));
+
+	map->setCubesRadius(t, 0, 4, HOLE);
+	map->setCubesRadius(t, 10, 4, HOLE);
+}
+
+//|||||||||||||||||||||||||||||||||||||||||||||||
+
+void spin(Map* map, unsigned int t) {
+	map->setTimeQuaternion(t-10, Quaternion(1, 0, 0, 0));
+	map->setTimeQuaternion(t+30, Quaternion(Degree(50), Vector3(0, -1, 0)));
+	map->setTimeQuaternion(t+50, Quaternion(1, 0, 0, 0));
+
+	unsigned int tmp = t;
+	tmp = t-9;
+	map->setCubes(tmp, 1, 0, 1, OBSTACLE); map->setCubes(tmp, 1, 2, 1, OBSTACLE); map->setCubes(tmp, 1, 4, 1, OBSTACLE); map->setCubes(tmp, 1, 6, 1, OBSTACLE); map->setCubes(tmp, 1, 8, 1, OBSTACLE); map->setCubes(tmp, 1, 10, 1, OBSTACLE);
+	tmp = t;
+	map->setCubes(tmp, 1, 1, 1, OBSTACLE); map->setCubes(tmp, 1, 3, 1, OBSTACLE); map->setCubes(tmp, 1, 5, 1, OBSTACLE); map->setCubes(tmp, 1, 7, 1, OBSTACLE); map->setCubes(tmp, 1, 9, 1, OBSTACLE); 
+	tmp = t+10;
+	map->setCubes(tmp, 1, 0, 1, OBSTACLE); map->setCubes(tmp, 1, 2, 1, OBSTACLE); map->setCubes(tmp, 1, 4, 1, OBSTACLE); map->setCubes(tmp, 1, 6, 1, OBSTACLE); map->setCubes(tmp, 1, 8, 1, OBSTACLE); map->setCubes(tmp, 1, 10, 1, OBSTACLE);
+	tmp = t+20;
+	map->setCubes(tmp, 1, 1, 1, OBSTACLE); map->setCubes(tmp, 1, 3, 1, OBSTACLE); map->setCubes(tmp, 1, 5, 1, OBSTACLE); map->setCubes(tmp, 1, 7, 1, OBSTACLE); map->setCubes(tmp, 1, 9, 1, OBSTACLE);
+	tmp = t+30;
+	map->setCubes(tmp, 1, 0, 1, OBSTACLE); map->setCubes(tmp, 1, 2, 1, OBSTACLE); map->setCubes(tmp, 1, 4, 1, OBSTACLE); map->setCubes(tmp, 1, 6, 1, OBSTACLE); map->setCubes(tmp, 1, 8, 1, OBSTACLE); map->setCubes(tmp, 1, 10, 1, OBSTACLE);
+	tmp = t+40;
+	map->setCubes(tmp, 1, 1, 1, OBSTACLE); map->setCubes(tmp, 1, 3, 1, OBSTACLE); map->setCubes(tmp, 1, 5, 1, OBSTACLE); map->setCubes(tmp, 1, 7, 1, OBSTACLE); map->setCubes(tmp, 1, 9, 1, OBSTACLE);
+	tmp = t+48;
+	map->setCubes(tmp, 1, 0, 1, OBSTACLE); map->setCubes(tmp, 1, 2, 1, OBSTACLE); map->setCubes(tmp, 1, 4, 1, OBSTACLE); map->setCubes(tmp, 1, 6, 1, OBSTACLE); map->setCubes(tmp, 1, 8, 1, OBSTACLE); map->setCubes(tmp, 1, 10, 1, OBSTACLE);
+
+}
+
+//|||||||||||||||||||||||||||||||||||||||||||||||
+
+void gap(Map* map, unsigned int t) {
+	map->setTimeQuaternion(t-10, Quaternion(1, 0, 0, 0));
+	map->setTimeQuaternion(t, Quaternion(Degree(-20), Vector3(1, 0, 0)));
+	map->setTimeQuaternion(t+10, Quaternion(Degree(10), Vector3(1, 0, 0)));
+
+	map->setCubes(t-1, 3, 0, 10, HOLE);
+}
+
+//|||||||||||||||||||||||||||||||||||||||||||||||
+
+void createMap(Map* map) {
+	map->setTimeQuaternion(170, Quaternion(Degree(60), Vector3(-1, 0, 0)));
+	trippleBump(map, 180);
+	raise(map, 239);
+	trippleBump(map, 254);
+	raise(map, 310);
+	trippleBump(map, 326);
+	raise(map, 379);
+	spin(map, 397);
+
+	gap(map, 450);
+}
+
+//|||||||||||||||||||||||||||||||||||||||||||||||
+
 void MapGenerator::generateMap() 
 {
 	//setCubes
@@ -19,7 +97,7 @@ void MapGenerator::generateMap()
 	m_map->resetCubes();
 	//parseAudioForHoles();
 	
-	m_map->setCubes(300, 1, 5, 1, OBSTACLE);
+	/*
 	m_map->setCubes(350, 1, 5, 1, OBSTACLE);
 	m_map->setCubes(400, 1, 5, 1, OBSTACLE);
 	m_map->setCubes(450, 1, 5, 1, OBSTACLE);
@@ -38,14 +116,15 @@ void MapGenerator::generateMap()
 	//use these last
 	m_map->setCubesRow(0, 10, NORMAL);		//start is normal
 	m_map->setCubesRow(-5, 5, HOLE);		//cuts of end
-
+	*/
 
 	//setTimeQuaternions
 	//TODO: move setTimeQuaternions here
 	//TODO: make setTimeQuaternions work with audio data
 	//m_map->setTimeQuaternions();
 	m_map->setTimeQuaternion(0, Quaternion(1, 0, 0, 0));
-	parseAudioForOrientation();
+	//parseAudioForOrientation();
+	createMap(m_map);
 	m_map->setTimeQuaternion(m_map->getLength(), Quaternion(1, 0, 0, 0));
 
 	m_map->addUpTimeQuaternions();
