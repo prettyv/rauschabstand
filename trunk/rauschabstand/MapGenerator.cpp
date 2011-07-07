@@ -33,31 +33,147 @@ void bigTrippleBump(Map* map, unsigned int t) {
 	map->setTimeQuaternion(t-10, Quaternion(1, 0, 0, 0));
 	map->setTimeQuaternion(t, Quaternion(Degree(7), Vector3(1, 0, 0)));
 	map->setTimeQuaternion(t+7, Quaternion(Degree(-14), Vector3(1, 0, 0)));
+	map->setCubes(t+6, 3, 0, 1, OBSTACLE); map->setCubes(t+6, 3, 4, 1, OBSTACLE); map->setCubes(t+6, 3, 8, 1, OBSTACLE); map->setCubes(t+6, 3, 10, 1, OBSTACLE);
 	map->setTimeQuaternion(t+16, Quaternion(Degree(14), Vector3(1, 0, 0)));
+	map->setCubes(t+16, 3, 2, 1, HOLE); map->setCubes(t+16, 3, 6, 1, HOLE);
 	map->setTimeQuaternion(t+23, Quaternion(Degree(-14), Vector3(1, 0, 0)));
+	map->setCubes(t+22, 3, 0, 1, OBSTACLE); map->setCubes(t+22, 3, 4, 1, OBSTACLE); map->setCubes(t+22, 3, 8, 1, OBSTACLE); map->setCubes(t+22, 3, 10, 1, OBSTACLE);
 	map->setTimeQuaternion(t+32, Quaternion(Degree(14), Vector3(1, 0, 0)));
+	map->setCubes(t+32, 3, 2, 1, HOLE); map->setCubes(t+32, 3, 6, 1, HOLE);
 	map->setTimeQuaternion(t+39, Quaternion(Degree(-14), Vector3(1, 0, 0)));
+	map->setCubes(t+38, 3, 0, 1, OBSTACLE); map->setCubes(t+38, 3, 4, 1, OBSTACLE); map->setCubes(t+38, 3, 8, 1, OBSTACLE); map->setCubes(t+38, 3, 10, 1, OBSTACLE);
 	map->setTimeQuaternion(t+47, Quaternion(Degree(14), Vector3(1, 0, 0)));
+	map->setCubes(t+47, 3, 2, 1, HOLE); map->setCubes(t+47, 3, 6, 1, HOLE);
 	map->setTimeQuaternion(t+56, Quaternion(Degree(-14), Vector3(1, 0, 0)));
+	map->setCubes(t+55, 3, 0, 1, OBSTACLE); map->setCubes(t+55, 3, 4, 1, OBSTACLE); map->setCubes(t+55, 3, 8, 1, OBSTACLE); map->setCubes(t+55, 3, 10, 1, OBSTACLE);
 	map->setTimeQuaternion(t+65, Quaternion(Degree(14), Vector3(1, 0, 0)));
+	map->setCubes(t+65, 3, 2, 1, HOLE); map->setCubes(t+65, 3, 6, 1, HOLE);
 	map->setTimeQuaternion(t+73, Quaternion(Degree(-14), Vector3(1, 0, 0)));
+	map->setCubes(t+72, 3, 0, 1, OBSTACLE); map->setCubes(t+72, 3, 4, 1, OBSTACLE); map->setCubes(t+72, 3, 8, 1, OBSTACLE); map->setCubes(t+72, 3, 10, 1, OBSTACLE);
 	map->setTimeQuaternion(t+81, Quaternion(Degree(14), Vector3(1, 0, 0)));
+	map->setCubes(t+81, 3, 2, 1, HOLE); map->setCubes(t+81, 3, 6, 1, HOLE);
 	map->setTimeQuaternion(t+89, Quaternion(Degree(-14), Vector3(1, 0, 0)));
+	map->setCubes(t+88, 3, 0, 1, OBSTACLE); map->setCubes(t+88, 3, 4, 1, OBSTACLE); map->setCubes(t+88, 3, 8, 1, OBSTACLE); map->setCubes(t+88, 3, 10, 1, OBSTACLE);
 	map->setTimeQuaternion(t+98, Quaternion(Degree(14), Vector3(1, 0, 0)));
+	map->setCubes(t+98, 3, 2, 1, HOLE); map->setCubes(t+98, 3, 6, 1, HOLE);
 	map->setTimeQuaternion(t+107, Quaternion(Degree(-14), Vector3(1, 0, 0)));
+	map->setCubes(t+106, 3, 0, 1, OBSTACLE); map->setCubes(t+106, 3, 4, 1, OBSTACLE); map->setCubes(t+106, 3, 8, 1, OBSTACLE); map->setCubes(t+106, 3, 10, 1, OBSTACLE);
 	map->setTimeQuaternion(t+115, Quaternion(Degree(14), Vector3(1, 0, 0)));
+	map->setCubes(t+115, 3, 2, 1, HOLE); map->setCubes(t+115, 3, 6, 1, HOLE);
 	map->setTimeQuaternion(t+123, Quaternion(Degree(-14), Vector3(1, 0, 0)));
+	map->setCubes(t+122, 3, 0, 1, OBSTACLE); map->setCubes(t+122, 3, 4, 1, OBSTACLE); map->setCubes(t+122, 3, 8, 1, OBSTACLE); map->setCubes(t+122, 3, 10, 1, OBSTACLE);
 	map->setTimeQuaternion(t+132, Quaternion(Degree(14), Vector3(1, 0, 0)));
+	map->setCubes(t+132, 3, 2, 1, HOLE); map->setCubes(t+132, 3, 6, 1, HOLE);
 	map->setTimeQuaternion(t+140, Quaternion(Degree(-14), Vector3(1, 0, 0)));
+	map->setCubes(t+139, 3, 0, 1, OBSTACLE); map->setCubes(t+139, 3, 4, 1, OBSTACLE); map->setCubes(t+139, 3, 8, 1, OBSTACLE); map->setCubes(t+139, 3, 10, 1, OBSTACLE);
 	map->setTimeQuaternion(t+148, Quaternion(Degree(14), Vector3(1, 0, 0)));
+	map->setCubes(t+148, 3, 2, 1, HOLE); map->setCubes(t+148, 3, 6, 1, HOLE);
 	map->setTimeQuaternion(t+157, Quaternion(Degree(-14), Vector3(1, 0, 0)));
+	map->setCubes(t+156, 3, 0, 1, OBSTACLE); map->setCubes(t+156, 3, 4, 1, OBSTACLE); map->setCubes(t+156, 3, 8, 1, OBSTACLE); map->setCubes(t+156, 3, 10, 1, OBSTACLE);
 	map->setTimeQuaternion(t+166, Quaternion(Degree(14), Vector3(1, 0, 0)));
+	map->setCubes(t+166, 3, 2, 1, HOLE); map->setCubes(t+166, 3, 6, 1, HOLE);
 	map->setTimeQuaternion(t+174, Quaternion(Degree(-14), Vector3(1, 0, 0)));
+	map->setCubes(t+173, 3, 0, 1, OBSTACLE); map->setCubes(t+173, 3, 4, 1, OBSTACLE); map->setCubes(t+173, 3, 8, 1, OBSTACLE); map->setCubes(t+173, 3, 10, 1, OBSTACLE);
 	map->setTimeQuaternion(t+182, Quaternion(Degree(14), Vector3(1, 0, 0)));
-	map->setTimeQuaternion(t+189, Quaternion(Degree(-14), Vector3(1, 0, 0)));
-	map->setTimeQuaternion(t+197, Quaternion(Degree(14), Vector3(1, 0, 0)));
-	map->setTimeQuaternion(t+206, Quaternion(Degree(-14), Vector3(1, 0, 0)));
-	map->setTimeQuaternion(t+216, Quaternion(1, 0, 0, 0));
+	map->setCubes(t+182, 3, 2, 1, HOLE); map->setCubes(t+182, 3, 6, 1, HOLE);
+	map->setTimeQuaternion(t+190, Quaternion(Degree(-14), Vector3(1, 0, 0)));
+	map->setCubes(t+189, 3, 0, 1, OBSTACLE); map->setCubes(t+189, 3, 4, 1, OBSTACLE); map->setCubes(t+189, 3, 8, 1, OBSTACLE); map->setCubes(t+189, 3, 10, 1, OBSTACLE);
+	map->setTimeQuaternion(t+198, Quaternion(Degree(14), Vector3(1, 0, 0)));
+	map->setCubes(t+198, 3, 2, 1, HOLE); map->setCubes(t+198, 3, 6, 1, HOLE);
+	map->setTimeQuaternion(t+207, Quaternion(Degree(-14), Vector3(1, 0, 0)));
+	map->setTimeQuaternion(t+217, Quaternion(1, 0, 0, 0));
+}
+
+//|||||||||||||||||||||||||||||||||||||||||||||||
+
+void bigTrippleBump2(Map* map, unsigned int t) {
+	map->setTimeQuaternion(t-10, Quaternion(1, 0, 0, 0));
+	map->setTimeQuaternion(t, Quaternion(Degree(7), Vector3(1, 0, 0)));
+	map->setTimeQuaternion(t+7, Quaternion(Degree(-14), Vector3(1, 0, 0)));
+	map->setCubes(t+7, 1, 0, 2, OBSTACLE); map->setCubes(t+7, 1, 4, 2, OBSTACLE); map->setCubes(t+7, 1, 8, 2, OBSTACLE);
+	map->setTimeQuaternion(t+16, Quaternion(Degree(14), Vector3(1, 0, 0)));
+	map->setCubes(t+15, 3, 2, 2, HOLE); map->setCubes(t+15, 3, 6, 2, HOLE);
+	map->setTimeQuaternion(t+23, Quaternion(Degree(-14), Vector3(1, 0, 0)));
+	map->setCubes(t+23, 1, 0, 2, OBSTACLE); map->setCubes(t+23, 1, 4, 2, OBSTACLE); map->setCubes(t+23, 1, 8, 2, OBSTACLE);
+	map->setTimeQuaternion(t+32, Quaternion(Degree(14), Vector3(1, 0, 0)));
+	map->setCubes(t+32, 3, 2, 2, HOLE); map->setCubes(t+32, 3, 6, 2, HOLE);
+	map->setTimeQuaternion(t+39, Quaternion(Degree(-14), Vector3(1, 0, 0)));
+	map->setCubes(t+39, 1, 0, 2, OBSTACLE); map->setCubes(t+39, 1, 4, 2, OBSTACLE); map->setCubes(t+39, 1, 8, 2, OBSTACLE);
+	map->setTimeQuaternion(t+48, Quaternion(Degree(14), Vector3(1, 0, 0)));
+	map->setCubes(t+48, 3, 2, 2, HOLE); map->setCubes(t+48, 3, 6, 2, HOLE);
+	map->setTimeQuaternion(t+57, Quaternion(Degree(-14), Vector3(1, 0, 0)));
+	map->setCubes(t+57, 1, 0, 2, OBSTACLE); map->setCubes(t+57, 1, 4, 2, OBSTACLE); map->setCubes(t+57, 1, 8, 2, OBSTACLE);
+	map->setTimeQuaternion(t+66, Quaternion(Degree(14), Vector3(1, 0, 0)));
+	map->setCubes(t+66, 3, 2, 2, HOLE); map->setCubes(t+66, 3, 6, 2, HOLE);
+	map->setTimeQuaternion(t+75, Quaternion(Degree(-14), Vector3(1, 0, 0)));
+	map->setCubes(t+75, 1, 0, 2, OBSTACLE); map->setCubes(t+75, 1, 4, 2, OBSTACLE); map->setCubes(t+75, 1, 8, 2, OBSTACLE);
+	map->setTimeQuaternion(t+83, Quaternion(Degree(14), Vector3(1, 0, 0)));
+	map->setCubes(t+83, 3, 2, 2, HOLE); map->setCubes(t+83, 3, 6, 2, HOLE);
+	map->setTimeQuaternion(t+92, Quaternion(Degree(-14), Vector3(1, 0, 0)));
+	map->setCubes(t+92, 1, 0, 2, OBSTACLE); map->setCubes(t+92, 1, 4, 2, OBSTACLE); map->setCubes(t+92, 1, 8, 2, OBSTACLE);
+	map->setTimeQuaternion(t+100, Quaternion(Degree(14), Vector3(1, 0, 0)));
+	map->setCubes(t+100, 3, 2, 2, HOLE); map->setCubes(t+100, 3, 6, 2, HOLE);
+	map->setTimeQuaternion(t+109, Quaternion(Degree(-14), Vector3(1, 0, 0)));
+	map->setCubes(t+109, 1, 0, 2, OBSTACLE); map->setCubes(t+109, 1, 4, 2, OBSTACLE); map->setCubes(t+109, 1, 8, 2, OBSTACLE);
+	map->setTimeQuaternion(t+118, Quaternion(Degree(14), Vector3(1, 0, 0)));
+	map->setCubes(t+118, 3, 2, 2, HOLE); map->setCubes(t+118, 3, 6, 2, HOLE);
+	map->setTimeQuaternion(t+125, Quaternion(Degree(-14), Vector3(1, 0, 0)));
+	map->setCubes(t+125, 1, 0, 2, OBSTACLE); map->setCubes(t+125, 1, 4, 2, OBSTACLE); map->setCubes(t+125, 1, 8, 2, OBSTACLE);
+	map->setTimeQuaternion(t+134, Quaternion(Degree(14), Vector3(1, 0, 0)));
+	map->setCubes(t+134, 3, 2, 2, HOLE); map->setCubes(t+134, 3, 6, 2, HOLE);
+	map->setTimeQuaternion(t+143, Quaternion(Degree(-14), Vector3(1, 0, 0)));
+	map->setCubes(t+143, 1, 0, 2, OBSTACLE); map->setCubes(t+143, 1, 4, 2, OBSTACLE); map->setCubes(t+143, 1, 8, 2, OBSTACLE);
+	map->setTimeQuaternion(t+151, Quaternion(Degree(14), Vector3(1, 0, 0)));
+	map->setCubes(t+151, 3, 2, 2, HOLE); map->setCubes(t+151, 3, 6, 2, HOLE);
+	map->setTimeQuaternion(t+160, Quaternion(Degree(-14), Vector3(1, 0, 0)));
+	map->setCubes(t+160, 1, 0, 2, OBSTACLE); map->setCubes(t+160, 1, 4, 2, OBSTACLE); map->setCubes(t+160, 1, 8, 2, OBSTACLE);
+	map->setTimeQuaternion(t+169, Quaternion(Degree(14), Vector3(1, 0, 0)));
+	map->setCubes(t+168, 3, 2, 2, HOLE); map->setCubes(t+168, 3, 6, 2, HOLE);
+	map->setTimeQuaternion(t+177, Quaternion(Degree(-14), Vector3(1, 0, 0)));
+	map->setCubes(t+177, 1, 0, 2, OBSTACLE); map->setCubes(t+177, 1, 4, 2, OBSTACLE); map->setCubes(t+177, 1, 8, 2, OBSTACLE);
+	map->setTimeQuaternion(t+184, Quaternion(Degree(14), Vector3(1, 0, 0)));
+	map->setCubes(t+184, 3, 2, 2, HOLE); map->setCubes(t+184, 3, 6, 2, HOLE);
+	map->setTimeQuaternion(t+190, Quaternion(Degree(-14), Vector3(1, 0, 0)));
+	map->setCubes(t+190, 1, 0, 2, OBSTACLE); map->setCubes(t+190, 1, 4, 2, OBSTACLE); map->setCubes(t+190, 1, 8, 2, OBSTACLE);
+	map->setTimeQuaternion(t+198, Quaternion(Degree(14), Vector3(1, 0, 0)));
+	map->setCubes(t+198, 3, 2, 2, HOLE); map->setCubes(t+198, 3, 6, 2, HOLE);
+	map->setTimeQuaternion(t+207, Quaternion(Degree(-14), Vector3(1, 0, 0)));
+	map->setCubes(t+207, 1, 0, 2, OBSTACLE); map->setCubes(t+207, 1, 4, 2, OBSTACLE); map->setCubes(t+207, 1, 8, 2, OBSTACLE);
+	map->setTimeQuaternion(t+215, Quaternion(Degree(14), Vector3(1, 0, 0)));
+	map->setCubes(t+215, 3, 2, 2, HOLE); map->setCubes(t+215, 3, 6, 2, HOLE);
+	map->setTimeQuaternion(t+224, Quaternion(Degree(-14), Vector3(1, 0, 0)));
+	map->setCubes(t+224, 1, 0, 2, OBSTACLE); map->setCubes(t+224, 1, 4, 2, OBSTACLE); map->setCubes(t+224, 1, 8, 2, OBSTACLE);
+	map->setTimeQuaternion(t+232, Quaternion(Degree(14), Vector3(1, 0, 0)));
+	map->setCubes(t+232, 3, 2, 2, HOLE); map->setCubes(t+232, 3, 6, 2, HOLE);
+	map->setTimeQuaternion(t+240, Quaternion(Degree(-14), Vector3(1, 0, 0)));
+	map->setCubes(t+240, 1, 0, 2, OBSTACLE); map->setCubes(t+240, 1, 4, 2, OBSTACLE); map->setCubes(t+240, 1, 8, 2, OBSTACLE);
+	map->setTimeQuaternion(t+249, Quaternion(Degree(14), Vector3(1, 0, 0)));
+	map->setCubes(t+249, 3, 2, 2, HOLE); map->setCubes(t+249, 3, 6, 2, HOLE);
+	map->setTimeQuaternion(t+257, Quaternion(Degree(-14), Vector3(1, 0, 0)));
+	map->setCubes(t+257, 1, 0, 2, OBSTACLE); map->setCubes(t+257, 1, 4, 2, OBSTACLE); map->setCubes(t+257, 1, 8, 2, OBSTACLE);
+	map->setTimeQuaternion(t+265, Quaternion(Degree(14), Vector3(1, 0, 0)));
+	map->setCubes(t+265, 3, 2, 2, HOLE); map->setCubes(t+265, 3, 6, 2, HOLE);
+	map->setTimeQuaternion(t+272, Quaternion(Degree(-14), Vector3(1, 0, 0)));
+	map->setCubes(t+272, 1, 0, 2, OBSTACLE); map->setCubes(t+272, 1, 4, 2, OBSTACLE); map->setCubes(t+272, 1, 8, 2, OBSTACLE);
+	map->setTimeQuaternion(t+280, Quaternion(Degree(14), Vector3(1, 0, 0)));
+	map->setCubes(t+280, 3, 2, 2, HOLE); map->setCubes(t+280, 3, 6, 2, HOLE);
+	map->setTimeQuaternion(t+289, Quaternion(Degree(-14), Vector3(1, 0, 0)));
+	map->setCubes(t+289, 1, 0, 2, OBSTACLE); map->setCubes(t+289, 1, 4, 2, OBSTACLE); map->setCubes(t+289, 1, 8, 2, OBSTACLE);
+	map->setTimeQuaternion(t+296, Quaternion(Degree(12), Vector3(1, 0, 0)));
+	map->setCubes(t+296, 3, 2, 2, HOLE); map->setCubes(t+296, 3, 6, 2, HOLE);
+	map->setTimeQuaternion(t+305, Quaternion(Degree(-12), Vector3(1, 0, 0)));
+	map->setCubes(t+305, 1, 0, 2, OBSTACLE); map->setCubes(t+305, 1, 4, 2, OBSTACLE); map->setCubes(t+305, 1, 8, 2, OBSTACLE);
+	map->setTimeQuaternion(t+313, Quaternion(Degree(10), Vector3(1, 0, 0)));
+	map->setTimeQuaternion(t+321, Quaternion(Degree(-10), Vector3(1, 0, 0)));
+	map->setTimeQuaternion(t+329, Quaternion(Degree(8), Vector3(1, 0, 0)));
+	map->setTimeQuaternion(t+338, Quaternion(Degree(-8), Vector3(1, 0, 0)));
+	map->setTimeQuaternion(t+346, Quaternion(Degree(6), Vector3(1, 0, 0)));
+	map->setTimeQuaternion(t+354, Quaternion(Degree(-6), Vector3(1, 0, 0)));
+	map->setTimeQuaternion(t+362, Quaternion(Degree(4), Vector3(1, 0, 0)));
+	map->setTimeQuaternion(t+370, Quaternion(Degree(-4), Vector3(1, 0, 0)));
+	map->setTimeQuaternion(t+378, Quaternion(Degree(2), Vector3(1, 0, 0)));
+	map->setTimeQuaternion(t+386, Quaternion(Degree(-2), Vector3(1, 0, 0)));
+	map->setTimeQuaternion(t+396, Quaternion(1, 0, 0, 0));
 }
 
 //|||||||||||||||||||||||||||||||||||||||||||||||
@@ -141,7 +257,11 @@ void createMap(Map* map) {
 
 	bigTrippleBump(map, 1025);
 
-	map->setTimeQuaternion(1300, Quaternion(Degree(-20), Vector3(1, 0, 0)));
+	map->setTimeQuaternion(1285, Quaternion(Degree(-20), Vector3(1, 1, 0)));
+
+	bigTrippleBump2(map, 1300);
+
+	map->setTimeQuaternion(map->getLength(), Quaternion(Degree(-40), Vector3(1, 0, 0)));
 }
 
 //|||||||||||||||||||||||||||||||||||||||||||||||
