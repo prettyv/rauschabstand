@@ -13,18 +13,51 @@ MapGenerator::MapGenerator(std::string mapname, SceneManager* sceneMgr,
 //|||||||||||||||||||||||||||||||||||||||||||||||
 
 void trippleBump(Map* map, unsigned int t) {
-	map->setTimeQuaternion(t-10, Quaternion(1, 0, 0, 0));
+	map->setTimeQuaternion(t-7, Quaternion(1, 0, 0, 0));
 	map->setTimeQuaternion(t, Quaternion(Degree(3), Vector3(1, 0, 0)));
 	map->setTimeQuaternion(t+7, Quaternion(Degree(-6), Vector3(1, 0, 0)));
 	map->setTimeQuaternion(t+16, Quaternion(Degree(6), Vector3(1, 0, 0)));
 	map->setTimeQuaternion(t+23, Quaternion(Degree(-6), Vector3(1, 0, 0)));
 	map->setTimeQuaternion(t+32, Quaternion(Degree(6), Vector3(1, 0, 0)));
 	map->setTimeQuaternion(t+39, Quaternion(Degree(-6), Vector3(1, 0, 0)));
-	map->setTimeQuaternion(t+49, Quaternion(1, 0, 0, 0));
+	map->setTimeQuaternion(t+46, Quaternion(1, 0, 0, 0));
 
 	map->setCubes(t, 1, 3, 7, OBSTACLE);
 	map->setCubes(t+16, 1, 0, 7, OBSTACLE);
 	map->setCubes(t+32, 1, 3, 7, OBSTACLE);
+}
+
+//|||||||||||||||||||||||||||||||||||||||||||||||
+
+void bigTrippleBump(Map* map, unsigned int t) {
+	map->setTimeQuaternion(t-10, Quaternion(1, 0, 0, 0));
+	map->setTimeQuaternion(t, Quaternion(Degree(7), Vector3(1, 0, 0)));
+	map->setTimeQuaternion(t+7, Quaternion(Degree(-14), Vector3(1, 0, 0)));
+	map->setTimeQuaternion(t+16, Quaternion(Degree(14), Vector3(1, 0, 0)));
+	map->setTimeQuaternion(t+23, Quaternion(Degree(-14), Vector3(1, 0, 0)));
+	map->setTimeQuaternion(t+32, Quaternion(Degree(14), Vector3(1, 0, 0)));
+	map->setTimeQuaternion(t+39, Quaternion(Degree(-14), Vector3(1, 0, 0)));
+	map->setTimeQuaternion(t+47, Quaternion(Degree(14), Vector3(1, 0, 0)));
+	map->setTimeQuaternion(t+56, Quaternion(Degree(-14), Vector3(1, 0, 0)));
+	map->setTimeQuaternion(t+65, Quaternion(Degree(14), Vector3(1, 0, 0)));
+	map->setTimeQuaternion(t+73, Quaternion(Degree(-14), Vector3(1, 0, 0)));
+	map->setTimeQuaternion(t+81, Quaternion(Degree(14), Vector3(1, 0, 0)));
+	map->setTimeQuaternion(t+89, Quaternion(Degree(-14), Vector3(1, 0, 0)));
+	map->setTimeQuaternion(t+98, Quaternion(Degree(14), Vector3(1, 0, 0)));
+	map->setTimeQuaternion(t+107, Quaternion(Degree(-14), Vector3(1, 0, 0)));
+	map->setTimeQuaternion(t+115, Quaternion(Degree(14), Vector3(1, 0, 0)));
+	map->setTimeQuaternion(t+123, Quaternion(Degree(-14), Vector3(1, 0, 0)));
+	map->setTimeQuaternion(t+132, Quaternion(Degree(14), Vector3(1, 0, 0)));
+	map->setTimeQuaternion(t+140, Quaternion(Degree(-14), Vector3(1, 0, 0)));
+	map->setTimeQuaternion(t+148, Quaternion(Degree(14), Vector3(1, 0, 0)));
+	map->setTimeQuaternion(t+157, Quaternion(Degree(-14), Vector3(1, 0, 0)));
+	map->setTimeQuaternion(t+166, Quaternion(Degree(14), Vector3(1, 0, 0)));
+	map->setTimeQuaternion(t+174, Quaternion(Degree(-14), Vector3(1, 0, 0)));
+	map->setTimeQuaternion(t+182, Quaternion(Degree(14), Vector3(1, 0, 0)));
+	map->setTimeQuaternion(t+189, Quaternion(Degree(-14), Vector3(1, 0, 0)));
+	map->setTimeQuaternion(t+197, Quaternion(Degree(14), Vector3(1, 0, 0)));
+	map->setTimeQuaternion(t+206, Quaternion(Degree(-14), Vector3(1, 0, 0)));
+	map->setTimeQuaternion(t+216, Quaternion(1, 0, 0, 0));
 }
 
 //|||||||||||||||||||||||||||||||||||||||||||||||
@@ -66,9 +99,9 @@ void spin(Map* map, unsigned int t) {
 //|||||||||||||||||||||||||||||||||||||||||||||||
 
 void gap(Map* map, unsigned int t) {
-	map->setTimeQuaternion(t-5, Quaternion(1, 0, 0, 0));
+	map->setTimeQuaternion(t-3, Quaternion(1, 0, 0, 0));
 	map->setTimeQuaternion(t, Quaternion(Degree(-20), Vector3(1, 0, 0)));
-	map->setTimeQuaternion(t+5, Quaternion(Degree(10), Vector3(1, 0, 0)));
+	map->setTimeQuaternion(t+3, Quaternion(Degree(10), Vector3(1, 0, 0)));
 
 	map->setCubes(t-1, 3, 0, 10, HOLE);
 }
@@ -93,16 +126,22 @@ void createMap(Map* map) {
 	trippleBump(map, 609);
 	raise(map, 662);
 	spin(map, 680);
-	gap(map, 733);
 	
+	map->setTimeQuaternion(736-6, Quaternion(1, 0, 0, 0));
+	map->setTimeQuaternion(736, Quaternion(Degree(20), Vector3(1, 0, 0)));
+	map->setTimeQuaternion(736+6, Quaternion(Degree(-10), Vector3(1, 0, 0)));
+
 	trippleBump(map, 748);
 	raise(map, 807);
 	trippleBump(map, 821);
 	raise(map, 877);
 	trippleBump(map, 892);
 	raise(map, 945);
-	//spin(map, 963);
-	//gap(map, 1016);
+	spin(map, 963);
+
+	bigTrippleBump(map, 1025);
+
+	map->setTimeQuaternion(1300, Quaternion(Degree(-20), Vector3(1, 0, 0)));
 }
 
 //|||||||||||||||||||||||||||||||||||||||||||||||

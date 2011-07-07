@@ -82,7 +82,7 @@ GameLogic::~GameLogic()
 void GameLogic::init()
 {
 	m_mapGenerator->generateMap();
-	m_audioPlayer->addObstacles(m_map->getObstaclePositions());
+	//m_audioPlayer->addObstacles(m_map->getObstaclePositions());
 	start();
 }
 
