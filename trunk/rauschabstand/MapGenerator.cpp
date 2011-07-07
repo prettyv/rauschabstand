@@ -66,9 +66,9 @@ void spin(Map* map, unsigned int t) {
 //|||||||||||||||||||||||||||||||||||||||||||||||
 
 void gap(Map* map, unsigned int t) {
-	map->setTimeQuaternion(t-10, Quaternion(1, 0, 0, 0));
+	map->setTimeQuaternion(t-5, Quaternion(1, 0, 0, 0));
 	map->setTimeQuaternion(t, Quaternion(Degree(-20), Vector3(1, 0, 0)));
-	map->setTimeQuaternion(t+10, Quaternion(Degree(10), Vector3(1, 0, 0)));
+	map->setTimeQuaternion(t+5, Quaternion(Degree(10), Vector3(1, 0, 0)));
 
 	map->setCubes(t-1, 3, 0, 10, HOLE);
 }
@@ -84,8 +84,25 @@ void createMap(Map* map) {
 	trippleBump(map, 326);
 	raise(map, 379);
 	spin(map, 397);
-
 	gap(map, 450);
+
+	trippleBump(map, 465);
+	raise(map, 524);
+	trippleBump(map, 538);
+	raise(map, 594);
+	trippleBump(map, 609);
+	raise(map, 662);
+	spin(map, 680);
+	gap(map, 733);
+	
+	trippleBump(map, 748);
+	raise(map, 807);
+	trippleBump(map, 821);
+	raise(map, 877);
+	trippleBump(map, 892);
+	raise(map, 945);
+	//spin(map, 963);
+	//gap(map, 1016);
 }
 
 //|||||||||||||||||||||||||||||||||||||||||||||||

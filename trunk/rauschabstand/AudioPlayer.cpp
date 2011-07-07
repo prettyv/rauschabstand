@@ -62,10 +62,10 @@ void AudioPlayer::addObstacles(std::vector<Ogre::Vector3> positions) {
 
 void AudioPlayer::play()
 {
-	trackMusic->play();
+	trackMusic->play();/*
 	for (unsigned int i = 0; i < obstacles.size(); i++) {
 		obstacles[i]->play3d(obstacles[i]->getPosition(), 1.0, true);
-	}
+	}*/
 }
 
 void AudioPlayer::playShip() {
