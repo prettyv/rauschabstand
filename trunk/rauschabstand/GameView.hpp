@@ -10,7 +10,6 @@
 #include "DotSceneLoader.hpp"
 
 #include "GameLogic.hpp"
-#include "OgreFontManager.h"
 
 #include <OgreSubEntity.h>
 #include <OgreMaterialManager.h>
@@ -27,32 +26,42 @@ public:
     void disengage();
     void update(Ogre::Real timeSinceLastFrame);
 
-    void keyPressed();
+    void keyPressed(const OIS::KeyEvent &keyEventRef);
+    void mouseMoved(const OIS::MouseEvent &evt);
+    void mousePressed(const OIS::MouseEvent &evt, OIS::MouseButtonID id);
 
     void pauseGame();
     void resumeGame();
 
     //getters
     OgreBites::ParamsPanel* getHighscorePanel();
+    bool getHighscoreShown();
 
 private:
     void showAllHUDElements();
     void hideAllHUDElements();
     void createHUD();
     void createHUDForDebug();
+    void createHighscore();
     void createAllMaterials();
+    void createStartMenu();
     void calculateDimensions();
     void updateHUD(Ogre::Real timeSinceLastFrame);
     void updateHUDForDebug(Ogre::Real timeSinceLastFrame);
+    void updateHighscore(Ogre::Real timeSinceLastFrame);
     void updateScore();
+    void getScoreForHighscore();
     void updateMultiplier(Ogre::Real timeSinceLastFrame);
 
-    void setAlphaToAllPanels();
+    void setAlphaToAllHUDPanels();
+    void setAlphaToAllHUDMaterials();
+    void setAlphaToHighscorePanels();
+    void setAlphaToStartMenuPanels();
 
+public:
+    //For GameState
+    bool                        m_stopAtStart;
 private:
-    //Status
-    bool                        m_showHUD;
-    bool                        m_scaleMultiplier;
     
     OgreBites::ParamsPanel*		m_pDetailsPanel;
     
@@ -73,8 +82,13 @@ private:
     String                      m_materialNameX;
     String                      m_materialNameMult;
     String                      m_materialNameHighscore;
+    String                      m_materialNameHighscoreNumbers;
+    String                      m_materialNameHighscoreName;
+    String                      m_materialNameStartBackground;
     // For Overlays
     OverlayContainer*           m_panelLogo;
+    OverlayContainer*           m_panelStartBack;
+
     OverlayContainer*           m_panelBoost;
     OverlayContainer*           m_panelTrack;
     OverlayContainer*           m_panelX;
@@ -89,6 +103,19 @@ private:
 
     OverlayContainer*           m_panelMult1;
     OverlayContainer*           m_panelMult2;
+
+    //Highscore
+    OverlayContainer*           m_panelHighNum1;
+    OverlayContainer*           m_panelHighNum2;
+    OverlayContainer*           m_panelHighNum3;
+    OverlayContainer*           m_panelHighNum4;
+    OverlayContainer*           m_panelHighNum5;
+    OverlayContainer*           m_panelHighNum6;
+
+
+    OverlayContainer*           m_panelHighName1;
+    OverlayContainer*           m_panelHighName2;
+    OverlayContainer*           m_panelHighName3;
 
     //Overlays
     Ogre::Overlay*              m_overlayBoost;
@@ -117,12 +144,21 @@ private:
     int                         m_PixelBoostWidth;
     int                         m_PixelBoostHeight;
 
+    //Start Menü
+
     double                      m_PosLogoLeft;
     double                      m_PosLogoTop;
     double                      m_DimLogoWidth;
     double                      m_DimLogoHeight;
     int                         m_PixelLogoWidth;
     int                         m_PixelLogoHeight;
+
+    double                      m_PosStartBackLeft;
+    double                      m_PosStartBackTop;
+    double                      m_DimStartBackWidth;
+    double                      m_DimStartBackHeight;
+    int                         m_PixelStartBackWidth;
+    int                         m_PixelStartBackHeight;
 
         //Numbers
     double                      m_PosNum1Left;
@@ -152,12 +188,31 @@ private:
     double                      m_DimMultHeight;
         //Numbers End
 
-    double                      m_PosXLeft;
-    double                      m_PosXTop;
-    double                      m_DimXWidth;
-    double                      m_DimXHeight;
-    int                         m_PixelXWidth;
-    int                         m_PixelXHeight;
+        //Highscore
+    double                      m_DimHighscoreCharWidth;
+    double                      m_DimHighscoreCharHeight;
+    int                         m_PixelHighscoreCharWidth;
+    int                         m_PixelHighscoreCharHeight;
+
+    double                      m_PosHighscoreNum1Left;
+    double                      m_PosHighscoreNum1Top;
+    double                      m_PosHighscoreNum2Left;
+    double                      m_PosHighscoreNum2Top;
+    double                      m_PosHighscoreNum3Left;
+    double                      m_PosHighscoreNum3Top;
+    double                      m_PosHighscoreNum4Left;
+    double                      m_PosHighscoreNum4Top;
+    double                      m_PosHighscoreNum5Left;
+    double                      m_PosHighscoreNum5Top;
+    double                      m_PosHighscoreNum6Left;
+    double                      m_PosHighscoreNum6Top;
+
+    double                      m_PosHighscoreName1Left;
+    double                      m_PosHighscoreName1Top;
+    double                      m_PosHighscoreName2Left;
+    double                      m_PosHighscoreName2Top;
+    double                      m_PosHighscoreName3Left;
+    double                      m_PosHighscoreName3Top;
 
     double                      m_PosHighscoreLeft;
     double                      m_PosHighscoreTop;
@@ -166,21 +221,51 @@ private:
     int                         m_PixelHighscoreWidth;
     int                         m_PixelHighscoreHeight;
 
-    //Fade In
-    double                      m_alpha;
-    bool                        m_fadeIn;
+
+        //Highscore End
+
+    double                      m_PosXLeft;
+    double                      m_PosXTop;
+    double                      m_DimXWidth;
+    double                      m_DimXHeight;
+    int                         m_PixelXWidth;
+    int                         m_PixelXHeight;
 
     //Times
     Ogre::Real                  m_timeScaleMultiplier;
+    Ogre::Real                  m_timeToWaitForHUDToFadeIn;
+    Ogre::Real                  m_timeScaleBoost;
+    Ogre::Real                  m_timeScaleHighscoreNum;
 
+    bool                        m_updateHighscoreFirstTime;
+    int                         m_highscoreCharCount;
     //Animation
+    bool                        m_fadeHighscoreIn;
+    bool                        m_fadeHUDOut;
+    bool                        m_fadeHUDIn;
+    bool                        m_waitForHUDToFadeIn;
+
+    bool                        m_animationScaleBoostInvert;
+    bool                        m_animationScaleHighscoreNumInvert;
+
     double                      m_animationScaleMultiplier;
+    double                      m_animationScaleBoost;
+
+    double                      m_animationPosHighscoreNum;
+    double                      m_animationAlphaHighscore;
+    double                      m_animationAlphaHUD;
+    double                      m_animationAlphaStartMenu;
+
+    //Status
+    bool                        m_showHUD;
+    bool                        m_scaleMultiplier;
+    bool                        m_showHighscore;
+    bool                        m_showStartMenu;
+
+    bool                        m_enterGameSelected;
     
     //Test
     double                      m_positionLogo;
-    double                      m_scale;
-    bool                        m_scaleInvert;  //nur zum Testen
-    Ogre::Real                  m_timeTest;
 
     Ogre::Real                  m_timeHighscoreTest;
 };

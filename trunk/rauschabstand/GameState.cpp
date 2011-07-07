@@ -27,7 +27,6 @@ GameState::GameState()
 
     m_gameView = new GameView();
 
-	stopAtBeginning = true;
 	m_audioRunningBeforePause = false;
 }
 
@@ -284,13 +283,9 @@ bool GameState::keyPressed(const OIS::KeyEvent &keyEventRef)
         pushAppState(findByName("PauseState"));
         return true;
     }
-	if (OgreFramework::getSingletonPtr()->m_pKeyboard->isKeyDown(OIS::KC_P))
-	{
-		stopAtBeginning = false;
-	}
     
-    //Update für die GameView
-    m_gameView->keyPressed();
+    //GameView update
+    m_gameView->keyPressed(keyEventRef);
 
     return true;
 }
@@ -309,7 +304,9 @@ bool GameState::keyReleased(const OIS::KeyEvent &keyEventRef)
 
 bool GameState::mouseMoved(const OIS::MouseEvent &evt)
 {
-    
+    //GameView update
+    m_gameView->mouseMoved(evt);
+
     if(OgreFramework::getSingletonPtr()->m_pTrayMgr->injectMouseMove(evt)) return true;
     /*
     if(m_bRMouseDown)
@@ -325,7 +322,9 @@ bool GameState::mouseMoved(const OIS::MouseEvent &evt)
 
 bool GameState::mousePressed(const OIS::MouseEvent &evt, OIS::MouseButtonID id)
 {
-    
+    //GameView update
+    m_gameView->mousePressed(evt, id);
+
     if(OgreFramework::getSingletonPtr()->m_pTrayMgr->injectMouseDown(evt, id)) return true;
 
     if(id == OIS::MB_Left)
@@ -397,16 +396,18 @@ void GameState::onLeftPressed(const OIS::MouseEvent &evt)
 
 void GameState::getInput()
 {
-    if ( OgreFramework::getSingletonPtr()->m_pKeyboard->isKeyDown(OIS::KC_W)
-        || OgreFramework::getSingletonPtr()->m_pKeyboard->isKeyDown(OIS::KC_S)
-        || OgreFramework::getSingletonPtr()->m_pKeyboard->isKeyDown(OIS::KC_A)
-		|| OgreFramework::getSingletonPtr()->m_pKeyboard->isKeyDown(OIS::KC_D)
-		|| OgreFramework::getSingletonPtr()->m_pKeyboard->isKeyDown(OIS::KC_SPACE)
-		|| OgreFramework::getSingletonPtr()->m_pKeyboard->isKeyDown(OIS::KC_K)
-		|| OgreFramework::getSingletonPtr()->m_pKeyboard->isKeyDown(OIS::KC_LSHIFT))
-	{
-		m_gameLogic->update(m_FrameEvent.timeSinceLastFrame, OgreFramework::getSingletonPtr()->m_pKeyboard);
-	}
+    if(!m_gameView->getHighscoreShown()) {   //Die Schiffbewegung wird gesperrt, wenn die Highscore angezeigt wird
+        if ( OgreFramework::getSingletonPtr()->m_pKeyboard->isKeyDown(OIS::KC_W)
+            || OgreFramework::getSingletonPtr()->m_pKeyboard->isKeyDown(OIS::KC_S)
+            || OgreFramework::getSingletonPtr()->m_pKeyboard->isKeyDown(OIS::KC_A)
+            || OgreFramework::getSingletonPtr()->m_pKeyboard->isKeyDown(OIS::KC_D)
+            || OgreFramework::getSingletonPtr()->m_pKeyboard->isKeyDown(OIS::KC_SPACE)
+            || OgreFramework::getSingletonPtr()->m_pKeyboard->isKeyDown(OIS::KC_K)
+            || OgreFramework::getSingletonPtr()->m_pKeyboard->isKeyDown(OIS::KC_LSHIFT))
+        {
+            m_gameLogic->update(m_FrameEvent.timeSinceLastFrame, OgreFramework::getSingletonPtr()->m_pKeyboard);
+        }
+    }
 }
 
 //|||||||||||||||||||||||||||||||||||||||||||||||
@@ -416,7 +417,7 @@ void GameState::update(Ogre::Real timeSinceLastFrame)
     m_FrameEvent.timeSinceLastFrame = timeSinceLastFrame;
     OgreFramework::getSingletonPtr()->m_pTrayMgr->frameRenderingQueued(m_FrameEvent);
 
-	m_gameLogic->update(stopAtBeginning ? Ogre::Real(0.0) : timeSinceLastFrame);
+	m_gameLogic->update(m_gameView->m_stopAtStart ? Ogre::Real(0.0) : timeSinceLastFrame);
 
     if(m_bQuit == true)
     {
@@ -428,7 +429,7 @@ void GameState::update(Ogre::Real timeSinceLastFrame)
 
 
 	// AUDIO-VISUALS begin
-	m_visuals->updateVisual(stopAtBeginning ? Ogre::Real(0.0) : timeSinceLastFrame);
+	m_visuals->updateVisual(m_gameView->m_stopAtStart ? Ogre::Real(0.0) : timeSinceLastFrame);
 	// AUDIO-VISUALS end
 
 	/*
@@ -438,7 +439,7 @@ void GameState::update(Ogre::Real timeSinceLastFrame)
 	}
 	*/
 
-    m_gameView->update(stopAtBeginning ? Ogre::Real(0.0) : timeSinceLastFrame);
+    m_gameView->update(m_gameView->m_stopAtStart ? Ogre::Real(0.0) : timeSinceLastFrame);
 }
 
 //|||||||||||||||||||||||||||||||||||||||||||||||
