@@ -270,13 +270,13 @@ void GameLogic::boostOn()
 	//turn on blur
 	Ogre::CompositorManager::getSingleton().setCompositorEnabled(OgreFramework::getSingletonPtr()->m_pViewport, "Motion Blur", true);
 	//speed up level
-	m_boostSpeed = 2;
+	m_boostSpeed = 1.5;
 	//speed up visuals
 	m_visuals->setBoostSpeed(m_boostSpeed);
 	//speed up sound
-	m_audioPlayer->increasePitch(1.0f);
+	m_audioPlayer->increasePitch(0.5f);
 	//speed up gravity
-	m_player->setBoostSpeed(m_boostSpeed * 2);
+	m_player->setBoostSpeed(m_boostSpeed * 1.5);
 }
 
 void GameLogic::boostOff() 
@@ -289,7 +289,7 @@ void GameLogic::boostOff()
 	//speed down visuals
 	m_visuals->setBoostSpeed(m_boostSpeed);
 	//speed down sound
-	m_audioPlayer->decreasePitch(1.0f);
+	m_audioPlayer->decreasePitch(0.5f);
 	//speed up gravity
 	m_player->setBoostSpeed(m_boostSpeed * 2);
 }

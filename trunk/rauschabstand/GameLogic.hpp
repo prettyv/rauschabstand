@@ -44,7 +44,7 @@ public:
 	Map* getMap() { return m_map; }
 	unsigned long getScore() { return m_score; }
 	unsigned long getMultiplier() { return m_multiplier; }
-	Real getProgress() { return m_t / m_map->getLength(); }
+	Real getProgress() { return m_t / (m_map->getLength() - 18*20); }
 	Real getBoostLevel() { return m_boostLevel; }
 	Real getBlockMs() { return m_blockMs; }
 
