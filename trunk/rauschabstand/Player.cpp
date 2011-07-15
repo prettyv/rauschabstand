@@ -157,7 +157,7 @@ void Player::update (Real timeSinceLastFrame, Real t, Real u)
 void Player::update(Real elapsedTime, OIS::Keyboard *input) {
 	if (m_rollFactor < 0.5 && m_rollFactor > -0.5)
 	{
-		if (input->isKeyDown (OIS::KC_A))
+		if (input->isKeyDown (OIS::KC_LEFT))
 		{
 			// for side-roll movement while steering
 			m_rollFactor -= 0.005f * elapsedTime;
@@ -165,7 +165,7 @@ void Player::update(Real elapsedTime, OIS::Keyboard *input) {
 			m_rollBack = false;
 		}
 
-		if (input->isKeyDown (OIS::KC_D))
+		if (input->isKeyDown (OIS::KC_RIGHT))
 		{
 			// for side-roll movement while steering
 			m_rollFactor += 0.005f * elapsedTime;
@@ -203,7 +203,7 @@ void Player::jump(Real elapsedTime, Real t, Real u)
 //|||||||||||||||||||||||||||||||||||||||||||||||
 
 void Player::keyReleased (Real elapsedTime, const OIS::KeyEvent& keyEvt) {
-	if (keyEvt.key == OIS::KC_A || keyEvt.key == OIS::KC_D)
+	if (keyEvt.key == OIS::KC_LEFT || keyEvt.key == OIS::KC_RIGHT)
 	{
 		m_rollBack = true;
 	}

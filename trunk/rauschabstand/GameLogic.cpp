@@ -200,12 +200,12 @@ void GameLogic::update(Ogre::Real timeSinceLastFrame)
 void GameLogic::update(Ogre::Real elapsedTime, OIS::Keyboard* input) {
 	Ogre::Real shipPosPrev = m_u;
 	
-	if (input->isKeyDown(OIS::KC_A))
+	if (input->isKeyDown(OIS::KC_LEFT))
 	{
 		m_u += m_blockMsSide * elapsedTime;
 		m_u = m_u < m_map->getWidth() * 100 / (double) 2 ? m_u : m_map->getWidth() * 100 / (double) 2;
 	}
-	if (input->isKeyDown(OIS::KC_D))
+	if (input->isKeyDown(OIS::KC_RIGHT))
 	{
 		m_u -= m_blockMsSide * elapsedTime;
 		m_u = m_u > -m_map->getWidth() * 100 / (double) 2 ? m_u : -m_map->getWidth() * 100 / (double) 2;
@@ -215,7 +215,7 @@ void GameLogic::update(Ogre::Real elapsedTime, OIS::Keyboard* input) {
 		m_player->jump(elapsedTime, m_t, m_u);
 	}
 	// kill player for debug
-	if (input->isKeyDown(OIS::KC_K))
+	if (input->isKeyDown(OIS::KC_R))
 	{
 		playerDies();
 	}

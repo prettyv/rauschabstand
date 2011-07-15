@@ -397,12 +397,10 @@ void GameState::onLeftPressed(const OIS::MouseEvent &evt)
 void GameState::getInput()
 {
     if(!m_gameView->getHighscoreShown()) {   //Die Schiffbewegung wird gesperrt, wenn die Highscore angezeigt wird
-        if ( OgreFramework::getSingletonPtr()->m_pKeyboard->isKeyDown(OIS::KC_W)
-            || OgreFramework::getSingletonPtr()->m_pKeyboard->isKeyDown(OIS::KC_S)
-            || OgreFramework::getSingletonPtr()->m_pKeyboard->isKeyDown(OIS::KC_A)
-            || OgreFramework::getSingletonPtr()->m_pKeyboard->isKeyDown(OIS::KC_D)
+        if ( OgreFramework::getSingletonPtr()->m_pKeyboard->isKeyDown(OIS::KC_LEFT)
+            || OgreFramework::getSingletonPtr()->m_pKeyboard->isKeyDown(OIS::KC_RIGHT)
             || OgreFramework::getSingletonPtr()->m_pKeyboard->isKeyDown(OIS::KC_SPACE)
-            || OgreFramework::getSingletonPtr()->m_pKeyboard->isKeyDown(OIS::KC_K)
+            || OgreFramework::getSingletonPtr()->m_pKeyboard->isKeyDown(OIS::KC_R)
             || OgreFramework::getSingletonPtr()->m_pKeyboard->isKeyDown(OIS::KC_LSHIFT))
         {
             m_gameLogic->update(m_FrameEvent.timeSinceLastFrame, OgreFramework::getSingletonPtr()->m_pKeyboard);
