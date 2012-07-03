@@ -6,7 +6,8 @@
 #include <OgreMaterialManager.h>
 
 //|||||||||||||||||||||||||||||||||||||||||||||||
-GameView::GameView() {
+GameView::GameView()
+{
     //For GameState
     m_stopAtStart = true;
 
@@ -49,8 +50,8 @@ GameView::GameView() {
 
     m_sceneManager      = 0;
 
-    
-    m_pDetailsPanel		= 0;
+
+    m_pDetailsPanel     = 0;
     m_bSettingsMode     = false;
 
     //Material Names
@@ -69,7 +70,7 @@ GameView::GameView() {
 
     m_overlayBoost      = 0;
     m_overlayMultiplier = 0;
-    
+
     m_panelLogo         = 0;
     m_panelStartBack    = 0;
 
@@ -103,7 +104,7 @@ GameView::GameView() {
 
     //Positionierung der Einzelnen Overlays
 
-        //Start Menü------
+    //Start Menü------
     //Logo------------
     m_PosLogoLeft       = 0.0;
     m_PosLogoTop        = 0.2;
@@ -119,25 +120,25 @@ GameView::GameView() {
     m_DimStartBackHeight    = 1.0;
     m_PixelStartBackWidth   = 1280;
     m_PixelStartBackHeight  = 1024;
-        //Start Menü End--
+    //Start Menü End--
 
-        //Track-----------
+    //Track-----------
     m_PosTrackLeft      = 0;
     m_PosTrackTop       = 0.5;
     m_DimTrackWidth     = 0.1;  //Gewünscht Breite
     m_DimTrackHeight    = 0;    //Höhe noch unbekannt
     m_PixelTrackWidth   = 188;
     m_PixelTrackHeight  = 825;
-        //Track End-------
-        //Boost-----------
+    //Track End-------
+    //Boost-----------
     m_PosBoostLeft      = 0;
     m_PosBoostTop       = 0;
     m_DimBoostWidth     = 0.4;
     m_DimBoostHeight    = 0;
     m_PixelBoostWidth   = 975;
     m_PixelBoostHeight  = 300;
-        //Boost End-------
-        //Numbers---------
+    //Boost End-------
+    //Numbers---------
     m_PosNum1Left       = 0.9;
     m_PosNum1Top        = 0.01;
     m_PosNum2Left       = 0.85;
@@ -155,8 +156,8 @@ GameView::GameView() {
     m_DimNumHeight      = 0;
     m_PixelNumWidth     = 200;
     m_PixelNumHeight    = 200;
-        //Numbers End-----
-        //Multiplikator---
+    //Numbers End-----
+    //Multiplikator---
     m_PosMult1Left      = 0.52;
     m_PosMult1Top       = 0.01;
     m_PosMult2Left      = 0.47;
@@ -164,16 +165,16 @@ GameView::GameView() {
 
     m_DimMultWidth      = 0.1;
     m_DimNumHeight      = 0;
-        //Multiplikator End
-        //x --------------
+    //Multiplikator End
+    //x --------------
     m_PosXLeft          = 0.4;
     m_PosXTop           = 0.01;
     m_DimXWidth         = 0.1;
     m_DimXHeight        = 0;
     m_PixelXWidth       = 375;
     m_PixelXHeight      = 375;
-        //x End-----------
-        //Highscore-------
+    //x End-----------
+    //Highscore-------
     m_PosHighscoreNum1Left      = 0.8;
     m_PosHighscoreNum1Top       = 0.37;
     m_PosHighscoreNum2Left      = 0.75;
@@ -205,7 +206,7 @@ GameView::GameView() {
     m_DimHighscoreHeight    = 0;
     m_PixelHighscoreWidth   = 1280;
     m_PixelHighscoreHeight  = 1024;
-        //Highscore End---
+    //Highscore End---
 
     //Test
     m_boostCharge       = 0;
@@ -213,11 +214,13 @@ GameView::GameView() {
     m_timeHighscoreTest = 0;
 }
 
-GameView::~GameView() {
-   
+GameView::~GameView()
+{
+
 }
 
-void GameView::engage(GameLogic* gameLogic, Ogre::SceneManager* sceneManager, Ogre::Camera* pCamera,Ogre::FrameEvent FrameEvent) {
+void GameView::engage(GameLogic* gameLogic, Ogre::SceneManager* sceneManager, Ogre::Camera* pCamera, Ogre::FrameEvent FrameEvent)
+{
 
     m_sceneManager  = sceneManager;
     m_gameLogic     = gameLogic;
@@ -262,7 +265,8 @@ void GameView::engage(GameLogic* gameLogic, Ogre::SceneManager* sceneManager, Og
     m_panelTrack->setMaterialName(m_materialNameTrack + "00");      //Wieder zurück auf 0
 }
 
-void GameView::disengage() {
+void GameView::disengage()
+{
     /*
     //Darf nicht alles löschen!!!
     Ogre::MaterialManager::getSingletonPtr()->destroyAllResourcePools();
@@ -270,7 +274,8 @@ void GameView::disengage() {
     */
 }
 
-void GameView::createHighscore() {
+void GameView::createHighscore()
+{
     OverlayManager& overlayManager = Ogre::OverlayManager::getSingleton();
 
     Overlay* overlayNum;
@@ -279,32 +284,32 @@ void GameView::createHighscore() {
 
     m_panelHighNum1 = static_cast<OverlayContainer*>(overlayManager.createOverlayElement("Panel", "PanelHighscoreNum1"));
     m_panelHighNum1->setPosition(m_PosHighscoreNum1Left, m_PosHighscoreNum1Top);
-    m_panelHighNum1->setDimensions(m_DimHighscoreCharWidth, m_DimHighscoreCharHeight); 
+    m_panelHighNum1->setDimensions(m_DimHighscoreCharWidth, m_DimHighscoreCharHeight);
     overlayNum->add2D(m_panelHighNum1);
 
     m_panelHighNum2 = static_cast<OverlayContainer*>(overlayManager.createOverlayElement("Panel", "PanelHighscoreNum2"));
     m_panelHighNum2->setPosition(m_PosHighscoreNum2Left, m_PosHighscoreNum2Top);
-    m_panelHighNum2->setDimensions(m_DimHighscoreCharWidth, m_DimHighscoreCharHeight); 
+    m_panelHighNum2->setDimensions(m_DimHighscoreCharWidth, m_DimHighscoreCharHeight);
     overlayNum->add2D(m_panelHighNum2);
 
     m_panelHighNum3 = static_cast<OverlayContainer*>(overlayManager.createOverlayElement("Panel", "PanelHighscoreNum3"));
     m_panelHighNum3->setPosition(m_PosHighscoreNum3Left, m_PosHighscoreNum3Top);
-    m_panelHighNum3->setDimensions(m_DimHighscoreCharWidth, m_DimHighscoreCharHeight); 
+    m_panelHighNum3->setDimensions(m_DimHighscoreCharWidth, m_DimHighscoreCharHeight);
     overlayNum->add2D(m_panelHighNum3);
 
     m_panelHighNum4 = static_cast<OverlayContainer*>(overlayManager.createOverlayElement("Panel", "PanelHighscoreNum4"));
     m_panelHighNum4->setPosition(m_PosHighscoreNum4Left, m_PosHighscoreNum4Top);
-    m_panelHighNum4->setDimensions(m_DimHighscoreCharWidth, m_DimHighscoreCharHeight); 
+    m_panelHighNum4->setDimensions(m_DimHighscoreCharWidth, m_DimHighscoreCharHeight);
     overlayNum->add2D(m_panelHighNum4);
 
     m_panelHighNum5 = static_cast<OverlayContainer*>(overlayManager.createOverlayElement("Panel", "PanelHighscoreNum5"));
     m_panelHighNum5->setPosition(m_PosHighscoreNum5Left, m_PosHighscoreNum5Top);
-    m_panelHighNum5->setDimensions(m_DimHighscoreCharWidth, m_DimHighscoreCharHeight); 
+    m_panelHighNum5->setDimensions(m_DimHighscoreCharWidth, m_DimHighscoreCharHeight);
     overlayNum->add2D(m_panelHighNum5);
 
     m_panelHighNum6 = static_cast<OverlayContainer*>(overlayManager.createOverlayElement("Panel", "PanelHighscoreNum6"));
     m_panelHighNum6->setPosition(m_PosHighscoreNum6Left, m_PosHighscoreNum6Top);
-    m_panelHighNum6->setDimensions(m_DimHighscoreCharWidth, m_DimHighscoreCharHeight); 
+    m_panelHighNum6->setDimensions(m_DimHighscoreCharWidth, m_DimHighscoreCharHeight);
     overlayNum->add2D(m_panelHighNum6);
 
     m_panelHighName1 = static_cast<OverlayContainer*>(overlayManager.createOverlayElement("Panel", "PanelHighscoreName1"));
@@ -339,7 +344,7 @@ void GameView::createHighscore() {
     overlayHighscore->show();
 
     //Highscore Background End
-    
+
     //Ich muss irgendein Material vorher setzten
     m_panelHighNum1->setMaterialName(m_materialNameHighscoreNumbers + Ogre::StringConverter::toString(0));   //Es steht am Anfang überall 0
     m_panelHighNum2->setMaterialName(m_materialNameHighscoreNumbers + Ogre::StringConverter::toString(0));   //Es steht am Anfang überall 0
@@ -347,11 +352,12 @@ void GameView::createHighscore() {
     m_panelHighNum4->setMaterialName(m_materialNameHighscoreNumbers + Ogre::StringConverter::toString(0));   //Es steht am Anfang überall 0
     m_panelHighNum5->setMaterialName(m_materialNameHighscoreNumbers + Ogre::StringConverter::toString(0));   //Es steht am Anfang überall 0
     m_panelHighNum6->setMaterialName(m_materialNameHighscoreNumbers + Ogre::StringConverter::toString(0));   //Es steht am Anfang überall 0
-    
+
     setAlphaToHighscorePanels();
 }
 
-void GameView::createHUDForDebug() {
+void GameView::createHUDForDebug()
+{
     Ogre::StringVector itemsScore;
     itemsScore.push_back("Score");
     itemsScore.push_back("Multiplier");
@@ -363,7 +369,7 @@ void GameView::createHUDForDebug() {
     OgreFramework::getSingletonPtr()->m_pTrayMgr->showLogo(OgreBites::TL_BOTTOMRIGHT);
     //OgreFramework::getSingletonPtr()->m_pTrayMgr->createLabel(OgreBites::TL_TOP, "GameLbl", "Game mode", 250);
     OgreFramework::getSingletonPtr()->m_pTrayMgr->showCursor();
-  
+
     Ogre::StringVector items;
     items.push_back("cam.pX");
     items.push_back("cam.pY");
@@ -384,13 +390,14 @@ void GameView::createHUDForDebug() {
     OgreFramework::getSingletonPtr()->m_pTrayMgr->createLongSelectMenu(OgreBites::TL_TOPRIGHT, "ChatModeSelMenu", "ChatMode", 200, 3, chatModes);
 }
 
-void GameView::createStartMenu() {
+void GameView::createStartMenu()
+{
     OverlayManager& overlayManager = Ogre::OverlayManager::getSingleton();
-    
+
     Overlay* overlayStart = overlayManager.create("Overlay_Start");
     overlayStart->show();
 
-    
+
 
     //Background
     m_panelStartBack = static_cast<OverlayContainer*>(overlayManager.createOverlayElement("Panel", "Panel_StartBackground"));
@@ -411,7 +418,8 @@ void GameView::createStartMenu() {
     //Logo End
 }
 
-void GameView::createHUD() {
+void GameView::createHUD()
+{
     OverlayManager& overlayManager = Ogre::OverlayManager::getSingleton();
 
     m_overlayMultiplier = overlayManager.create("Overlay_Multiplier");
@@ -428,7 +436,7 @@ void GameView::createHUD() {
     m_overlayBoost = overlayManager.create("Overlay_Boost");
     m_overlayBoost->add2D(m_panelBoost);
     m_overlayBoost->show();
-    m_overlayBoost->setScale(m_animationScaleBoost,m_animationScaleBoost);
+    m_overlayBoost->setScale(m_animationScaleBoost, m_animationScaleBoost);
     //------------
     //Boost-Balken - End
 
@@ -550,14 +558,15 @@ void GameView::createHUD() {
 
 }
 
-void GameView::calculateDimensions() {
-    
+void GameView::calculateDimensions()
+{
+
     //Bildschirmauflösung feststellen
     //GetSystemMetrics(SM_CXSCREEN);
     int height    = OgreFramework::getSingletonPtr()->m_pRenderWnd->getHeight();
     int widthTest = OgreFramework::getSingletonPtr()->m_pRenderWnd->getWidth();
     double ratio  = ((double)widthTest) / height;
-    
+
     //Track ------------
     //Ohne Bildschirmauflösung
     double ratioTrack = ((double) m_PixelTrackWidth) / m_PixelTrackHeight;
@@ -567,85 +576,99 @@ void GameView::calculateDimensions() {
     if(ratio > 1) { //=Breitbild
         //Die Breite vom Track gehört verkleinert
         m_DimTrackWidth = 1 / ratio * m_DimTrackWidth;
-    }
-    else if (ratio < 1) {   //=Kommt eigentlich nicht vor Mehr höhe als breite
+    } else if (ratio < 1) { //=Kommt eigentlich nicht vor Mehr höhe als breite
         //ist einmal nicht vorgesehen
     }
+
     //Wenns genau eins ist, dann passts
     //Track End---------
 
     //Boost-------------
     double ratioBoost = ((double) m_PixelBoostWidth ) / m_PixelBoostHeight;
     m_DimBoostHeight = 1 / ratioBoost * m_DimBoostWidth;
+
     if(ratio > 1) {
         m_DimBoostWidth = 1 / ratio * m_DimBoostWidth;
     } else if (ratio < 1) {
         //Zuerzeit nicht vorgesehen
     }
+
     //Boost End---------
 
     //Logo--------------
     double ratioLogo = ((double) m_PixelLogoWidth) / m_PixelLogoHeight;
     m_DimLogoHeight = 1 / ratioLogo * m_DimLogoWidth;
+
     if(ratio > 1) {
-        m_DimLogoWidth = 1/ ratio * m_DimLogoWidth;
+        m_DimLogoWidth = 1 / ratio * m_DimLogoWidth;
     } else if (ratio < 1) {
         //Zuerzeit nicht vorgesehen
     }
+
     //Logo End----------
 
     //Numbers-----------
     double ratioNumbers = ((double) m_PixelNumWidth) / m_PixelNumHeight;
     m_DimNumHeight = 1 / ratioNumbers * m_DimNumWidth;
+
     if(ratio > 1) {
-        m_DimNumWidth = 1/ ratio * m_DimNumWidth;
+        m_DimNumWidth = 1 / ratio * m_DimNumWidth;
     } else if (ratio < 1) {
         //Zuerzeit nicht vorgesehen
     }
+
     //Numbers End-------
 
     //x-----------------
     double ratioX = ((double) m_PixelXWidth) / m_PixelXHeight;
     m_DimXHeight = 1 / ratioX * m_DimXWidth;
+
     if (ratio > 1) {
         m_DimXWidth = 1 / ratio * m_DimXWidth;
     } else if (ratio < 1) {
         //Zuerzeit nicht vorgesehen
     }
+
     //x End-------------
 
     //Multiplikator-----------
     //Ratio ist gleich wie bei den Numbers
     m_DimMultHeight = 1 / ratioNumbers * m_DimMultWidth;
+
     if(ratio > 1) {
-        m_DimMultWidth = 1/ ratio * m_DimMultWidth;
+        m_DimMultWidth = 1 / ratio * m_DimMultWidth;
     } else if (ratio < 1) {
         //Zuerzeit nicht vorgesehen
     }
+
     //Multiplikaotr End-------
 
     //Highscore-----------
     double ratioHighscore = ((double) m_PixelHighscoreWidth) / m_PixelHighscoreHeight;
     m_DimHighscoreHeight = 1 / ratioHighscore * m_DimHighscoreWidth;
+
     if(ratio > 1) {
-        m_DimHighscoreWidth = 1/ ratio * m_DimHighscoreWidth;
+        m_DimHighscoreWidth = 1 / ratio * m_DimHighscoreWidth;
     } else if (ratio < 1) {
         //Zuerzeit nicht vorgesehen
     }
 
     double ratioHighscoreChar = ((double) m_PixelHighscoreCharWidth) / m_PixelHighscoreCharHeight;
     m_DimHighscoreCharHeight = 1 / ratioHighscoreChar * m_DimHighscoreCharWidth;
+
     if(ratio > 1) {
         m_DimHighscoreCharWidth = 1 / ratio * m_DimHighscoreCharWidth;
     } else if (ratio < 1) {
         //Zuerzeit nicht vorgesehen
     }
+
     //Highscore End-------
 }
 
-void GameView::createAllMaterials() {
+void GameView::createAllMaterials()
+{
     MaterialManager& materialManager = Ogre::MaterialManager::getSingleton();
-    
+
     MaterialPtr material;
 
     // Create boost material
@@ -658,8 +681,7 @@ void GameView::createAllMaterials() {
             material->getTechnique(0)->getPass(0)->setDepthWriteEnabled(false);
             material->getTechnique(0)->getPass(0)->setLightingEnabled(false);
             material->getTechnique(0)->getPass(0)->setSceneBlending(Ogre::SBT_TRANSPARENT_ALPHA);
-        }
-        else {
+        } else {
             material = materialManager.create(m_materialNameBoostBar + Ogre::StringConverter::toString(i), "General");
             material->getTechnique(0)->getPass(0)->createTextureUnitState("rauschabstand Visuals/Bars" + Ogre::StringConverter::toString(i) + "-01.png");
             material->getTechnique(0)->getPass(0)->setDepthCheckEnabled(false);
@@ -668,6 +690,7 @@ void GameView::createAllMaterials() {
             material->getTechnique(0)->getPass(0)->setSceneBlending(Ogre::SBT_TRANSPARENT_ALPHA);
         }
     }
+
     // ---------------------
 
     // Create Track material
@@ -680,8 +703,7 @@ void GameView::createAllMaterials() {
             material->getTechnique(0)->getPass(0)->setDepthWriteEnabled(false);
             material->getTechnique(0)->getPass(0)->setLightingEnabled(false);
             material->getTechnique(0)->getPass(0)->setSceneBlending(Ogre::SBT_TRANSPARENT_ALPHA);
-        }
-        else {
+        } else {
             material = materialManager.create(m_materialNameTrack + Ogre::StringConverter::toString(i), "General");
             material->getTechnique(0)->getPass(0)->createTextureUnitState("rauschabstand Visuals/Track" + Ogre::StringConverter::toString(i) + "-02.png");
             material->getTechnique(0)->getPass(0)->setDepthCheckEnabled(false);
@@ -690,6 +712,7 @@ void GameView::createAllMaterials() {
             material->getTechnique(0)->getPass(0)->setSceneBlending(Ogre::SBT_TRANSPARENT_ALPHA);
         }
     }
+
     // ---------------------
 
     // Create Numbers material
@@ -702,6 +725,7 @@ void GameView::createAllMaterials() {
         material->getTechnique(0)->getPass(0)->setLightingEnabled(false);
         material->getTechnique(0)->getPass(0)->setSceneBlending(Ogre::SBT_TRANSPARENT_ALPHA);
     }
+
     //------------------------
 
     // Create Multiplikator material
@@ -714,6 +738,7 @@ void GameView::createAllMaterials() {
         material->getTechnique(0)->getPass(0)->setLightingEnabled(false);
         material->getTechnique(0)->getPass(0)->setSceneBlending(Ogre::SBT_TRANSPARENT_ALPHA);
     }
+
     //------------------------
 
     // Create X material
@@ -735,7 +760,7 @@ void GameView::createAllMaterials() {
     material->getTechnique(0)->getPass(0)->setLightingEnabled(false);
     material->getTechnique(0)->getPass(0)->setSceneBlending(Ogre::SBT_TRANSPARENT_ALPHA);
     //------------------
-    
+
     // Create Highscore Number materials
     //------------------
     for(int i = 0; i < 10; i++) {
@@ -746,6 +771,7 @@ void GameView::createAllMaterials() {
         material->getTechnique(0)->getPass(0)->setLightingEnabled(false);
         material->getTechnique(0)->getPass(0)->setSceneBlending(Ogre::SBT_TRANSPARENT_ALPHA);
     }
+
     //------------------
 
     //Create Highscore Character materials
@@ -758,11 +784,12 @@ void GameView::createAllMaterials() {
         material->getTechnique(0)->getPass(0)->setLightingEnabled(false);
         material->getTechnique(0)->getPass(0)->setSceneBlending(Ogre::SBT_TRANSPARENT_ALPHA);
     }
+
     //------------------
 
     //Materials for Start Menü
     //-------------------
-    
+
     // Create Logo material
     // ---------------------
     material = materialManager.create(m_materialNameLogo, "General");
@@ -795,42 +822,49 @@ void GameView::createAllMaterials() {
     //Start Menü Background END
 }
 
-void GameView::update(Ogre::Real timeSinceLastFrame) {
-    
-    if(timeSinceLastFrame == 0) {return;}   //Dann ist nix passiert
+void GameView::update(Ogre::Real timeSinceLastFrame)
+{
+
+    if(timeSinceLastFrame == 0) {
+        return;   //Dann ist nix passiert
+    }
 
     if(m_showStartMenu) {
         m_animationAlphaStartMenu -= 0.01;
+
         if(m_animationAlphaStartMenu <= 0) {
             m_animationAlphaStartMenu = 0;
             m_showStartMenu = false;
         }
+
         setAlphaToStartMenuPanels();
     }
 
     if (m_showHUD) {
-        
+
         if(m_showHighscore) {
             updateHighscore(timeSinceLastFrame);
+
             if(m_fadeHUDOut) {
                 m_animationAlphaHUD -= 0.01;
+
                 if(m_animationAlphaHUD <= 0) {
                     m_animationAlphaHUD = 0;
                     m_fadeHUDOut = false;
                 }
+
                 setAlphaToAllHUDPanels();
             }
-        }
-        else {
+        } else {
             updateHUD(timeSinceLastFrame);
         }
-    }
-    else {
+    } else {
         updateHUDForDebug(timeSinceLastFrame);
     }
 }
 
-void GameView::updateHighscore(Ogre::Real timeSinceLastFrame) {
+void GameView::updateHighscore(Ogre::Real timeSinceLastFrame)
+{
 
     if(m_updateHighscoreFirstTime) {
         m_updateHighscoreFirstTime = false;
@@ -839,49 +873,54 @@ void GameView::updateHighscore(Ogre::Real timeSinceLastFrame) {
 
     if(m_fadeHighscoreIn) {
         m_animationAlphaHighscore += 0.01;
+
         if(m_animationAlphaHighscore > 0.9) {
             m_fadeHighscoreIn = false;
             m_animationAlphaHighscore = 0.9;
         }
+
         setAlphaToHighscorePanels();
     }
 
     m_timeScaleHighscoreNum += timeSinceLastFrame;
+
     if(m_animationScaleHighscoreNumInvert) {
         m_animationPosHighscoreNum += 0.001;
-    }
-    else {
+    } else {
         m_animationPosHighscoreNum -= 0.001;
     }
+
     if(m_timeScaleHighscoreNum > 100) {
         m_timeScaleHighscoreNum = 0;
         m_animationScaleHighscoreNumInvert = !m_animationScaleHighscoreNumInvert;
+
         if(m_animationScaleHighscoreNumInvert) { //Dann ist man wieder am Anfang
             m_animationPosHighscoreNum = 0;
         }
     }
 
     switch(m_highscoreCharCount) {
-    case 1:
-        m_panelHighName1->setPosition(m_PosHighscoreName1Left, m_PosHighscoreName1Top + m_animationPosHighscoreNum);
-        m_panelHighName2->setPosition(m_PosHighscoreName2Left, m_PosHighscoreName2Top);
-        m_panelHighName3->setPosition(m_PosHighscoreName3Left, m_PosHighscoreName3Top);
-        break;
-    case 2:
-        m_panelHighName1->setPosition(m_PosHighscoreName1Left, m_PosHighscoreName1Top);
-        m_panelHighName2->setPosition(m_PosHighscoreName2Left, m_PosHighscoreName2Top + m_animationPosHighscoreNum);
-        m_panelHighName3->setPosition(m_PosHighscoreName3Left, m_PosHighscoreName3Top);
-        break;
-    case 3:
-        m_panelHighName1->setPosition(m_PosHighscoreName1Left, m_PosHighscoreName1Top);
-        m_panelHighName2->setPosition(m_PosHighscoreName2Left, m_PosHighscoreName2Top);
-        m_panelHighName3->setPosition(m_PosHighscoreName3Left, m_PosHighscoreName3Top + m_animationPosHighscoreNum);
-        break;
+        case 1:
+            m_panelHighName1->setPosition(m_PosHighscoreName1Left, m_PosHighscoreName1Top + m_animationPosHighscoreNum);
+            m_panelHighName2->setPosition(m_PosHighscoreName2Left, m_PosHighscoreName2Top);
+            m_panelHighName3->setPosition(m_PosHighscoreName3Left, m_PosHighscoreName3Top);
+            break;
+        case 2:
+            m_panelHighName1->setPosition(m_PosHighscoreName1Left, m_PosHighscoreName1Top);
+            m_panelHighName2->setPosition(m_PosHighscoreName2Left, m_PosHighscoreName2Top + m_animationPosHighscoreNum);
+            m_panelHighName3->setPosition(m_PosHighscoreName3Left, m_PosHighscoreName3Top);
+            break;
+        case 3:
+            m_panelHighName1->setPosition(m_PosHighscoreName1Left, m_PosHighscoreName1Top);
+            m_panelHighName2->setPosition(m_PosHighscoreName2Left, m_PosHighscoreName2Top);
+            m_panelHighName3->setPosition(m_PosHighscoreName3Left, m_PosHighscoreName3Top + m_animationPosHighscoreNum);
+            break;
     }
 
 }
 
-void GameView::updateHUDForDebug(Ogre::Real timeSinceLastFrame) {
+void GameView::updateHUDForDebug(Ogre::Real timeSinceLastFrame)
+{
     // Update für Highscore
     m_score  = m_gameLogic->getScore();
     m_multiplier = m_gameLogic->getMultiplier();
@@ -892,12 +931,10 @@ void GameView::updateHUDForDebug(Ogre::Real timeSinceLastFrame) {
     m_FrameEvent.timeSinceLastFrame = timeSinceLastFrame;
     OgreFramework::getSingletonPtr()->m_pTrayMgr->frameRenderingQueued(m_FrameEvent);
 
-    
-    
-    if(!OgreFramework::getSingletonPtr()->m_pTrayMgr->isDialogVisible())
-    {
-        if(m_pDetailsPanel->isVisible())
-        {
+
+
+    if(!OgreFramework::getSingletonPtr()->m_pTrayMgr->isDialogVisible()) {
+        if(m_pDetailsPanel->isVisible()) {
             m_pDetailsPanel->setParamValue(0, Ogre::StringConverter::toString(m_pCamera->getDerivedPosition().x));
             m_pDetailsPanel->setParamValue(1, Ogre::StringConverter::toString(m_pCamera->getDerivedPosition().y));
             m_pDetailsPanel->setParamValue(2, Ogre::StringConverter::toString(m_pCamera->getDerivedPosition().z));
@@ -905,6 +942,7 @@ void GameView::updateHUDForDebug(Ogre::Real timeSinceLastFrame) {
             m_pDetailsPanel->setParamValue(4, Ogre::StringConverter::toString(m_pCamera->getDerivedOrientation().x));
             m_pDetailsPanel->setParamValue(5, Ogre::StringConverter::toString(m_pCamera->getDerivedOrientation().y));
             m_pDetailsPanel->setParamValue(6, Ogre::StringConverter::toString(m_pCamera->getDerivedOrientation().z));
+
             if(m_bSettingsMode)
                 m_pDetailsPanel->setParamValue(7, "Buffered Input");
             else
@@ -913,7 +951,8 @@ void GameView::updateHUDForDebug(Ogre::Real timeSinceLastFrame) {
     }
 }
 
-void GameView::updateScore() {
+void GameView::updateScore()
+{
     m_scoreOld  = m_score;
     m_score     = m_gameLogic->getScore();
 
@@ -931,468 +970,510 @@ void GameView::updateScore() {
 
     for(unsigned int i = 0; i < score.size(); i++) {
 
-        int num = score.at(score.size()-1-i) - 48;
-  
+        int num = score.at(score.size() - 1 - i) - 48;
+
         switch(num) {
-        case 0:
-            switch(i) {
             case 0:
-                m_panelNum1->setMaterialName(m_materialNameNumbers + Ogre::StringConverter::toString(num));
+
+                switch(i) {
+                    case 0:
+                        m_panelNum1->setMaterialName(m_materialNameNumbers + Ogre::StringConverter::toString(num));
+                        break;
+                    case 1:
+                        m_panelNum2->setMaterialName(m_materialNameNumbers + Ogre::StringConverter::toString(num));
+                        break;
+                    case 2:
+                        m_panelNum3->setMaterialName(m_materialNameNumbers + Ogre::StringConverter::toString(num));
+                        break;
+                    case 3:
+                        m_panelNum4->setMaterialName(m_materialNameNumbers + Ogre::StringConverter::toString(num));
+                        break;
+                    case 4:
+                        m_panelNum5->setMaterialName(m_materialNameNumbers + Ogre::StringConverter::toString(num));
+                        break;
+                    case 5:
+                        m_panelNum6->setMaterialName(m_materialNameNumbers + Ogre::StringConverter::toString(num));
+                        break;
+                }
+
                 break;
             case 1:
-                m_panelNum2->setMaterialName(m_materialNameNumbers + Ogre::StringConverter::toString(num));
+
+                switch(i) {
+                    case 0:
+                        m_panelNum1->setMaterialName(m_materialNameNumbers + Ogre::StringConverter::toString(num));
+                        break;
+                    case 1:
+                        m_panelNum2->setMaterialName(m_materialNameNumbers + Ogre::StringConverter::toString(num));
+                        break;
+                    case 2:
+                        m_panelNum3->setMaterialName(m_materialNameNumbers + Ogre::StringConverter::toString(num));
+                        break;
+                    case 3:
+                        m_panelNum4->setMaterialName(m_materialNameNumbers + Ogre::StringConverter::toString(num));
+                        break;
+                    case 4:
+                        m_panelNum5->setMaterialName(m_materialNameNumbers + Ogre::StringConverter::toString(num));
+                        break;
+                    case 5:
+                        m_panelNum6->setMaterialName(m_materialNameNumbers + Ogre::StringConverter::toString(num));
+                        break;
+                }
+
                 break;
             case 2:
-                m_panelNum3->setMaterialName(m_materialNameNumbers + Ogre::StringConverter::toString(num));
+
+                switch(i) {
+                    case 0:
+                        m_panelNum1->setMaterialName(m_materialNameNumbers + Ogre::StringConverter::toString(num));
+                        break;
+                    case 1:
+                        m_panelNum2->setMaterialName(m_materialNameNumbers + Ogre::StringConverter::toString(num));
+                        break;
+                    case 2:
+                        m_panelNum3->setMaterialName(m_materialNameNumbers + Ogre::StringConverter::toString(num));
+                        break;
+                    case 3:
+                        m_panelNum4->setMaterialName(m_materialNameNumbers + Ogre::StringConverter::toString(num));
+                        break;
+                    case 4:
+                        m_panelNum5->setMaterialName(m_materialNameNumbers + Ogre::StringConverter::toString(num));
+                        break;
+                    case 5:
+                        m_panelNum6->setMaterialName(m_materialNameNumbers + Ogre::StringConverter::toString(num));
+                        break;
+                }
+
                 break;
             case 3:
-                m_panelNum4->setMaterialName(m_materialNameNumbers + Ogre::StringConverter::toString(num));
+
+                switch(i) {
+                    case 0:
+                        m_panelNum1->setMaterialName(m_materialNameNumbers + Ogre::StringConverter::toString(num));
+                        break;
+                    case 1:
+                        m_panelNum2->setMaterialName(m_materialNameNumbers + Ogre::StringConverter::toString(num));
+                        break;
+                    case 2:
+                        m_panelNum3->setMaterialName(m_materialNameNumbers + Ogre::StringConverter::toString(num));
+                        break;
+                    case 3:
+                        m_panelNum4->setMaterialName(m_materialNameNumbers + Ogre::StringConverter::toString(num));
+                        break;
+                    case 4:
+                        m_panelNum5->setMaterialName(m_materialNameNumbers + Ogre::StringConverter::toString(num));
+                        break;
+                    case 5:
+                        m_panelNum6->setMaterialName(m_materialNameNumbers + Ogre::StringConverter::toString(num));
+                        break;
+                }
+
                 break;
             case 4:
-                m_panelNum5->setMaterialName(m_materialNameNumbers + Ogre::StringConverter::toString(num));
+
+                switch(i) {
+                    case 0:
+                        m_panelNum1->setMaterialName(m_materialNameNumbers + Ogre::StringConverter::toString(num));
+                        break;
+                    case 1:
+                        m_panelNum2->setMaterialName(m_materialNameNumbers + Ogre::StringConverter::toString(num));
+                        break;
+                    case 2:
+                        m_panelNum3->setMaterialName(m_materialNameNumbers + Ogre::StringConverter::toString(num));
+                        break;
+                    case 3:
+                        m_panelNum4->setMaterialName(m_materialNameNumbers + Ogre::StringConverter::toString(num));
+                        break;
+                    case 4:
+                        m_panelNum5->setMaterialName(m_materialNameNumbers + Ogre::StringConverter::toString(num));
+                        break;
+                    case 5:
+                        m_panelNum6->setMaterialName(m_materialNameNumbers + Ogre::StringConverter::toString(num));
+                        break;
+                }
+
                 break;
             case 5:
-                m_panelNum6->setMaterialName(m_materialNameNumbers + Ogre::StringConverter::toString(num));
+
+                switch(i) {
+                    case 0:
+                        m_panelNum1->setMaterialName(m_materialNameNumbers + Ogre::StringConverter::toString(num));
+                        break;
+                    case 1:
+                        m_panelNum2->setMaterialName(m_materialNameNumbers + Ogre::StringConverter::toString(num));
+                        break;
+                    case 2:
+                        m_panelNum3->setMaterialName(m_materialNameNumbers + Ogre::StringConverter::toString(num));
+                        break;
+                    case 3:
+                        m_panelNum4->setMaterialName(m_materialNameNumbers + Ogre::StringConverter::toString(num));
+                        break;
+                    case 4:
+                        m_panelNum5->setMaterialName(m_materialNameNumbers + Ogre::StringConverter::toString(num));
+                        break;
+                    case 5:
+                        m_panelNum6->setMaterialName(m_materialNameNumbers + Ogre::StringConverter::toString(num));
+                        break;
+                }
+
                 break;
-            }
-            break;
-        case 1:
-            switch(i) {
-            case 0:
-                m_panelNum1->setMaterialName(m_materialNameNumbers + Ogre::StringConverter::toString(num));
+            case 6:
+
+                switch(i) {
+                    case 0:
+                        m_panelNum1->setMaterialName(m_materialNameNumbers + Ogre::StringConverter::toString(num));
+                        break;
+                    case 1:
+                        m_panelNum2->setMaterialName(m_materialNameNumbers + Ogre::StringConverter::toString(num));
+                        break;
+                    case 2:
+                        m_panelNum3->setMaterialName(m_materialNameNumbers + Ogre::StringConverter::toString(num));
+                        break;
+                    case 3:
+                        m_panelNum4->setMaterialName(m_materialNameNumbers + Ogre::StringConverter::toString(num));
+                        break;
+                    case 4:
+                        m_panelNum5->setMaterialName(m_materialNameNumbers + Ogre::StringConverter::toString(num));
+                        break;
+                    case 5:
+                        m_panelNum6->setMaterialName(m_materialNameNumbers + Ogre::StringConverter::toString(num));
+                        break;
+                }
+
                 break;
-            case 1:
-                m_panelNum2->setMaterialName(m_materialNameNumbers + Ogre::StringConverter::toString(num));
+            case 7:
+
+                switch(i) {
+                    case 0:
+                        m_panelNum1->setMaterialName(m_materialNameNumbers + Ogre::StringConverter::toString(num));
+                        break;
+                    case 1:
+                        m_panelNum2->setMaterialName(m_materialNameNumbers + Ogre::StringConverter::toString(num));
+                        break;
+                    case 2:
+                        m_panelNum3->setMaterialName(m_materialNameNumbers + Ogre::StringConverter::toString(num));
+                        break;
+                    case 3:
+                        m_panelNum4->setMaterialName(m_materialNameNumbers + Ogre::StringConverter::toString(num));
+                        break;
+                    case 4:
+                        m_panelNum5->setMaterialName(m_materialNameNumbers + Ogre::StringConverter::toString(num));
+                        break;
+                    case 5:
+                        m_panelNum6->setMaterialName(m_materialNameNumbers + Ogre::StringConverter::toString(num));
+                        break;
+                }
+
                 break;
-            case 2:
-                m_panelNum3->setMaterialName(m_materialNameNumbers + Ogre::StringConverter::toString(num));
+            case 8:
+
+                switch(i) {
+                    case 0:
+                        m_panelNum1->setMaterialName(m_materialNameNumbers + Ogre::StringConverter::toString(num));
+                        break;
+                    case 1:
+                        m_panelNum2->setMaterialName(m_materialNameNumbers + Ogre::StringConverter::toString(num));
+                        break;
+                    case 2:
+                        m_panelNum3->setMaterialName(m_materialNameNumbers + Ogre::StringConverter::toString(num));
+                        break;
+                    case 3:
+                        m_panelNum4->setMaterialName(m_materialNameNumbers + Ogre::StringConverter::toString(num));
+                        break;
+                    case 4:
+                        m_panelNum5->setMaterialName(m_materialNameNumbers + Ogre::StringConverter::toString(num));
+                        break;
+                    case 5:
+                        m_panelNum6->setMaterialName(m_materialNameNumbers + Ogre::StringConverter::toString(num));
+                        break;
+                }
+
                 break;
-            case 3:
-                m_panelNum4->setMaterialName(m_materialNameNumbers + Ogre::StringConverter::toString(num));
+            case 9:
+
+                switch(i) {
+                    case 0:
+                        m_panelNum1->setMaterialName(m_materialNameNumbers + Ogre::StringConverter::toString(num));
+                        break;
+                    case 1:
+                        m_panelNum2->setMaterialName(m_materialNameNumbers + Ogre::StringConverter::toString(num));
+                        break;
+                    case 2:
+                        m_panelNum3->setMaterialName(m_materialNameNumbers + Ogre::StringConverter::toString(num));
+                        break;
+                    case 3:
+                        m_panelNum4->setMaterialName(m_materialNameNumbers + Ogre::StringConverter::toString(num));
+                        break;
+                    case 4:
+                        m_panelNum5->setMaterialName(m_materialNameNumbers + Ogre::StringConverter::toString(num));
+                        break;
+                    case 5:
+                        m_panelNum6->setMaterialName(m_materialNameNumbers + Ogre::StringConverter::toString(num));
+                        break;
+                }
+
                 break;
-            case 4:
-                m_panelNum5->setMaterialName(m_materialNameNumbers + Ogre::StringConverter::toString(num));
-                break;
-            case 5:
-                m_panelNum6->setMaterialName(m_materialNameNumbers + Ogre::StringConverter::toString(num));
-                break;
-            }
-            break;
-        case 2:
-            switch(i) {
-            case 0:
-                m_panelNum1->setMaterialName(m_materialNameNumbers + Ogre::StringConverter::toString(num));
-                break;
-            case 1:
-                m_panelNum2->setMaterialName(m_materialNameNumbers + Ogre::StringConverter::toString(num));
-                break;
-            case 2:
-                m_panelNum3->setMaterialName(m_materialNameNumbers + Ogre::StringConverter::toString(num));
-                break;
-            case 3:
-                m_panelNum4->setMaterialName(m_materialNameNumbers + Ogre::StringConverter::toString(num));
-                break;
-            case 4:
-                m_panelNum5->setMaterialName(m_materialNameNumbers + Ogre::StringConverter::toString(num));
-                break;
-            case 5:
-                m_panelNum6->setMaterialName(m_materialNameNumbers + Ogre::StringConverter::toString(num));
-                break;
-            }
-            break;
-        case 3:
-            switch(i) {
-            case 0:
-                m_panelNum1->setMaterialName(m_materialNameNumbers + Ogre::StringConverter::toString(num));
-                break;
-            case 1:
-                m_panelNum2->setMaterialName(m_materialNameNumbers + Ogre::StringConverter::toString(num));
-                break;
-            case 2:
-                m_panelNum3->setMaterialName(m_materialNameNumbers + Ogre::StringConverter::toString(num));
-                break;
-            case 3:
-                m_panelNum4->setMaterialName(m_materialNameNumbers + Ogre::StringConverter::toString(num));
-                break;
-            case 4:
-                m_panelNum5->setMaterialName(m_materialNameNumbers + Ogre::StringConverter::toString(num));
-                break;
-            case 5:
-                m_panelNum6->setMaterialName(m_materialNameNumbers + Ogre::StringConverter::toString(num));
-                break;
-            }
-            break;
-        case 4:
-            switch(i) {
-            case 0:
-                m_panelNum1->setMaterialName(m_materialNameNumbers + Ogre::StringConverter::toString(num));
-                break;
-            case 1:
-                m_panelNum2->setMaterialName(m_materialNameNumbers + Ogre::StringConverter::toString(num));
-                break;
-            case 2:
-                m_panelNum3->setMaterialName(m_materialNameNumbers + Ogre::StringConverter::toString(num));
-                break;
-            case 3:
-                m_panelNum4->setMaterialName(m_materialNameNumbers + Ogre::StringConverter::toString(num));
-                break;
-            case 4:
-                m_panelNum5->setMaterialName(m_materialNameNumbers + Ogre::StringConverter::toString(num));
-                break;
-            case 5:
-                m_panelNum6->setMaterialName(m_materialNameNumbers + Ogre::StringConverter::toString(num));
-                break;
-            }
-            break;
-        case 5:
-            switch(i) {
-            case 0:
-                m_panelNum1->setMaterialName(m_materialNameNumbers + Ogre::StringConverter::toString(num));
-                break;
-            case 1:
-                m_panelNum2->setMaterialName(m_materialNameNumbers + Ogre::StringConverter::toString(num));
-                break;
-            case 2:
-                m_panelNum3->setMaterialName(m_materialNameNumbers + Ogre::StringConverter::toString(num));
-                break;
-            case 3:
-                m_panelNum4->setMaterialName(m_materialNameNumbers + Ogre::StringConverter::toString(num));
-                break;
-            case 4:
-                m_panelNum5->setMaterialName(m_materialNameNumbers + Ogre::StringConverter::toString(num));
-                break;
-            case 5:
-                m_panelNum6->setMaterialName(m_materialNameNumbers + Ogre::StringConverter::toString(num));
-                break;
-            }
-            break;
-        case 6:
-            switch(i) {
-            case 0:
-                m_panelNum1->setMaterialName(m_materialNameNumbers + Ogre::StringConverter::toString(num));
-                break;
-            case 1:
-                m_panelNum2->setMaterialName(m_materialNameNumbers + Ogre::StringConverter::toString(num));
-                break;
-            case 2:
-                m_panelNum3->setMaterialName(m_materialNameNumbers + Ogre::StringConverter::toString(num));
-                break;
-            case 3:
-                m_panelNum4->setMaterialName(m_materialNameNumbers + Ogre::StringConverter::toString(num));
-                break;
-            case 4:
-                m_panelNum5->setMaterialName(m_materialNameNumbers + Ogre::StringConverter::toString(num));
-                break;
-            case 5:
-                m_panelNum6->setMaterialName(m_materialNameNumbers + Ogre::StringConverter::toString(num));
-                break;
-            }
-            break;
-        case 7:
-            switch(i) {
-            case 0:
-                m_panelNum1->setMaterialName(m_materialNameNumbers + Ogre::StringConverter::toString(num));
-                break;
-            case 1:
-                m_panelNum2->setMaterialName(m_materialNameNumbers + Ogre::StringConverter::toString(num));
-                break;
-            case 2:
-                m_panelNum3->setMaterialName(m_materialNameNumbers + Ogre::StringConverter::toString(num));
-                break;
-            case 3:
-                m_panelNum4->setMaterialName(m_materialNameNumbers + Ogre::StringConverter::toString(num));
-                break;
-            case 4:
-                m_panelNum5->setMaterialName(m_materialNameNumbers + Ogre::StringConverter::toString(num));
-                break;
-            case 5:
-                m_panelNum6->setMaterialName(m_materialNameNumbers + Ogre::StringConverter::toString(num));
-                break;
-            }
-            break;
-        case 8:
-            switch(i) {
-            case 0:
-                m_panelNum1->setMaterialName(m_materialNameNumbers + Ogre::StringConverter::toString(num));
-                break;
-            case 1:
-                m_panelNum2->setMaterialName(m_materialNameNumbers + Ogre::StringConverter::toString(num));
-                break;
-            case 2:
-                m_panelNum3->setMaterialName(m_materialNameNumbers + Ogre::StringConverter::toString(num));
-                break;
-            case 3:
-                m_panelNum4->setMaterialName(m_materialNameNumbers + Ogre::StringConverter::toString(num));
-                break;
-            case 4:
-                m_panelNum5->setMaterialName(m_materialNameNumbers + Ogre::StringConverter::toString(num));
-                break;
-            case 5:
-                m_panelNum6->setMaterialName(m_materialNameNumbers + Ogre::StringConverter::toString(num));
-                break;
-            }
-            break;
-        case 9:
-            switch(i) {
-            case 0:
-                m_panelNum1->setMaterialName(m_materialNameNumbers + Ogre::StringConverter::toString(num));
-                break;
-            case 1:
-                m_panelNum2->setMaterialName(m_materialNameNumbers + Ogre::StringConverter::toString(num));
-                break;
-            case 2:
-                m_panelNum3->setMaterialName(m_materialNameNumbers + Ogre::StringConverter::toString(num));
-                break;
-            case 3:
-                m_panelNum4->setMaterialName(m_materialNameNumbers + Ogre::StringConverter::toString(num));
-                break;
-            case 4:
-                m_panelNum5->setMaterialName(m_materialNameNumbers + Ogre::StringConverter::toString(num));
-                break;
-            case 5:
-                m_panelNum6->setMaterialName(m_materialNameNumbers + Ogre::StringConverter::toString(num));
-                break;
-            }
-            break;
         }
     }
 }
 
-void GameView::getScoreForHighscore() {
+void GameView::getScoreForHighscore()
+{
     m_score     = m_gameLogic->getScore();
 
     String score = Ogre::StringConverter::toString(m_score);
 
     for(unsigned int i = 0; i < score.size(); i++) {
 
-        int num = score.at(score.size()-1-i) - 48;
+        int num = score.at(score.size() - 1 - i) - 48;
 
         switch(num) {
-        case 0:
-            switch(i) {
             case 0:
-                m_panelHighNum1->setMaterialName(m_materialNameHighscoreNumbers + Ogre::StringConverter::toString(num));
+
+                switch(i) {
+                    case 0:
+                        m_panelHighNum1->setMaterialName(m_materialNameHighscoreNumbers + Ogre::StringConverter::toString(num));
+                        break;
+                    case 1:
+                        m_panelHighNum2->setMaterialName(m_materialNameHighscoreNumbers + Ogre::StringConverter::toString(num));
+                        break;
+                    case 2:
+                        m_panelHighNum3->setMaterialName(m_materialNameHighscoreNumbers + Ogre::StringConverter::toString(num));
+                        break;
+                    case 3:
+                        m_panelHighNum4->setMaterialName(m_materialNameHighscoreNumbers + Ogre::StringConverter::toString(num));
+                        break;
+                    case 4:
+                        m_panelHighNum5->setMaterialName(m_materialNameHighscoreNumbers + Ogre::StringConverter::toString(num));
+                        break;
+                    case 5:
+                        m_panelHighNum6->setMaterialName(m_materialNameHighscoreNumbers + Ogre::StringConverter::toString(num));
+                        break;
+                }
+
                 break;
             case 1:
-                m_panelHighNum2->setMaterialName(m_materialNameHighscoreNumbers + Ogre::StringConverter::toString(num));
+
+                switch(i) {
+                    case 0:
+                        m_panelHighNum1->setMaterialName(m_materialNameHighscoreNumbers + Ogre::StringConverter::toString(num));
+                        break;
+                    case 1:
+                        m_panelHighNum2->setMaterialName(m_materialNameHighscoreNumbers + Ogre::StringConverter::toString(num));
+                        break;
+                    case 2:
+                        m_panelHighNum3->setMaterialName(m_materialNameHighscoreNumbers + Ogre::StringConverter::toString(num));
+                        break;
+                    case 3:
+                        m_panelHighNum4->setMaterialName(m_materialNameHighscoreNumbers + Ogre::StringConverter::toString(num));
+                        break;
+                    case 4:
+                        m_panelHighNum5->setMaterialName(m_materialNameHighscoreNumbers + Ogre::StringConverter::toString(num));
+                        break;
+                    case 5:
+                        m_panelHighNum6->setMaterialName(m_materialNameHighscoreNumbers + Ogre::StringConverter::toString(num));
+                        break;
+                }
+
                 break;
             case 2:
-                m_panelHighNum3->setMaterialName(m_materialNameHighscoreNumbers + Ogre::StringConverter::toString(num));
+
+                switch(i) {
+                    case 0:
+                        m_panelHighNum1->setMaterialName(m_materialNameHighscoreNumbers + Ogre::StringConverter::toString(num));
+                        break;
+                    case 1:
+                        m_panelHighNum2->setMaterialName(m_materialNameHighscoreNumbers + Ogre::StringConverter::toString(num));
+                        break;
+                    case 2:
+                        m_panelHighNum3->setMaterialName(m_materialNameHighscoreNumbers + Ogre::StringConverter::toString(num));
+                        break;
+                    case 3:
+                        m_panelHighNum4->setMaterialName(m_materialNameHighscoreNumbers + Ogre::StringConverter::toString(num));
+                        break;
+                    case 4:
+                        m_panelHighNum5->setMaterialName(m_materialNameHighscoreNumbers + Ogre::StringConverter::toString(num));
+                        break;
+                    case 5:
+                        m_panelHighNum6->setMaterialName(m_materialNameHighscoreNumbers + Ogre::StringConverter::toString(num));
+                        break;
+                }
+
                 break;
             case 3:
-                m_panelHighNum4->setMaterialName(m_materialNameHighscoreNumbers + Ogre::StringConverter::toString(num));
+
+                switch(i) {
+                    case 0:
+                        m_panelHighNum1->setMaterialName(m_materialNameHighscoreNumbers + Ogre::StringConverter::toString(num));
+                        break;
+                    case 1:
+                        m_panelHighNum2->setMaterialName(m_materialNameHighscoreNumbers + Ogre::StringConverter::toString(num));
+                        break;
+                    case 2:
+                        m_panelHighNum3->setMaterialName(m_materialNameHighscoreNumbers + Ogre::StringConverter::toString(num));
+                        break;
+                    case 3:
+                        m_panelHighNum4->setMaterialName(m_materialNameHighscoreNumbers + Ogre::StringConverter::toString(num));
+                        break;
+                    case 4:
+                        m_panelHighNum5->setMaterialName(m_materialNameHighscoreNumbers + Ogre::StringConverter::toString(num));
+                        break;
+                    case 5:
+                        m_panelHighNum6->setMaterialName(m_materialNameHighscoreNumbers + Ogre::StringConverter::toString(num));
+                        break;
+                }
+
                 break;
             case 4:
-                m_panelHighNum5->setMaterialName(m_materialNameHighscoreNumbers + Ogre::StringConverter::toString(num));
+
+                switch(i) {
+                    case 0:
+                        m_panelHighNum1->setMaterialName(m_materialNameHighscoreNumbers + Ogre::StringConverter::toString(num));
+                        break;
+                    case 1:
+                        m_panelHighNum2->setMaterialName(m_materialNameHighscoreNumbers + Ogre::StringConverter::toString(num));
+                        break;
+                    case 2:
+                        m_panelHighNum3->setMaterialName(m_materialNameHighscoreNumbers + Ogre::StringConverter::toString(num));
+                        break;
+                    case 3:
+                        m_panelHighNum4->setMaterialName(m_materialNameHighscoreNumbers + Ogre::StringConverter::toString(num));
+                        break;
+                    case 4:
+                        m_panelHighNum5->setMaterialName(m_materialNameHighscoreNumbers + Ogre::StringConverter::toString(num));
+                        break;
+                    case 5:
+                        m_panelHighNum6->setMaterialName(m_materialNameHighscoreNumbers + Ogre::StringConverter::toString(num));
+                        break;
+                }
+
                 break;
             case 5:
-                m_panelHighNum6->setMaterialName(m_materialNameHighscoreNumbers + Ogre::StringConverter::toString(num));
+
+                switch(i) {
+                    case 0:
+                        m_panelHighNum1->setMaterialName(m_materialNameHighscoreNumbers + Ogre::StringConverter::toString(num));
+                        break;
+                    case 1:
+                        m_panelHighNum2->setMaterialName(m_materialNameHighscoreNumbers + Ogre::StringConverter::toString(num));
+                        break;
+                    case 2:
+                        m_panelHighNum3->setMaterialName(m_materialNameHighscoreNumbers + Ogre::StringConverter::toString(num));
+                        break;
+                    case 3:
+                        m_panelHighNum4->setMaterialName(m_materialNameHighscoreNumbers + Ogre::StringConverter::toString(num));
+                        break;
+                    case 4:
+                        m_panelHighNum5->setMaterialName(m_materialNameHighscoreNumbers + Ogre::StringConverter::toString(num));
+                        break;
+                    case 5:
+                        m_panelHighNum6->setMaterialName(m_materialNameHighscoreNumbers + Ogre::StringConverter::toString(num));
+                        break;
+                }
+
                 break;
-            }
-            break;
-        case 1:
-            switch(i) {
-            case 0:
-                m_panelHighNum1->setMaterialName(m_materialNameHighscoreNumbers + Ogre::StringConverter::toString(num));
+            case 6:
+
+                switch(i) {
+                    case 0:
+                        m_panelHighNum1->setMaterialName(m_materialNameHighscoreNumbers + Ogre::StringConverter::toString(num));
+                        break;
+                    case 1:
+                        m_panelHighNum2->setMaterialName(m_materialNameHighscoreNumbers + Ogre::StringConverter::toString(num));
+                        break;
+                    case 2:
+                        m_panelHighNum3->setMaterialName(m_materialNameHighscoreNumbers + Ogre::StringConverter::toString(num));
+                        break;
+                    case 3:
+                        m_panelHighNum4->setMaterialName(m_materialNameHighscoreNumbers + Ogre::StringConverter::toString(num));
+                        break;
+                    case 4:
+                        m_panelHighNum5->setMaterialName(m_materialNameHighscoreNumbers + Ogre::StringConverter::toString(num));
+                        break;
+                    case 5:
+                        m_panelHighNum6->setMaterialName(m_materialNameHighscoreNumbers + Ogre::StringConverter::toString(num));
+                        break;
+                }
+
                 break;
-            case 1:
-                m_panelHighNum2->setMaterialName(m_materialNameHighscoreNumbers + Ogre::StringConverter::toString(num));
+            case 7:
+
+                switch(i) {
+                    case 0:
+                        m_panelHighNum1->setMaterialName(m_materialNameHighscoreNumbers + Ogre::StringConverter::toString(num));
+                        break;
+                    case 1:
+                        m_panelHighNum2->setMaterialName(m_materialNameHighscoreNumbers + Ogre::StringConverter::toString(num));
+                        break;
+                    case 2:
+                        m_panelHighNum3->setMaterialName(m_materialNameHighscoreNumbers + Ogre::StringConverter::toString(num));
+                        break;
+                    case 3:
+                        m_panelHighNum4->setMaterialName(m_materialNameHighscoreNumbers + Ogre::StringConverter::toString(num));
+                        break;
+                    case 4:
+                        m_panelHighNum5->setMaterialName(m_materialNameHighscoreNumbers + Ogre::StringConverter::toString(num));
+                        break;
+                    case 5:
+                        m_panelHighNum6->setMaterialName(m_materialNameHighscoreNumbers + Ogre::StringConverter::toString(num));
+                        break;
+                }
+
                 break;
-            case 2:
-                m_panelHighNum3->setMaterialName(m_materialNameHighscoreNumbers + Ogre::StringConverter::toString(num));
+            case 8:
+
+                switch(i) {
+                    case 0:
+                        m_panelHighNum1->setMaterialName(m_materialNameHighscoreNumbers + Ogre::StringConverter::toString(num));
+                        break;
+                    case 1:
+                        m_panelHighNum2->setMaterialName(m_materialNameHighscoreNumbers + Ogre::StringConverter::toString(num));
+                        break;
+                    case 2:
+                        m_panelHighNum3->setMaterialName(m_materialNameHighscoreNumbers + Ogre::StringConverter::toString(num));
+                        break;
+                    case 3:
+                        m_panelHighNum4->setMaterialName(m_materialNameHighscoreNumbers + Ogre::StringConverter::toString(num));
+                        break;
+                    case 4:
+                        m_panelHighNum5->setMaterialName(m_materialNameHighscoreNumbers + Ogre::StringConverter::toString(num));
+                        break;
+                    case 5:
+                        m_panelHighNum6->setMaterialName(m_materialNameHighscoreNumbers + Ogre::StringConverter::toString(num));
+                        break;
+                }
+
                 break;
-            case 3:
-                m_panelHighNum4->setMaterialName(m_materialNameHighscoreNumbers + Ogre::StringConverter::toString(num));
+            case 9:
+
+                switch(i) {
+                    case 0:
+                        m_panelHighNum1->setMaterialName(m_materialNameHighscoreNumbers + Ogre::StringConverter::toString(num));
+                        break;
+                    case 1:
+                        m_panelHighNum2->setMaterialName(m_materialNameHighscoreNumbers + Ogre::StringConverter::toString(num));
+                        break;
+                    case 2:
+                        m_panelHighNum3->setMaterialName(m_materialNameHighscoreNumbers + Ogre::StringConverter::toString(num));
+                        break;
+                    case 3:
+                        m_panelHighNum4->setMaterialName(m_materialNameHighscoreNumbers + Ogre::StringConverter::toString(num));
+                        break;
+                    case 4:
+                        m_panelHighNum5->setMaterialName(m_materialNameHighscoreNumbers + Ogre::StringConverter::toString(num));
+                        break;
+                    case 5:
+                        m_panelHighNum6->setMaterialName(m_materialNameHighscoreNumbers + Ogre::StringConverter::toString(num));
+                        break;
+                }
+
                 break;
-            case 4:
-                m_panelHighNum5->setMaterialName(m_materialNameHighscoreNumbers + Ogre::StringConverter::toString(num));
-                break;
-            case 5:
-                m_panelHighNum6->setMaterialName(m_materialNameHighscoreNumbers + Ogre::StringConverter::toString(num));
-                break;
-            }
-            break;
-        case 2:
-            switch(i) {
-            case 0:
-                m_panelHighNum1->setMaterialName(m_materialNameHighscoreNumbers + Ogre::StringConverter::toString(num));
-                break;
-            case 1:
-                m_panelHighNum2->setMaterialName(m_materialNameHighscoreNumbers + Ogre::StringConverter::toString(num));
-                break;
-            case 2:
-                m_panelHighNum3->setMaterialName(m_materialNameHighscoreNumbers + Ogre::StringConverter::toString(num));
-                break;
-            case 3:
-                m_panelHighNum4->setMaterialName(m_materialNameHighscoreNumbers + Ogre::StringConverter::toString(num));
-                break;
-            case 4:
-                m_panelHighNum5->setMaterialName(m_materialNameHighscoreNumbers + Ogre::StringConverter::toString(num));
-                break;
-            case 5:
-                m_panelHighNum6->setMaterialName(m_materialNameHighscoreNumbers + Ogre::StringConverter::toString(num));
-                break;
-            }
-            break;
-        case 3:
-            switch(i) {
-            case 0:
-                m_panelHighNum1->setMaterialName(m_materialNameHighscoreNumbers + Ogre::StringConverter::toString(num));
-                break;
-            case 1:
-                m_panelHighNum2->setMaterialName(m_materialNameHighscoreNumbers + Ogre::StringConverter::toString(num));
-                break;
-            case 2:
-                m_panelHighNum3->setMaterialName(m_materialNameHighscoreNumbers + Ogre::StringConverter::toString(num));
-                break;
-            case 3:
-                m_panelHighNum4->setMaterialName(m_materialNameHighscoreNumbers + Ogre::StringConverter::toString(num));
-                break;
-            case 4:
-                m_panelHighNum5->setMaterialName(m_materialNameHighscoreNumbers + Ogre::StringConverter::toString(num));
-                break;
-            case 5:
-                m_panelHighNum6->setMaterialName(m_materialNameHighscoreNumbers + Ogre::StringConverter::toString(num));
-                break;
-            }
-            break;
-        case 4:
-            switch(i) {
-            case 0:
-                m_panelHighNum1->setMaterialName(m_materialNameHighscoreNumbers + Ogre::StringConverter::toString(num));
-                break;
-            case 1:
-                m_panelHighNum2->setMaterialName(m_materialNameHighscoreNumbers + Ogre::StringConverter::toString(num));
-                break;
-            case 2:
-                m_panelHighNum3->setMaterialName(m_materialNameHighscoreNumbers + Ogre::StringConverter::toString(num));
-                break;
-            case 3:
-                m_panelHighNum4->setMaterialName(m_materialNameHighscoreNumbers + Ogre::StringConverter::toString(num));
-                break;
-            case 4:
-                m_panelHighNum5->setMaterialName(m_materialNameHighscoreNumbers + Ogre::StringConverter::toString(num));
-                break;
-            case 5:
-                m_panelHighNum6->setMaterialName(m_materialNameHighscoreNumbers + Ogre::StringConverter::toString(num));
-                break;
-            }
-            break;
-        case 5:
-            switch(i) {
-            case 0:
-                m_panelHighNum1->setMaterialName(m_materialNameHighscoreNumbers + Ogre::StringConverter::toString(num));
-                break;
-            case 1:
-                m_panelHighNum2->setMaterialName(m_materialNameHighscoreNumbers + Ogre::StringConverter::toString(num));
-                break;
-            case 2:
-                m_panelHighNum3->setMaterialName(m_materialNameHighscoreNumbers + Ogre::StringConverter::toString(num));
-                break;
-            case 3:
-                m_panelHighNum4->setMaterialName(m_materialNameHighscoreNumbers + Ogre::StringConverter::toString(num));
-                break;
-            case 4:
-                m_panelHighNum5->setMaterialName(m_materialNameHighscoreNumbers + Ogre::StringConverter::toString(num));
-                break;
-            case 5:
-                m_panelHighNum6->setMaterialName(m_materialNameHighscoreNumbers + Ogre::StringConverter::toString(num));
-                break;
-            }
-            break;
-        case 6:
-            switch(i) {
-            case 0:
-                m_panelHighNum1->setMaterialName(m_materialNameHighscoreNumbers + Ogre::StringConverter::toString(num));
-                break;
-            case 1:
-                m_panelHighNum2->setMaterialName(m_materialNameHighscoreNumbers + Ogre::StringConverter::toString(num));
-                break;
-            case 2:
-                m_panelHighNum3->setMaterialName(m_materialNameHighscoreNumbers + Ogre::StringConverter::toString(num));
-                break;
-            case 3:
-                m_panelHighNum4->setMaterialName(m_materialNameHighscoreNumbers + Ogre::StringConverter::toString(num));
-                break;
-            case 4:
-                m_panelHighNum5->setMaterialName(m_materialNameHighscoreNumbers + Ogre::StringConverter::toString(num));
-                break;
-            case 5:
-                m_panelHighNum6->setMaterialName(m_materialNameHighscoreNumbers + Ogre::StringConverter::toString(num));
-                break;
-            }
-            break;
-        case 7:
-            switch(i) {
-            case 0:
-                m_panelHighNum1->setMaterialName(m_materialNameHighscoreNumbers + Ogre::StringConverter::toString(num));
-                break;
-            case 1:
-                m_panelHighNum2->setMaterialName(m_materialNameHighscoreNumbers + Ogre::StringConverter::toString(num));
-                break;
-            case 2:
-                m_panelHighNum3->setMaterialName(m_materialNameHighscoreNumbers + Ogre::StringConverter::toString(num));
-                break;
-            case 3:
-                m_panelHighNum4->setMaterialName(m_materialNameHighscoreNumbers + Ogre::StringConverter::toString(num));
-                break;
-            case 4:
-                m_panelHighNum5->setMaterialName(m_materialNameHighscoreNumbers + Ogre::StringConverter::toString(num));
-                break;
-            case 5:
-                m_panelHighNum6->setMaterialName(m_materialNameHighscoreNumbers + Ogre::StringConverter::toString(num));
-                break;
-            }
-            break;
-        case 8:
-            switch(i) {
-            case 0:
-                m_panelHighNum1->setMaterialName(m_materialNameHighscoreNumbers + Ogre::StringConverter::toString(num));
-                break;
-            case 1:
-                m_panelHighNum2->setMaterialName(m_materialNameHighscoreNumbers + Ogre::StringConverter::toString(num));
-                break;
-            case 2:
-                m_panelHighNum3->setMaterialName(m_materialNameHighscoreNumbers + Ogre::StringConverter::toString(num));
-                break;
-            case 3:
-                m_panelHighNum4->setMaterialName(m_materialNameHighscoreNumbers + Ogre::StringConverter::toString(num));
-                break;
-            case 4:
-                m_panelHighNum5->setMaterialName(m_materialNameHighscoreNumbers + Ogre::StringConverter::toString(num));
-                break;
-            case 5:
-                m_panelHighNum6->setMaterialName(m_materialNameHighscoreNumbers + Ogre::StringConverter::toString(num));
-                break;
-            }
-            break;
-        case 9:
-            switch(i) {
-            case 0:
-                m_panelHighNum1->setMaterialName(m_materialNameHighscoreNumbers + Ogre::StringConverter::toString(num));
-                break;
-            case 1:
-                m_panelHighNum2->setMaterialName(m_materialNameHighscoreNumbers + Ogre::StringConverter::toString(num));
-                break;
-            case 2:
-                m_panelHighNum3->setMaterialName(m_materialNameHighscoreNumbers + Ogre::StringConverter::toString(num));
-                break;
-            case 3:
-                m_panelHighNum4->setMaterialName(m_materialNameHighscoreNumbers + Ogre::StringConverter::toString(num));
-                break;
-            case 4:
-                m_panelHighNum5->setMaterialName(m_materialNameHighscoreNumbers + Ogre::StringConverter::toString(num));
-                break;
-            case 5:
-                m_panelHighNum6->setMaterialName(m_materialNameHighscoreNumbers + Ogre::StringConverter::toString(num));
-                break;
-            }
-            break;
         }
     }
 }
 
-void GameView::updateMultiplier(Ogre::Real timeSinceLastFrame) {
+void GameView::updateMultiplier(Ogre::Real timeSinceLastFrame)
+{
     m_multiplierOld = m_multiplier;
     m_multiplier    = m_gameLogic->getMultiplier();
 
@@ -1403,27 +1484,27 @@ void GameView::updateMultiplier(Ogre::Real timeSinceLastFrame) {
     //Animation
     if(m_scaleMultiplier) {
         m_timeScaleMultiplier += timeSinceLastFrame;
+
         if(m_timeScaleMultiplier < 200) {
             m_animationScaleMultiplier += 0.1;
-            m_panelMult1->getMaterial()->getTechnique(0)->getPass(0)->getTextureUnitState(0)->setTextureScale(m_animationScaleMultiplier,m_animationScaleMultiplier);
-            m_panelMult2->getMaterial()->getTechnique(0)->getPass(0)->getTextureUnitState(0)->setTextureScale(m_animationScaleMultiplier,m_animationScaleMultiplier);
-            m_panelX->getMaterial()->getTechnique(0)->getPass(0)->getTextureUnitState(0)->setTextureScale(m_animationScaleMultiplier,m_animationScaleMultiplier);
+            m_panelMult1->getMaterial()->getTechnique(0)->getPass(0)->getTextureUnitState(0)->setTextureScale(m_animationScaleMultiplier, m_animationScaleMultiplier);
+            m_panelMult2->getMaterial()->getTechnique(0)->getPass(0)->getTextureUnitState(0)->setTextureScale(m_animationScaleMultiplier, m_animationScaleMultiplier);
+            m_panelX->getMaterial()->getTechnique(0)->getPass(0)->getTextureUnitState(0)->setTextureScale(m_animationScaleMultiplier, m_animationScaleMultiplier);
 
-        }
-        else {
+        } else {
             m_animationScaleMultiplier -= 0.1;
-            m_panelMult1->getMaterial()->getTechnique(0)->getPass(0)->getTextureUnitState(0)->setTextureScale(m_animationScaleMultiplier,m_animationScaleMultiplier);
-            m_panelMult2->getMaterial()->getTechnique(0)->getPass(0)->getTextureUnitState(0)->setTextureScale(m_animationScaleMultiplier,m_animationScaleMultiplier);
-            m_panelX->getMaterial()->getTechnique(0)->getPass(0)->getTextureUnitState(0)->setTextureScale(m_animationScaleMultiplier,m_animationScaleMultiplier);
- 
+            m_panelMult1->getMaterial()->getTechnique(0)->getPass(0)->getTextureUnitState(0)->setTextureScale(m_animationScaleMultiplier, m_animationScaleMultiplier);
+            m_panelMult2->getMaterial()->getTechnique(0)->getPass(0)->getTextureUnitState(0)->setTextureScale(m_animationScaleMultiplier, m_animationScaleMultiplier);
+            m_panelX->getMaterial()->getTechnique(0)->getPass(0)->getTextureUnitState(0)->setTextureScale(m_animationScaleMultiplier, m_animationScaleMultiplier);
+
             if(m_timeScaleMultiplier > 200) {
                 m_timeScaleMultiplier = 0;
                 m_scaleMultiplier = false;
                 //Rücksetzen der Panels
                 m_animationScaleMultiplier = 1;
-                m_panelMult1->getMaterial()->getTechnique(0)->getPass(0)->getTextureUnitState(0)->setTextureScale(m_animationScaleMultiplier,m_animationScaleMultiplier);
-                m_panelMult2->getMaterial()->getTechnique(0)->getPass(0)->getTextureUnitState(0)->setTextureScale(m_animationScaleMultiplier,m_animationScaleMultiplier);
-                m_panelX->getMaterial()->getTechnique(0)->getPass(0)->getTextureUnitState(0)->setTextureScale(m_animationScaleMultiplier,m_animationScaleMultiplier);
+                m_panelMult1->getMaterial()->getTechnique(0)->getPass(0)->getTextureUnitState(0)->setTextureScale(m_animationScaleMultiplier, m_animationScaleMultiplier);
+                m_panelMult2->getMaterial()->getTechnique(0)->getPass(0)->getTextureUnitState(0)->setTextureScale(m_animationScaleMultiplier, m_animationScaleMultiplier);
+                m_panelX->getMaterial()->getTechnique(0)->getPass(0)->getTextureUnitState(0)->setTextureScale(m_animationScaleMultiplier, m_animationScaleMultiplier);
 
             }
         }
@@ -1440,115 +1521,136 @@ void GameView::updateMultiplier(Ogre::Real timeSinceLastFrame) {
     }
 
     for(unsigned int i = 0; i < multiplier.size(); i++) {
-        int num = multiplier.at(multiplier.size()-1-i) - 48;
+        int num = multiplier.at(multiplier.size() - 1 - i) - 48;
 
         switch(num) {
-        case 0:
-            switch(i) {
             case 0:
-                m_panelMult1->setMaterialName(m_materialNameMult + Ogre::StringConverter::toString(num));
+
+                switch(i) {
+                    case 0:
+                        m_panelMult1->setMaterialName(m_materialNameMult + Ogre::StringConverter::toString(num));
+                        break;
+                    case 1:
+                        m_panelMult2->setMaterialName(m_materialNameMult + Ogre::StringConverter::toString(num));
+                        break;
+                }
+
                 break;
             case 1:
-                m_panelMult2->setMaterialName(m_materialNameMult + Ogre::StringConverter::toString(num));
+
+                switch(i) {
+                    case 0:
+                        m_panelMult1->setMaterialName(m_materialNameMult + Ogre::StringConverter::toString(num));
+                        break;
+                    case 1:
+                        m_panelMult2->setMaterialName(m_materialNameMult + Ogre::StringConverter::toString(num));
+                        break;
+                }
+
                 break;
-            }
-            break;
-        case 1:
-            switch(i) {
-            case 0:
-                m_panelMult1->setMaterialName(m_materialNameMult + Ogre::StringConverter::toString(num));
+            case 2:
+
+                switch(i) {
+                    case 0:
+                        m_panelMult1->setMaterialName(m_materialNameMult + Ogre::StringConverter::toString(num));
+                        break;
+                    case 1:
+                        m_panelMult2->setMaterialName(m_materialNameMult + Ogre::StringConverter::toString(num));
+                        break;
+                }
+
                 break;
-            case 1:
-                m_panelMult2->setMaterialName(m_materialNameMult + Ogre::StringConverter::toString(num));
+            case 3:
+
+                switch(i) {
+                    case 0:
+                        m_panelMult1->setMaterialName(m_materialNameMult + Ogre::StringConverter::toString(num));
+                        break;
+                    case 1:
+                        m_panelMult2->setMaterialName(m_materialNameMult + Ogre::StringConverter::toString(num));
+                        break;
+                }
+
                 break;
-            }
-            break;
-        case 2:
-            switch(i) {
-            case 0:
-                m_panelMult1->setMaterialName(m_materialNameMult + Ogre::StringConverter::toString(num));
+            case 4:
+
+                switch(i) {
+                    case 0:
+                        m_panelMult1->setMaterialName(m_materialNameMult + Ogre::StringConverter::toString(num));
+                        break;
+                    case 1:
+                        m_panelMult2->setMaterialName(m_materialNameMult + Ogre::StringConverter::toString(num));
+                        break;
+                }
+
                 break;
-            case 1:
-                m_panelMult2->setMaterialName(m_materialNameMult + Ogre::StringConverter::toString(num));
+            case 5:
+
+                switch(i) {
+                    case 0:
+                        m_panelMult1->setMaterialName(m_materialNameMult + Ogre::StringConverter::toString(num));
+                        break;
+                    case 1:
+                        m_panelMult2->setMaterialName(m_materialNameMult + Ogre::StringConverter::toString(num));
+                        break;
+                }
+
                 break;
-            }
-            break;
-        case 3:
-            switch(i) {
-            case 0:
-                m_panelMult1->setMaterialName(m_materialNameMult + Ogre::StringConverter::toString(num));
+            case 6:
+
+                switch(i) {
+                    case 0:
+                        m_panelMult1->setMaterialName(m_materialNameMult + Ogre::StringConverter::toString(num));
+                        break;
+                    case 1:
+                        m_panelMult2->setMaterialName(m_materialNameMult + Ogre::StringConverter::toString(num));
+                        break;
+                }
+
                 break;
-            case 1:
-                m_panelMult2->setMaterialName(m_materialNameMult + Ogre::StringConverter::toString(num));
+            case 7:
+
+                switch(i) {
+                    case 0:
+                        m_panelMult1->setMaterialName(m_materialNameMult + Ogre::StringConverter::toString(num));
+                        break;
+                    case 1:
+                        m_panelMult2->setMaterialName(m_materialNameMult + Ogre::StringConverter::toString(num));
+                        break;
+                }
+
                 break;
-            }
-            break;
-        case 4:
-            switch(i) {
-            case 0:
-                m_panelMult1->setMaterialName(m_materialNameMult + Ogre::StringConverter::toString(num));
+            case 8:
+
+                switch(i) {
+                    case 0:
+                        m_panelMult1->setMaterialName(m_materialNameMult + Ogre::StringConverter::toString(num));
+                        break;
+                    case 1:
+                        m_panelMult2->setMaterialName(m_materialNameMult + Ogre::StringConverter::toString(num));
+                        break;
+                }
+
                 break;
-            case 1:
-                m_panelMult2->setMaterialName(m_materialNameMult + Ogre::StringConverter::toString(num));
+            case 9:
+
+                switch(i) {
+                    case 0:
+                        m_panelMult1->setMaterialName(m_materialNameMult + Ogre::StringConverter::toString(num));
+                        break;
+                    case 1:
+                        m_panelMult2->setMaterialName(m_materialNameMult + Ogre::StringConverter::toString(num));
+                        break;
+                }
+
                 break;
-            }
-            break;
-        case 5:
-            switch(i) {
-            case 0:
-                m_panelMult1->setMaterialName(m_materialNameMult + Ogre::StringConverter::toString(num));
-                break;
-            case 1:
-                m_panelMult2->setMaterialName(m_materialNameMult + Ogre::StringConverter::toString(num));
-                break;
-            }
-            break;
-        case 6:
-            switch(i) {
-            case 0:
-                m_panelMult1->setMaterialName(m_materialNameMult + Ogre::StringConverter::toString(num));
-                break;
-            case 1:
-                m_panelMult2->setMaterialName(m_materialNameMult + Ogre::StringConverter::toString(num));
-                break;
-            }
-            break;
-        case 7:
-            switch(i) {
-            case 0:
-                m_panelMult1->setMaterialName(m_materialNameMult + Ogre::StringConverter::toString(num));
-                break;
-            case 1:
-                m_panelMult2->setMaterialName(m_materialNameMult + Ogre::StringConverter::toString(num));
-                break;
-            }
-            break;
-        case 8:
-            switch(i) {
-            case 0:
-                m_panelMult1->setMaterialName(m_materialNameMult + Ogre::StringConverter::toString(num));
-                break;
-            case 1:
-                m_panelMult2->setMaterialName(m_materialNameMult + Ogre::StringConverter::toString(num));
-                break;
-            }
-            break;
-        case 9:
-            switch(i) {
-            case 0:
-                m_panelMult1->setMaterialName(m_materialNameMult + Ogre::StringConverter::toString(num));
-                break;
-            case 1:
-                m_panelMult2->setMaterialName(m_materialNameMult + Ogre::StringConverter::toString(num));
-                break;
-            }
-            break;
         }
     }
 }
 
-void GameView::updateHUD(Ogre::Real timeSinceLastFrame) {
-    
+void GameView::updateHUD(Ogre::Real timeSinceLastFrame)
+{
+
     updateScore();
     updateMultiplier(timeSinceLastFrame);
 
@@ -1563,21 +1665,23 @@ void GameView::updateHUD(Ogre::Real timeSinceLastFrame) {
         m_showHighscore = true;
     }
     */
-    
+
     if(m_levelProgress == 10) {
         m_showHighscore = true;
     }
 
     m_timeScaleBoost += timeSinceLastFrame;
+
     if(m_animationScaleBoostInvert) {
         m_animationScaleBoost += 0.0002 * m_boostCharge;
-    }
-    else {
+    } else {
         m_animationScaleBoost -= 0.0002 * m_boostCharge;
     }
+
     if(m_timeScaleBoost > 180) {
         m_timeScaleBoost = 0;
         m_animationScaleBoostInvert = !m_animationScaleBoostInvert;
+
         if(m_animationScaleBoostInvert) { //Dann ist man wieder am Anfang
             m_animationScaleBoost = 0.95;
         }
@@ -1585,87 +1689,89 @@ void GameView::updateHUD(Ogre::Real timeSinceLastFrame) {
 
     //Geht auch!!
     //m_materialBoost->getTechnique(0)->getPass(0)->getTextureUnitState(0)->setTextureScale(m_scale,m_scale);
-    m_overlayBoost->setScale(m_animationScaleBoost,m_animationScaleBoost);
+    m_overlayBoost->setScale(m_animationScaleBoost, m_animationScaleBoost);
 
     switch(m_boostCharge) {
-    case 0:
-        m_panelBoost->setMaterialName(m_materialNameBoostBar + "00");
-        break;
-    case 1:
-        m_panelBoost->setMaterialName(m_materialNameBoostBar + "01");
-        break;
-    case 2:
-        m_panelBoost->setMaterialName(m_materialNameBoostBar + "02");
-        break;
-    case 3:
-        m_panelBoost->setMaterialName(m_materialNameBoostBar + "03");
-        break;
-    case 4:
-        m_panelBoost->setMaterialName(m_materialNameBoostBar + "04");
-        break;
-    case 5:
-        m_panelBoost->setMaterialName(m_materialNameBoostBar + "05");
-        break;
-    case 6:
-        m_panelBoost->setMaterialName(m_materialNameBoostBar + "06");
-        break;
-    case 7:
-        m_panelBoost->setMaterialName(m_materialNameBoostBar + "07");
-        break;
-    case 8:
-        m_panelBoost->setMaterialName(m_materialNameBoostBar + "08");
-        break;
-    case 9:
-        m_panelBoost->setMaterialName(m_materialNameBoostBar + "09");
-        break;
-    case 10:
-        m_panelBoost->setMaterialName(m_materialNameBoostBar + "10");
-        break;
+        case 0:
+            m_panelBoost->setMaterialName(m_materialNameBoostBar + "00");
+            break;
+        case 1:
+            m_panelBoost->setMaterialName(m_materialNameBoostBar + "01");
+            break;
+        case 2:
+            m_panelBoost->setMaterialName(m_materialNameBoostBar + "02");
+            break;
+        case 3:
+            m_panelBoost->setMaterialName(m_materialNameBoostBar + "03");
+            break;
+        case 4:
+            m_panelBoost->setMaterialName(m_materialNameBoostBar + "04");
+            break;
+        case 5:
+            m_panelBoost->setMaterialName(m_materialNameBoostBar + "05");
+            break;
+        case 6:
+            m_panelBoost->setMaterialName(m_materialNameBoostBar + "06");
+            break;
+        case 7:
+            m_panelBoost->setMaterialName(m_materialNameBoostBar + "07");
+            break;
+        case 8:
+            m_panelBoost->setMaterialName(m_materialNameBoostBar + "08");
+            break;
+        case 9:
+            m_panelBoost->setMaterialName(m_materialNameBoostBar + "09");
+            break;
+        case 10:
+            m_panelBoost->setMaterialName(m_materialNameBoostBar + "10");
+            break;
     }
 
     switch(m_levelProgress) {
-    case 0:
-        m_panelTrack->setMaterialName(m_materialNameTrack + "00");
-        break;
-    case 1:
-        m_panelTrack->setMaterialName(m_materialNameTrack + "01");
-        break;
-    case 2:
-        m_panelTrack->setMaterialName(m_materialNameTrack + "02");
-        break;
-    case 3:
-        m_panelTrack->setMaterialName(m_materialNameTrack + "03");
-        break;
-    case 4:
-        m_panelTrack->setMaterialName(m_materialNameTrack + "04");
-        break;
-    case 5:
-        m_panelTrack->setMaterialName(m_materialNameTrack + "05");
-        break;
-    case 6:
-        m_panelTrack->setMaterialName(m_materialNameTrack + "06");
-        break;
-    case 7:
-        m_panelTrack->setMaterialName(m_materialNameTrack + "07");
-        break;
-    case 8:
-        m_panelTrack->setMaterialName(m_materialNameTrack + "08");
-        break;
-    case 9:
-        m_panelTrack->setMaterialName(m_materialNameTrack + "09");
-        break;
-    case 10:
-        m_panelTrack->setMaterialName(m_materialNameTrack + "10");
-        break;
+        case 0:
+            m_panelTrack->setMaterialName(m_materialNameTrack + "00");
+            break;
+        case 1:
+            m_panelTrack->setMaterialName(m_materialNameTrack + "01");
+            break;
+        case 2:
+            m_panelTrack->setMaterialName(m_materialNameTrack + "02");
+            break;
+        case 3:
+            m_panelTrack->setMaterialName(m_materialNameTrack + "03");
+            break;
+        case 4:
+            m_panelTrack->setMaterialName(m_materialNameTrack + "04");
+            break;
+        case 5:
+            m_panelTrack->setMaterialName(m_materialNameTrack + "05");
+            break;
+        case 6:
+            m_panelTrack->setMaterialName(m_materialNameTrack + "06");
+            break;
+        case 7:
+            m_panelTrack->setMaterialName(m_materialNameTrack + "07");
+            break;
+        case 8:
+            m_panelTrack->setMaterialName(m_materialNameTrack + "08");
+            break;
+        case 9:
+            m_panelTrack->setMaterialName(m_materialNameTrack + "09");
+            break;
+        case 10:
+            m_panelTrack->setMaterialName(m_materialNameTrack + "10");
+            break;
     }
 
 
     if(m_waitForHUDToFadeIn) {
         m_timeToWaitForHUDToFadeIn += timeSinceLastFrame;
+
         if(m_timeToWaitForHUDToFadeIn >= 4000) {
             m_fadeHUDIn = true;
             m_waitForHUDToFadeIn = false;
         }
+
         setAlphaToAllHUDPanels();
     }
 
@@ -1674,15 +1780,14 @@ void GameView::updateHUD(Ogre::Real timeSinceLastFrame) {
         if(m_animationAlphaHUD < 1) {
             m_animationAlphaHUD += 0.01;
             setAlphaToAllHUDPanels();
-        }
-        else {
+        } else {
             m_animationAlphaHUD = 1.0;
             m_fadeHUDIn = false;
             setAlphaToAllHUDPanels();
             setAlphaToAllHUDMaterials();    //Bis jetzt nur alle boost Materials
         }
     }
-    
+
     //Fade in End
 
     /*
@@ -1693,12 +1798,14 @@ void GameView::updateHUD(Ogre::Real timeSinceLastFrame) {
     */
 }
 
-void GameView::setAlphaToStartMenuPanels() {
+void GameView::setAlphaToStartMenuPanels()
+{
     m_panelLogo->getMaterial()->getTechnique(0)->getPass(0)->getTextureUnitState(0)->setAlphaOperation(Ogre::LBX_MODULATE, Ogre::LBS_MANUAL, Ogre::LBS_TEXTURE, m_animationAlphaStartMenu);
     m_panelStartBack->getMaterial()->getTechnique(0)->getPass(0)->getTextureUnitState(0)->setAlphaOperation(Ogre::LBX_MODULATE, Ogre::LBS_MANUAL, Ogre::LBS_TEXTURE, m_animationAlphaStartMenu);
 }
 
-void GameView::setAlphaToAllHUDMaterials() {
+void GameView::setAlphaToAllHUDMaterials()
+{
     MaterialManager* materialManager = Ogre::MaterialManager::getSingletonPtr();
     ((MaterialPtr) materialManager->getByName(m_materialNameBoostBar + "00"))->getTechnique(0)->getPass(0)->getTextureUnitState(0)->setAlphaOperation(Ogre::LBX_MODULATE, Ogre::LBS_MANUAL, Ogre::LBS_TEXTURE, m_animationAlphaHUD);
     ((MaterialPtr) materialManager->getByName(m_materialNameBoostBar + "01"))->getTechnique(0)->getPass(0)->getTextureUnitState(0)->setAlphaOperation(Ogre::LBX_MODULATE, Ogre::LBS_MANUAL, Ogre::LBS_TEXTURE, m_animationAlphaHUD);
@@ -1714,7 +1821,8 @@ void GameView::setAlphaToAllHUDMaterials() {
 
 }
 
-void GameView::setAlphaToAllHUDPanels() {
+void GameView::setAlphaToAllHUDPanels()
+{
     m_panelTrack->getMaterial()->getTechnique(0)->getPass(0)->getTextureUnitState(0)->setAlphaOperation(Ogre::LBX_MODULATE, Ogre::LBS_MANUAL, Ogre::LBS_TEXTURE, m_animationAlphaHUD);
     m_panelX->getMaterial()->getTechnique(0)->getPass(0)->getTextureUnitState(0)->setAlphaOperation(Ogre::LBX_MODULATE, Ogre::LBS_MANUAL, Ogre::LBS_TEXTURE, m_animationAlphaHUD);
     m_panelNum1->getMaterial()->getTechnique(0)->getPass(0)->getTextureUnitState(0)->setAlphaOperation(Ogre::LBX_MODULATE, Ogre::LBS_MANUAL, Ogre::LBS_TEXTURE, m_animationAlphaHUD);
@@ -1729,7 +1837,8 @@ void GameView::setAlphaToAllHUDPanels() {
 
 }
 
-void GameView::setAlphaToHighscorePanels() {
+void GameView::setAlphaToHighscorePanels()
+{
     m_panelHighscore->getMaterial()->getTechnique(0)->getPass(0)->getTextureUnitState(0)->setAlphaOperation(Ogre::LBX_MODULATE, Ogre::LBS_MANUAL, Ogre::LBS_TEXTURE, m_animationAlphaHighscore);
     m_panelHighNum1->getMaterial()->getTechnique(0)->getPass(0)->getTextureUnitState(0)->setAlphaOperation(Ogre::LBX_MODULATE, Ogre::LBS_MANUAL, Ogre::LBS_TEXTURE, m_animationAlphaHighscore);
     m_panelHighNum2->getMaterial()->getTechnique(0)->getPass(0)->getTextureUnitState(0)->setAlphaOperation(Ogre::LBX_MODULATE, Ogre::LBS_MANUAL, Ogre::LBS_TEXTURE, m_animationAlphaHighscore);
@@ -1742,8 +1851,10 @@ void GameView::setAlphaToHighscorePanels() {
     m_panelHighName3->getMaterial()->getTechnique(0)->getPass(0)->getTextureUnitState(0)->setAlphaOperation(Ogre::LBX_MODULATE, Ogre::LBS_MANUAL, Ogre::LBS_TEXTURE, m_animationAlphaHighscore);
 }
 
-void GameView::resumeGame() {
+void GameView::resumeGame()
+{
     createHUDForDebug();        //Wird nämlich im Pause-State zerstört
+
     if (m_showHUD) {
         showAllHUDElements();
         OgreFramework::getSingletonPtr()->m_pTrayMgr->hideAll();
@@ -1756,7 +1867,8 @@ void GameView::resumeGame() {
     }
 }
 
-void GameView::pauseGame() {
+void GameView::pauseGame()
+{
     if(m_showHUD) {
         hideAllHUDElements();
         OgreFramework::getSingletonPtr()->m_pTrayMgr->showAll();
@@ -1764,7 +1876,8 @@ void GameView::pauseGame() {
 
 }
 
-void GameView::showAllHUDElements() {
+void GameView::showAllHUDElements()
+{
     m_panelLogo->show();
     m_panelNum1->show();
     m_panelNum2->show();
@@ -1777,7 +1890,7 @@ void GameView::showAllHUDElements() {
     m_panelTrack->show();
     m_panelBoost->show();
     m_panelX->show();
-    
+
     m_panelHighscore->show();
     m_panelHighName1->show();
     m_panelHighName2->show();
@@ -1790,7 +1903,8 @@ void GameView::showAllHUDElements() {
     m_panelHighNum6->show();
 }
 
-void GameView::hideAllHUDElements() {
+void GameView::hideAllHUDElements()
+{
     m_panelLogo->hide();
     m_panelNum1->hide();
     m_panelNum2->hide();
@@ -1816,11 +1930,13 @@ void GameView::hideAllHUDElements() {
     m_panelHighNum6->hide();
 }
 
-void GameView::keyPressed(const OIS::KeyEvent &keyEventRef) {
+void GameView::keyPressed(const OIS::KeyEvent& keyEventRef)
+{
     OIS::Keyboard* myKeyboard = OgreFramework::getSingletonPtr()->m_pKeyboard;
-    
+
     if(m_showHighscore) {
         unsigned int myKeyCode = keyEventRef.text;
+
         if(myKeyCode >= 65 && myKeyCode <= 90 || myKeyCode >= 97 && myKeyCode <= 154) {
 
             if(myKeyCode >= 97) {
@@ -1828,22 +1944,26 @@ void GameView::keyPressed(const OIS::KeyEvent &keyEventRef) {
             }
 
             switch (m_highscoreCharCount) {
-            case 1:
-                m_panelHighName1->setMaterialName(m_materialNameHighscoreName + Ogre::StringConverter::toString(myKeyCode));
-                break;
-            case 2:
-                m_panelHighName2->setMaterialName(m_materialNameHighscoreName + Ogre::StringConverter::toString(myKeyCode));
-                break;
-            case 3:
-                m_panelHighName3->setMaterialName(m_materialNameHighscoreName + Ogre::StringConverter::toString(myKeyCode));
-                break;
+                case 1:
+                    m_panelHighName1->setMaterialName(m_materialNameHighscoreName + Ogre::StringConverter::toString(myKeyCode));
+                    break;
+                case 2:
+                    m_panelHighName2->setMaterialName(m_materialNameHighscoreName + Ogre::StringConverter::toString(myKeyCode));
+                    break;
+                case 3:
+                    m_panelHighName3->setMaterialName(m_materialNameHighscoreName + Ogre::StringConverter::toString(myKeyCode));
+                    break;
             }
+
             m_highscoreCharCount += 1;
-            if(m_highscoreCharCount > 3) {m_highscoreCharCount = 1;}
+
+            if(m_highscoreCharCount > 3) {
+                m_highscoreCharCount = 1;
+            }
+
             setAlphaToHighscorePanels();    //Damit die neuen Buchstaben auch wieder transparent sind
         }
-    }
-    else {
+    } else {
 
         if(myKeyboard->isKeyDown(OIS::KC_RETURN)) {
             m_stopAtStart = false;
@@ -1870,36 +1990,39 @@ void GameView::keyPressed(const OIS::KeyEvent &keyEventRef) {
     }
 }
 
-void GameView::mouseMoved(const OIS::MouseEvent &evt) {
+void GameView::mouseMoved(const OIS::MouseEvent& evt)
+{
     if(m_showStartMenu) {
         int displayWidth = evt.state.width;
         int displayHeight = evt.state.height;
         int xAbs = evt.state.X.abs;
         int yAbs = evt.state.Y.abs;
 
-        if( xAbs >= ((int) (displayWidth*0.22)) && xAbs <= ((int) (displayWidth*0.78)) &&
-            yAbs >= ((int) (displayHeight*0.58)) && yAbs <= ((int) (displayHeight*0.69))) {
+        if( xAbs >= ((int) (displayWidth * 0.22)) && xAbs <= ((int) (displayWidth * 0.78)) &&
+            yAbs >= ((int) (displayHeight * 0.58)) && yAbs <= ((int) (displayHeight * 0.69))) {
             m_panelStartBack->setMaterialName(m_materialNameStartBackground + "Active");
             m_enterGameSelected = true;
-        }
-        else {
+        } else {
             m_panelStartBack->setMaterialName(m_materialNameStartBackground);
             m_enterGameSelected = false;
         }
     }
 }
 
-void GameView::mousePressed(const OIS::MouseEvent &evt, OIS::MouseButtonID id) {
+void GameView::mousePressed(const OIS::MouseEvent& evt, OIS::MouseButtonID id)
+{
     if(m_enterGameSelected) {
         m_stopAtStart = false;
     }
 }
 
-bool GameView::getHighscoreShown() {
+bool GameView::getHighscoreShown()
+{
     return m_showHighscore;
 }
 
-OgreBites::ParamsPanel* GameView::getHighscorePanel() {
+OgreBites::ParamsPanel* GameView::getHighscorePanel()
+{
     return m_highscorePanel;
 }
 

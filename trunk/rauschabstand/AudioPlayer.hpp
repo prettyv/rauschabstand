@@ -31,39 +31,40 @@
 #include <vector>
 #include <OgreVector3.h>
 
-class AudioPlayer {
+class AudioPlayer
+{
 
-	public:
+    public:
 
-		AudioPlayer(const std::string& audio);
-		virtual ~AudioPlayer();
+        AudioPlayer(const std::string& audio);
+        virtual ~AudioPlayer();
 
-		void addObstacles(std::vector<Ogre::Vector3> positions);
+        void addObstacles(std::vector<Ogre::Vector3> positions);
 
-		void playSound(const std::string& audio);
-		void playShip();
-		void play();
-		void pause();
-		void resumeShip();
-		void stop();
+        void playSound(const std::string& audio);
+        void playShip();
+        void play();
+        void pause();
+        void resumeShip();
+        void stop();
 
-		bool isPlaying();
-		int getLength();
+        bool isPlaying();
+        int getLength();
 
-		float getPitch();
-		void increasePitch(float diff);
-		void decreasePitch(float diff);
-		void updateObstacles(Ogre::Vector3 shipVec);
+        float getPitch();
+        void increasePitch(float diff);
+        void decreasePitch(float diff);
+        void updateObstacles(Ogre::Vector3 shipVec);
 
-		void reset(std::vector< Ogre::Vector3 > positions);
+        void reset(std::vector< Ogre::Vector3 > positions);
 
-	private:
+    private:
 
-		cAudio::IAudioManager* audioMgr;
-		cAudio::IAudioSource* trackMusic;
-		cAudio::IAudioSource* shipHum;
-		cAudio::cVector3* playerPos;
-		std::vector<cAudio::IAudioSource*> obstacles;
+        cAudio::IAudioManager* audioMgr;
+        cAudio::IAudioSource* trackMusic;
+        cAudio::IAudioSource* shipHum;
+        cAudio::cVector3* playerPos;
+        std::vector<cAudio::IAudioSource*> obstacles;
 };
 
 #endif // AUDIOPLAYER_HPP

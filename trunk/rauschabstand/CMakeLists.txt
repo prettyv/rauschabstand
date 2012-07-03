@@ -1,5 +1,5 @@
 if (UNIX)
-	set(CMAKE_MODULE_PATH "/usr/lib/OGRE/cmake/;${CMAKE_MODULE_PATH}")
+    set(CMAKE_MODULE_PATH "/usr/lib/OGRE/cmake/;${CMAKE_MODULE_PATH}")
 endif (UNIX)
 
 find_package(OGRE REQUIRED)
@@ -15,65 +15,65 @@ set(AUDIO_LIB_FILES
 )
 
 set(AUDIO_BIN_FILES
-	#AudioAnalyzer.cpp
-	AudioPlayer.cpp
-	#TestMonitor.cpp
-	#SpectrumXMLWriter.cpp
+    #AudioAnalyzer.cpp
+    AudioPlayer.cpp
+    #TestMonitor.cpp
+    #SpectrumXMLWriter.cpp
 )
 
 set(OGRE_LIB_FILES
 )
 
 set(OGRE_BIN_FILES
-	main.cpp
-	AdvancedOgreFramework.cpp
-	AppStateManager.cpp
-	DemoApp.cpp
-	DotSceneLoader.cpp
-	GameLogic.cpp
-	GameState.cpp
-	GameView.cpp
-	Map.cpp
-	MapGenerator.cpp
-	MenuState.cpp
-	PauseState.cpp
-	Player.cpp
-	Visuals.cpp
+    main.cpp
+    AdvancedOgreFramework.cpp
+    AppStateManager.cpp
+    DemoApp.cpp
+    DotSceneLoader.cpp
+    GameLogic.cpp
+    GameState.cpp
+    GameView.cpp
+    Map.cpp
+    MapGenerator.cpp
+    MenuState.cpp
+    PauseState.cpp
+    Player.cpp
+    Visuals.cpp
 )
 
 # explicitly include headers for Visual Studio
 if (WIN32)
-	set(AUDIO_LIB_FILES ${AUDIO_LIB_FILES}
-	)
+    set(AUDIO_LIB_FILES ${AUDIO_LIB_FILES}
+    )
 
-	set(AUDIO_BIN_FILES ${AUDIO_BIN_FILES}
-		#AudioAnalyzer.hpp
-		AudioPlayer.hpp
-		#TestMonitor.hpp
-		#TestDataSource.hpp
-		#SpectrumXMLWriter.hpp
-	)
+    set(AUDIO_BIN_FILES ${AUDIO_BIN_FILES}
+        #AudioAnalyzer.hpp
+        AudioPlayer.hpp
+        #TestMonitor.hpp
+        #TestDataSource.hpp
+        #SpectrumXMLWriter.hpp
+    )
 
-	set(OGRE_LIB_FILES ${OGRE_LIB_FILES}
-	)
+    set(OGRE_LIB_FILES ${OGRE_LIB_FILES}
+    )
 
-	set(OGRE_BIN_FILES ${OGRE_BIN_FILES}
-		AdvancedOgreFramework.hpp
-		AppState.hpp
-		AppStateManager.hpp
-		DemoApp.hpp
-		DotSceneLoader.hpp
-		GameLogic.hpp
-		GameState.hpp
-		GameView.hpp
-		Map.hpp
-		MapGenerator.hpp
-		MenuState.hpp
-		PauseState.hpp
-		Player.hpp
-		rapidxml.hpp
-		Visuals.hpp
-	)
+    set(OGRE_BIN_FILES ${OGRE_BIN_FILES}
+        AdvancedOgreFramework.hpp
+        AppState.hpp
+        AppStateManager.hpp
+        DemoApp.hpp
+        DotSceneLoader.hpp
+        GameLogic.hpp
+        GameState.hpp
+        GameView.hpp
+        Map.hpp
+        MapGenerator.hpp
+        MenuState.hpp
+        PauseState.hpp
+        Player.hpp
+        rapidxml.hpp
+        Visuals.hpp
+    )
 endif (WIN32)
 
 include_directories(${OGRE_INCLUDE_DIRS} ${OIS_INCLUDE_DIRS})
@@ -84,4 +84,4 @@ add_executable(rauschgame ${OGRE_BIN_FILES} ${AUDIO_BIN_FILES})
 
 #target_link_libraries(rauschplayer clam_processing clam_audioio clam_core)
 #target_link_libraries(rauschplayer cAudio)
-target_link_libraries(rauschgame ${OGRE_LIBRARIES} OgreTerrain ${OIS_LIBRARIES} cAudio cAp_MP3Decoder)
+target_link_libraries(rauschgame ${OGRE_LIBRARIES} OgreTerrain ${OIS_LIBRARIES} cAudio)

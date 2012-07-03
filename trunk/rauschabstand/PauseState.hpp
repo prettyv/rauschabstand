@@ -11,30 +11,30 @@
 
 class PauseState : public AppState
 {
-public:
-    PauseState();
+    public:
+        PauseState();
 
-    DECLARE_APPSTATE_CLASS(PauseState)
+        DECLARE_APPSTATE_CLASS(PauseState)
 
-    void enter();
-    void createScene();
-    void exit();
+        void enter();
+        void createScene();
+        void exit();
 
-    bool keyPressed(const OIS::KeyEvent &keyEventRef);
-    bool keyReleased(const OIS::KeyEvent &keyEventRef);
+        bool keyPressed(const OIS::KeyEvent& keyEventRef);
+        bool keyReleased(const OIS::KeyEvent& keyEventRef);
 
-    bool mouseMoved(const OIS::MouseEvent &evt);
-    bool mousePressed(const OIS::MouseEvent &evt, OIS::MouseButtonID id);
-    bool mouseReleased(const OIS::MouseEvent &evt, OIS::MouseButtonID id);
+        bool mouseMoved(const OIS::MouseEvent& evt);
+        bool mousePressed(const OIS::MouseEvent& evt, OIS::MouseButtonID id);
+        bool mouseReleased(const OIS::MouseEvent& evt, OIS::MouseButtonID id);
 
-    void buttonHit(OgreBites::Button* button);
-    void yesNoDialogClosed(const Ogre::DisplayString& question, bool yesHit);
+        void buttonHit(OgreBites::Button* button);
+        void yesNoDialogClosed(const Ogre::DisplayString& question, bool yesHit);
 
-    void update(Ogre::Real timeSinceLastFrame);
+        void update(Ogre::Real timeSinceLastFrame);
 
-private:
-    bool m_bQuit;
-    bool m_bQuestionActive;
+    private:
+        bool m_bQuit;
+        bool m_bQuestionActive;
 };
 
 //|||||||||||||||||||||||||||||||||||||||||||||||

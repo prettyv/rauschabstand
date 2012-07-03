@@ -18,15 +18,15 @@ template<> OgreFramework* Ogre::Singleton<OgreFramework>::msSingleton = 0;
 
 OgreFramework::OgreFramework()
 {
-    m_pRoot				= 0;
-    m_pRenderWnd		= 0;
-    m_pViewport			= 0;
-    m_pLog				= 0;
-    m_pTimer			= 0;
+    m_pRoot             = 0;
+    m_pRenderWnd        = 0;
+    m_pViewport         = 0;
+    m_pLog              = 0;
+    m_pTimer            = 0;
 
-    m_pInputMgr			= 0;
-    m_pKeyboard			= 0;
-    m_pMouse			= 0;
+    m_pInputMgr         = 0;
+    m_pKeyboard         = 0;
+    m_pMouse            = 0;
     m_pTrayMgr          = 0;
 }
 
@@ -35,14 +35,17 @@ OgreFramework::OgreFramework()
 OgreFramework::~OgreFramework()
 {
     OgreFramework::getSingletonPtr()->m_pLog->logMessage("Shutdown OGRE...");
+
     if(m_pTrayMgr)      delete m_pTrayMgr;
-    if(m_pInputMgr)		OIS::InputManager::destroyInputSystem(m_pInputMgr);
-    if(m_pRoot)			delete m_pRoot;
+
+    if(m_pInputMgr)     OIS::InputManager::destroyInputSystem(m_pInputMgr);
+
+    if(m_pRoot)         delete m_pRoot;
 }
 
 //|||||||||||||||||||||||||||||||||||||||||||||||
 
-bool OgreFramework::initOgre(Ogre::String wndTitle, OIS::KeyListener *pKeyListener, OIS::MouseListener *pMouseListener)
+bool OgreFramework::initOgre(Ogre::String wndTitle, OIS::KeyListener* pKeyListener, OIS::MouseListener* pMouseListener)
 {
     Ogre::LogManager* logMgr = new Ogre::LogManager();
 
@@ -61,6 +64,7 @@ bool OgreFramework::initOgre(Ogre::String wndTitle, OIS::KeyListener *pKeyListen
 
     if(!m_pRoot->showConfigDialog())
         return false;
+
     m_pRenderWnd = m_pRoot->initialise(true, wndTitle);
 
     m_pViewport = m_pRenderWnd->addViewport(0);
@@ -73,23 +77,23 @@ bool OgreFramework::initOgre(Ogre::String wndTitle, OIS::KeyListener *pKeyListen
     m_pRenderWnd->getCustomAttribute("WINDOW", &hWnd);
 
     paramList.insert(OIS::ParamList::value_type("WINDOW", Ogre::StringConverter::toString(hWnd)));
-	#if defined OIS_WIN32_PLATFORM
-		paramList.insert(std::make_pair(std::string("w32_mouse"), std::string("DISCL_FOREGROUND" )));
-		paramList.insert(std::make_pair(std::string("w32_mouse"), std::string("DISCL_NONEXCLUSIVE")));
-		paramList.insert(std::make_pair(std::string("w32_keyboard"), std::string("DISCL_FOREGROUND")));
-		paramList.insert(std::make_pair(std::string("w32_keyboard"), std::string("DISCL_NONEXCLUSIVE")));
-	#elif defined OIS_LINUX_PLATFORM
-		paramList.insert(std::make_pair(std::string("x11_mouse_grab"), std::string("false")));
-		paramList.insert(std::make_pair(std::string("x11_keyboard_grab"), std::string("false")));
-	#endif
-		
+#if defined OIS_WIN32_PLATFORM
+    paramList.insert(std::make_pair(std::string("w32_mouse"), std::string("DISCL_FOREGROUND" )));
+    paramList.insert(std::make_pair(std::string("w32_mouse"), std::string("DISCL_NONEXCLUSIVE")));
+    paramList.insert(std::make_pair(std::string("w32_keyboard"), std::string("DISCL_FOREGROUND")));
+    paramList.insert(std::make_pair(std::string("w32_keyboard"), std::string("DISCL_NONEXCLUSIVE")));
+#elif defined OIS_LINUX_PLATFORM
+    paramList.insert(std::make_pair(std::string("x11_mouse_grab"), std::string("false")));
+    paramList.insert(std::make_pair(std::string("x11_keyboard_grab"), std::string("false")));
+#endif
+
     m_pInputMgr = OIS::InputManager::createInputSystem(paramList);
 
     m_pKeyboard = static_cast<OIS::Keyboard*>(m_pInputMgr->createInputObject(OIS::OISKeyboard, true));
     m_pMouse = static_cast<OIS::Mouse*>(m_pInputMgr->createInputObject(OIS::OISMouse, true));
 
     m_pMouse->getMouseState().height = m_pRenderWnd->getHeight();
-    m_pMouse->getMouseState().width	 = m_pRenderWnd->getWidth();
+    m_pMouse->getMouseState().width  = m_pRenderWnd->getWidth();
 
     if(pKeyListener == 0)
         m_pKeyboard->setEventCallback(this);
@@ -115,18 +119,19 @@ bool OgreFramework::initOgre(Ogre::String wndTitle, OIS::KeyListener *pKeyListen
 #endif
 
     Ogre::ConfigFile::SectionIterator seci = cf.getSectionIterator();
-    while (seci.hasMoreElements())
-    {
+
+    while (seci.hasMoreElements()) {
         secName = seci.peekNextKey();
-        Ogre::ConfigFile::SettingsMultiMap *settings = seci.getNext();
+        Ogre::ConfigFile::SettingsMultiMap* settings = seci.getNext();
         Ogre::ConfigFile::SettingsMultiMap::iterator i;
-        for (i = settings->begin(); i != settings->end(); ++i)
-        {
+
+        for (i = settings->begin(); i != settings->end(); ++i) {
             typeName = i->first;
             archName = i->second;
             Ogre::ResourceGroupManager::getSingleton().addResourceLocation(archName, typeName, secName);
         }
     }
+
     Ogre::TextureManager::getSingleton().setDefaultNumMipmaps(5);
     Ogre::ResourceGroupManager::getSingleton().initialiseAllResourceGroups();
 
@@ -142,23 +147,18 @@ bool OgreFramework::initOgre(Ogre::String wndTitle, OIS::KeyListener *pKeyListen
 
 //|||||||||||||||||||||||||||||||||||||||||||||||
 
-bool OgreFramework::keyPressed(const OIS::KeyEvent &keyEventRef)
+bool OgreFramework::keyPressed(const OIS::KeyEvent& keyEventRef)
 {
-    if(m_pKeyboard->isKeyDown(OIS::KC_SYSRQ))
-    {
+    if(m_pKeyboard->isKeyDown(OIS::KC_SYSRQ)) {
         m_pRenderWnd->writeContentsToTimestampedFile("AOF_Screenshot_", ".jpg");
         return true;
     }
 
-    if(m_pKeyboard->isKeyDown(OIS::KC_O))
-    {
-        if(m_pTrayMgr->isLogoVisible())
-        {
+    if(m_pKeyboard->isKeyDown(OIS::KC_O)) {
+        if(m_pTrayMgr->isLogoVisible()) {
             m_pTrayMgr->hideFrameStats();
             m_pTrayMgr->hideLogo();
-        }
-        else
-        {
+        } else {
             m_pTrayMgr->showFrameStats(OgreBites::TL_BOTTOMLEFT);
             m_pTrayMgr->showLogo(OgreBites::TL_BOTTOMRIGHT);
         }
@@ -169,28 +169,28 @@ bool OgreFramework::keyPressed(const OIS::KeyEvent &keyEventRef)
 
 //|||||||||||||||||||||||||||||||||||||||||||||||
 
-bool OgreFramework::keyReleased(const OIS::KeyEvent &keyEventRef)
+bool OgreFramework::keyReleased(const OIS::KeyEvent& keyEventRef)
 {
     return true;
 }
 
 //|||||||||||||||||||||||||||||||||||||||||||||||
 
-bool OgreFramework::mouseMoved(const OIS::MouseEvent &evt)
+bool OgreFramework::mouseMoved(const OIS::MouseEvent& evt)
 {
     return true;
 }
 
 //|||||||||||||||||||||||||||||||||||||||||||||||
 
-bool OgreFramework::mousePressed(const OIS::MouseEvent &evt, OIS::MouseButtonID id)
+bool OgreFramework::mousePressed(const OIS::MouseEvent& evt, OIS::MouseButtonID id)
 {
     return true;
 }
 
 //|||||||||||||||||||||||||||||||||||||||||||||||
 
-bool OgreFramework::mouseReleased(const OIS::MouseEvent &evt, OIS::MouseButtonID id)
+bool OgreFramework::mouseReleased(const OIS::MouseEvent& evt, OIS::MouseButtonID id)
 {
     return true;
 }

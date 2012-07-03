@@ -12,14 +12,14 @@
 
 class DemoApp
 {
-public:
-	DemoApp();
-	~DemoApp();
+    public:
+        DemoApp();
+        ~DemoApp();
 
-	void startDemo();
+        void startDemo();
 
-private:
-	AppStateManager*	m_pAppStateManager;
+    private:
+        AppStateManager*    m_pAppStateManager;
 };
 
 //|||||||||||||||||||||||||||||||||||||||||||||||

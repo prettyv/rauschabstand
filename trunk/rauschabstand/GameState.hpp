@@ -21,59 +21,58 @@
 
 //|||||||||||||||||||||||||||||||||||||||||||||||
 
-enum QueryFlags
-{
-	OGRE_HEAD_MASK	= 1<<0,
-    CUBE_MASK		= 1<<1
+enum QueryFlags {
+    OGRE_HEAD_MASK  = 1 << 0,
+    CUBE_MASK       = 1 << 1
 };
 
 //|||||||||||||||||||||||||||||||||||||||||||||||
 
 class GameState : public AppState
 {
-public:
-	GameState();
+    public:
+        GameState();
 
-	DECLARE_APPSTATE_CLASS(GameState)
+        DECLARE_APPSTATE_CLASS(GameState)
 
-	void enter();
-	void createScene();
-	void exit();
-	bool pause();
-	void resume();
+        void enter();
+        void createScene();
+        void exit();
+        bool pause();
+        void resume();
 
-	void getInput();
+        void getInput();
 
-	bool keyPressed(const OIS::KeyEvent &keyEventRef);
-	bool keyReleased(const OIS::KeyEvent &keyEventRef);
+        bool keyPressed(const OIS::KeyEvent& keyEventRef);
+        bool keyReleased(const OIS::KeyEvent& keyEventRef);
 
-	bool mouseMoved(const OIS::MouseEvent &arg);
-	bool mousePressed(const OIS::MouseEvent &arg, OIS::MouseButtonID id);
-	bool mouseReleased(const OIS::MouseEvent &arg, OIS::MouseButtonID id);
+        bool mouseMoved(const OIS::MouseEvent& arg);
+        bool mousePressed(const OIS::MouseEvent& arg, OIS::MouseButtonID id);
+        bool mouseReleased(const OIS::MouseEvent& arg, OIS::MouseButtonID id);
 
-	void onLeftPressed(const OIS::MouseEvent &evt);
-    void itemSelected(OgreBites::SelectMenu* menu);
+        void onLeftPressed(const OIS::MouseEvent& evt);
+        void itemSelected(OgreBites::SelectMenu* menu);
 
-	void update(Ogre::Real timeSinceLastFrame);
+        void update(Ogre::Real timeSinceLastFrame);
 
-private:
-	OgreBites::ParamsPanel*		m_pDetailsPanel;
-	bool						m_bQuit;
+    private:
+        OgreBites::ParamsPanel*     m_pDetailsPanel;
+        bool                        m_bQuit;
 
-	Ogre::RaySceneQuery*		m_pRSQ;
-	Ogre::SceneNode*			m_pCurrentObject;
-	Ogre::Entity*				m_pCurrentEntity;
-	bool						m_bLMouseDown, m_bRMouseDown;
-	bool						m_bSettingsMode;
+        Ogre::RaySceneQuery*        m_pRSQ;
+        Ogre::SceneNode*            m_pCurrentObject;
+        Ogre::Entity*               m_pCurrentEntity;
+        bool                        m_bLMouseDown, m_bRMouseDown;
+        bool                        m_bSettingsMode;
 
-	Visuals*					m_visuals;
+        Visuals*                    m_visuals;
 
-	GameLogic*					m_gameLogic;
-	AudioPlayer*				m_audioPlayer;
+        GameLogic*                  m_gameLogic;
+        AudioPlayer*                m_audioPlayer;
 
-    GameView*                   m_gameView;
+        GameView*                   m_gameView;
 
-	bool						m_audioRunningBeforePause;
+        bool                        m_audioRunningBeforePause;
 };
 
 //|||||||||||||||||||||||||||||||||||||||||||||||

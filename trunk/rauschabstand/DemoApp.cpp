@@ -10,14 +10,14 @@
 
 DemoApp::DemoApp()
 {
-	m_pAppStateManager = 0;
+    m_pAppStateManager = 0;
 }
 
 //|||||||||||||||||||||||||||||||||||||||||||||||
 
 DemoApp::~DemoApp()
 {
-	delete m_pAppStateManager;
+    delete m_pAppStateManager;
     delete OgreFramework::getSingletonPtr();
 }
 
@@ -25,19 +25,20 @@ DemoApp::~DemoApp()
 
 void DemoApp::startDemo()
 {
-	new OgreFramework();
-	if(!OgreFramework::getSingletonPtr()->initOgre("AdvancedOgreFramework", 0, 0))
-		return;
+    new OgreFramework();
 
-	OgreFramework::getSingletonPtr()->m_pLog->logMessage("Demo initialized!");
+    if(!OgreFramework::getSingletonPtr()->initOgre("AdvancedOgreFramework", 0, 0))
+        return;
 
-	m_pAppStateManager = new AppStateManager();
+    OgreFramework::getSingletonPtr()->m_pLog->logMessage("Demo initialized!");
 
-	MenuState::create(m_pAppStateManager, "MenuState");
-	GameState::create(m_pAppStateManager, "GameState");
+    m_pAppStateManager = new AppStateManager();
+
+    MenuState::create(m_pAppStateManager, "MenuState");
+    GameState::create(m_pAppStateManager, "GameState");
     PauseState::create(m_pAppStateManager, "PauseState");
 
-	m_pAppStateManager->start(m_pAppStateManager->findByName("MenuState"));
+    m_pAppStateManager->start(m_pAppStateManager->findByName("MenuState"));
 }
 
 //|||||||||||||||||||||||||||||||||||||||||||||||
