@@ -27,7 +27,7 @@
 #ifndef AUDIOPLAYER_HPP
 #define AUDIOPLAYER_HPP
 
-#include "cAudio/include/cAudio.h"
+#include "cAudio/cAudio.h"
 #include <vector>
 #include <OgreVector3.h>
 
@@ -37,7 +37,7 @@ class AudioPlayer {
 
 		AudioPlayer(const std::string& audio);
 		virtual ~AudioPlayer();
-		
+
 		void addObstacles(std::vector<Ogre::Vector3> positions);
 
 		void playSound(const std::string& audio);
@@ -46,15 +46,15 @@ class AudioPlayer {
 		void pause();
 		void resumeShip();
 		void stop();
-		
+
 		bool isPlaying();
 		int getLength();
-		
+
 		float getPitch();
 		void increasePitch(float diff);
 		void decreasePitch(float diff);
 		void updateObstacles(Ogre::Vector3 shipVec);
-		
+
 		void reset(std::vector< Ogre::Vector3 > positions);
 
 	private:

@@ -1,6 +1,6 @@
 #include "AudioPlayer.hpp"
 
-#include <cAudio/plugins/mp3Decoder/cMP3Plugin.h>
+//#include <cAudio/plugins/mp3Decoder/cMP3Plugin.h>
 
 #include <iostream>
 #include <sstream>
@@ -41,7 +41,7 @@ AudioPlayer::~AudioPlayer()
 }
 
 void AudioPlayer::addObstacles(std::vector<Ogre::Vector3> positions) {
-	IAudioSource* obstacle;
+	cAudio::IAudioSource* obstacle;
 	std::ostringstream ss;
 	cAudio::cVector3 position;
 	for (unsigned int i = 0; i < positions.size(); i++) {
